@@ -137,7 +137,8 @@ export default function Terminal({ onOpenCvModal, lang = "en" }: TerminalProps) 
   return (
     <div
       data-testid="hero-terminal"
-      className="rounded-2xl border border-white/10 bg-[#0B111D]/95 backdrop-blur-xl shadow-2xl overflow-hidden font-mono text-xs sm:text-sm flex flex-col"
+      dir="ltr"
+      className="rounded-2xl border border-white/10 bg-[#0B111D]/95 backdrop-blur-xl shadow-2xl overflow-hidden font-mono text-xs sm:text-sm flex flex-col text-left"
     >
       {/* Top Window Bar */}
       <div className="flex items-center justify-between border-b border-white/5 px-4 py-3 bg-[#090E17]/80">

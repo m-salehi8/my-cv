@@ -94,7 +94,7 @@ export default function Hero({ lang, onOpenCvModal }: HeroProps) {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
             </span>
             <span className="font-mono text-[11px] tracking-widest uppercase text-emerald-400 font-medium">
-              AVAILABLE FOR OPPORTUNITIES
+              {lang === "fa" ? "آماده برای فرصت‌های شغلی و پروژه‌های جدید" : "AVAILABLE FOR OPPORTUNITIES"}
             </span>
           </motion.div>
 
@@ -105,19 +105,27 @@ export default function Hero({ lang, onOpenCvModal }: HeroProps) {
             transition={{ duration: 0.7, delay: 0.1 }}
           >
             <h1 className="font-display font-black tracking-tight text-4xl sm:text-6xl lg:text-7xl leading-[1.05]">
-              <span className="text-white block">MOHAMMADREZA</span>
-              <span className="text-emerald-400 block mt-0.5 sm:mt-1">SALEHI</span>
+              <span className="text-white block">{lang === "fa" ? "محمدرضا" : "MOHAMMADREZA"}</span>
+              <span className="text-emerald-400 block mt-0.5 sm:mt-1">{lang === "fa" ? "صالحی" : "SALEHI"}</span>
             </h1>
 
             {/* Terminal Typing Subtitle: $ MICROSERVICES & ASYNC PIPELINES */}
             <div className="mt-4 sm:mt-5 flex items-center">
               <TerminalTyping
                 prefix="$"
-                phrases={[
-                  "MICROSERVICES & ASYNC PIPELINES",
-                  "PYTHON · FASTAPI · DJANGO · POSTGRES",
-                  "HIGH-THROUGHPUT WEB SCRAPING & LLM AGENTS",
-                ]}
+                phrases={
+                  lang === "fa"
+                    ? [
+                        "معماری میکروسرویس و خطوط داده ناهمگام",
+                        "پایتون · FASTAPI · جنگو · POSTGRESQL",
+                        "خزش خودکار وب در مقیاس بزرگ و ایجنت‌های هوش مصنوعی",
+                      ]
+                    : [
+                        "MICROSERVICES & ASYNC PIPELINES",
+                        "PYTHON · FASTAPI · DJANGO · POSTGRES",
+                        "HIGH-THROUGHPUT WEB SCRAPING & LLM AGENTS",
+                      ]
+                }
                 className="text-xs sm:text-sm text-slate-300 font-mono tracking-wider sm:tracking-widest uppercase break-words"
               />
             </div>
@@ -130,10 +138,10 @@ export default function Hero({ lang, onOpenCvModal }: HeroProps) {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="mt-5 sm:mt-6 text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl font-normal"
           >
-            Dynamic Backend Developer with 4+ years of experience engineering scalable microservices, RESTful APIs, and asynchronous data pipelines. Highly skilled in Python (FastAPI, Django) and modern data engineering, with proven expertise in building complex automated scraping architectures, ERP portals, and workflow orchestration systems.
+            {lang === "fa" ? PROFILE.heroHookFa : PROFILE.heroHook}
           </motion.p>
 
-          {/* Action Buttons (Download Resume + Email copy + Socials) matching screenshot */}
+          {/* Action Buttons (Download Resume + Email copy + Socials) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -142,26 +150,25 @@ export default function Hero({ lang, onOpenCvModal }: HeroProps) {
           >
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
               {/* Solid Green Download Resume button */}
-              <a
-                href={PROFILE.resumeUrl}
-                download="Mohammadreza_Salehi_CV.pdf"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-400 hover:bg-emerald-300 px-5 py-3 font-mono text-xs sm:text-sm font-semibold text-slate-950 transition-all shadow-lg shadow-emerald-500/10 active:scale-95 w-full sm:w-auto text-center"
+              <button
+                onClick={onOpenCvModal}
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-400 hover:bg-emerald-300 px-5 py-3 font-mono text-xs sm:text-sm font-semibold text-slate-950 transition-all shadow-lg shadow-emerald-500/10 active:scale-95 w-full sm:w-auto text-center cursor-pointer min-h-[44px]"
               >
                 <Download className="w-4 h-4 shrink-0" />
-                <span>Download Resume</span>
-              </a>
+                <span>{lang === "fa" ? "مشاهده و دریافت فایل رزومه" : "Download Resume"}</span>
+              </button>
 
               {/* Email Pill Button with copy */}
               <button
                 onClick={copyEmail}
-                className="inline-flex items-center justify-center sm:justify-start gap-2 rounded-xl border border-white/10 bg-[#0E1524]/80 px-4 py-3 font-mono text-xs sm:text-sm text-slate-300 hover:border-emerald-500/40 hover:text-emerald-300 hover:bg-white/5 transition-all w-full sm:w-auto max-w-full overflow-hidden"
+                className="inline-flex items-center justify-center sm:justify-start gap-2 rounded-xl border border-white/10 bg-[#0E1524]/80 px-4 py-3 font-mono text-xs sm:text-sm text-slate-300 hover:border-emerald-500/40 hover:text-emerald-300 hover:bg-white/5 transition-all w-full sm:w-auto max-w-full overflow-hidden min-h-[44px]"
                 title="Click to copy email"
               >
                 <Mail className="w-4 h-4 text-slate-400 shrink-0" />
                 <span className="truncate">{PROFILE.email}</span>
                 {copied && (
                   <span className="text-[10px] text-emerald-400 font-semibold flex items-center gap-1 ml-1 shrink-0">
-                    <Check className="w-3 h-3" /> Copied!
+                    <Check className="w-3 h-3" /> {lang === "fa" ? "کپی شد!" : "Copied!"}
                   </span>
                 )}
               </button>
@@ -199,7 +206,7 @@ export default function Hero({ lang, onOpenCvModal }: HeroProps) {
             className="relative z-10"
           >
             <TiltCard max={8}>
-              <Terminal />
+              <Terminal onOpenCvModal={onOpenCvModal} lang={lang} />
             </TiltCard>
           </motion.div>
         </div>

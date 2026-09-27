@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import { PROJECTS, ProjectItem } from "../data/resume";
 import SectionHeading from "./SectionHeading";
 import Reveal from "./Reveal";
-import TiltCard from "./TiltCard";
+import SpotlightCard from "./SpotlightCard";
 import { ExternalLink, Sparkles, FolderGit2, Search, X, CheckCircle2, ArrowRight } from "lucide-react";
 
 interface ProjectsProps {
@@ -90,76 +90,74 @@ export default function Projects({ lang }: ProjectsProps) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           {filteredProjects.map((proj, i) => (
             <Reveal key={proj.testid} delay={i * 0.1} className="h-full">
-              <TiltCard max={10} className="h-full">
-                <div
-                  data-testid={proj.testid}
-                  onClick={() => setActiveProjectModal(proj)}
-                  className="h-full rounded-2xl border border-white/10 bg-[#0B111D]/85 p-6 sm:p-7 backdrop-blur-md hover:border-emerald-400/50 hover:shadow-[0_15px_40px_rgba(16,185,129,0.12)] transition-all duration-300 flex flex-col justify-between group cursor-pointer"
-                >
-                  <div>
-                    {/* Top Row: Index & Role */}
-                    <div className="flex items-center justify-between pb-4 border-b border-white/5">
-                      <div className="flex items-center gap-2">
-                        <FolderGit2 className="w-4 h-4 text-emerald-400" />
-                        <span className="font-mono text-xs text-slate-400 font-semibold">
-                          PROJECT // {proj.index}
-                        </span>
-                      </div>
-                      <span className="font-mono text-xs text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20 font-medium">
-                        {proj.period}
+              <SpotlightCard
+                data-testid={proj.testid}
+                onClick={() => setActiveProjectModal(proj)}
+                className="h-full p-6 sm:p-7 flex flex-col justify-between group cursor-pointer"
+              >
+                <div>
+                  {/* Top Row: Index & Role */}
+                  <div className="flex items-center justify-between pb-4 border-b border-white/5">
+                    <div className="flex items-center gap-2">
+                      <FolderGit2 className="w-4 h-4 text-emerald-400" />
+                      <span className="font-mono text-xs text-slate-400 font-semibold">
+                        PROJECT // {proj.index}
                       </span>
                     </div>
-
-                    {/* Title */}
-                    <h3 className="mt-4 font-display font-bold text-xl text-white group-hover:text-emerald-300 transition-colors">
-                      {lang === "fa" && proj.titleFa ? proj.titleFa : proj.title}
-                    </h3>
-
-                    {/* Role sub-badge */}
-                    <div className="mt-1 font-mono text-xs text-slate-400">
-                      {proj.role}
-                    </div>
-
-                    {/* Description */}
-                    <p className="mt-4 text-slate-300 text-sm leading-relaxed line-clamp-3">
-                      {lang === "fa" && proj.descriptionFa ? proj.descriptionFa : proj.description}
-                    </p>
+                    <span className="font-mono text-xs text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20 font-medium">
+                      {proj.period}
+                    </span>
                   </div>
 
-                  {/* Footer tags and link */}
-                  <div className="mt-6 pt-5 border-t border-white/5">
-                    <div className="flex flex-wrap gap-1.5 mb-4">
-                      {proj.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-2 py-0.5 rounded bg-white/5 font-mono text-[11px] text-slate-400 border border-white/5"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+                  {/* Title */}
+                  <h3 className="mt-4 font-display font-bold text-xl text-white group-hover:text-emerald-300 transition-colors">
+                    {lang === "fa" && proj.titleFa ? proj.titleFa : proj.title}
+                  </h3>
 
-                    <div className="flex items-center justify-between font-mono text-xs">
-                      <span className="text-emerald-400 group-hover:underline flex items-center gap-1">
-                        <span>{lang === "fa" ? "مشاهده جزئیات معماری" : "View architecture specs"}</span>
-                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  {/* Role sub-badge */}
+                  <div className="mt-1 font-mono text-xs text-slate-400">
+                    {proj.role}
+                  </div>
+
+                  {/* Description */}
+                  <p className="mt-4 text-slate-300 text-sm leading-relaxed line-clamp-3">
+                    {lang === "fa" && proj.descriptionFa ? proj.descriptionFa : proj.description}
+                  </p>
+                </div>
+
+                {/* Footer tags and link */}
+                <div className="mt-6 pt-5 border-t border-white/5">
+                  <div className="flex flex-wrap gap-1.5 mb-4">
+                    {proj.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2 py-0.5 rounded bg-white/5 font-mono text-[11px] text-slate-400 border border-white/5"
+                      >
+                        {tag}
                       </span>
+                    ))}
+                  </div>
 
-                      {proj.url && (
-                        <a
-                          href={proj.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="inline-flex items-center gap-1 text-slate-400 hover:text-emerald-300 transition-colors"
-                        >
-                          <ExternalLink className="w-3.5 h-3.5" />
-                        </a>
-                      )}
-                    </div>
+                  <div className="flex items-center justify-between font-mono text-xs">
+                    <span className="text-emerald-400 group-hover:underline flex items-center gap-1">
+                      <span>{lang === "fa" ? "مشاهده جزئیات معماری" : "View architecture specs"}</span>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    </span>
+
+                    {proj.url && (
+                      <a
+                        href={proj.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center gap-1 text-slate-400 hover:text-emerald-300 transition-colors"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    )}
                   </div>
                 </div>
-              </TiltCard>
+              </SpotlightCard>
             </Reveal>
           ))}
         </div>

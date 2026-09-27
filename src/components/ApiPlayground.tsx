@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { PROFILE, SKILLS, PROJECTS } from "../data/resume";
 import SectionHeading from "./SectionHeading";
 import Reveal from "./Reveal";
+import SpotlightCard from "./SpotlightCard";
+import { useToast } from "./Toast";
 import { Play, Copy, Check, Terminal, Clock, Server, Send, ArrowRight } from "lucide-react";
 
 interface ApiPlaygroundProps {
@@ -137,6 +139,7 @@ export default function ApiPlayground({ lang }: ApiPlaygroundProps) {
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [copiedCurl, setCopiedCurl] = useState(false);
+  const { showToast } = useToast();
 
   const activeEp = endpoints[selectedIdx];
 
@@ -169,6 +172,11 @@ export default function ApiPlayground({ lang }: ApiPlaygroundProps) {
       setResponseOutput(target.response(bodyData));
       setLatency(simulatedLatency);
       setLoading(false);
+      showToast(
+        `${target.method} ${target.path}`,
+        `HTTP 200 OK · Roundtrip completed in ${simulatedLatency}ms`,
+        "success"
+      );
     }, 180);
   };
 
@@ -182,12 +190,14 @@ export default function ApiPlayground({ lang }: ApiPlaygroundProps) {
   const copyResponse = () => {
     navigator.clipboard.writeText(JSON.stringify(responseOutput, null, 2));
     setCopied(true);
+    showToast("JSON Copied", "Response payload copied to clipboard", "info");
     setTimeout(() => setCopied(false), 2000);
   };
 
   const copyCurl = () => {
     navigator.clipboard.writeText(curlCommand);
     setCopiedCurl(true);
+    showToast("cURL Copied", "Terminal command copied to clipboard", "info");
     setTimeout(() => setCopiedCurl(false), 2000);
   };
 
@@ -210,7 +220,7 @@ export default function ApiPlayground({ lang }: ApiPlaygroundProps) {
         </Reveal>
 
         <Reveal delay={0.2}>
-          <div className="rounded-2xl border border-white/10 bg-[#0B111D]/90 backdrop-blur-xl shadow-2xl overflow-hidden">
+          <SpotlightCard className="shadow-2xl overflow-hidden">
             {/* Top Toolbar */}
             <div className="flex flex-wrap items-center justify-between gap-3 px-4 sm:px-6 py-3.5 border-b border-white/10 bg-[#080D15]/80">
               <div className="flex items-center gap-2">
@@ -307,7 +317,7 @@ export default function ApiPlayground({ lang }: ApiPlaygroundProps) {
                       )}
                     </button>
                   </div>
-                  <pre className="text-slate-300 overflow-x-auto p-2 bg-[#0A0E17] rounded-lg text-[11px] leading-relaxed scrollbar-thin">
+                  <pre dir="ltr" className="text-slate-300 overflow-x-auto p-2 bg-[#0A0E17] rounded-lg text-[11px] leading-relaxed scrollbar-thin text-left">
                     {curlCommand}
                   </pre>
                 </div>
@@ -317,7 +327,7 @@ export default function ApiPlayground({ lang }: ApiPlaygroundProps) {
               <div className="lg:col-span-7 p-4 sm:p-6 flex flex-col justify-between space-y-4">
                 {/* Endpoint Header Bar with Execute button */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/10">
-                  <div className="flex items-center gap-2 overflow-x-auto scrollbar-none">
+                  <div dir="ltr" className="flex items-center gap-2 overflow-x-auto scrollbar-none">
                     <span
                       className={`font-mono text-xs font-bold px-2.5 py-1 rounded ${
                         activeEp.method === "GET"
@@ -353,10 +363,11 @@ export default function ApiPlayground({ lang }: ApiPlaygroundProps) {
                       Request Body (JSON):
                     </label>
                     <textarea
+                      dir="ltr"
                       value={requestBodyText}
                       onChange={(e) => setRequestBodyText(e.target.value)}
                       rows={5}
-                      className="w-full rounded-xl border border-white/10 bg-slate-950/80 p-3 font-mono text-xs text-slate-200 focus:outline-none focus:border-emerald-500/60 scrollbar-thin resize-y"
+                      className="w-full rounded-xl border border-white/10 bg-slate-950/80 p-3 font-mono text-xs text-slate-200 focus:outline-none focus:border-emerald-500/60 scrollbar-thin resize-y text-left"
                     />
                   </div>
                 )}
@@ -389,15 +400,15 @@ export default function ApiPlayground({ lang }: ApiPlaygroundProps) {
                     </button>
                   </div>
 
-                  <div className="relative flex-1 min-h-[260px] sm:min-h-[300px] rounded-xl border border-white/10 bg-[#080D15] p-3 sm:p-4 overflow-y-auto font-mono text-xs leading-relaxed text-emerald-300/90 scrollbar-thin">
-                    <pre className="whitespace-pre-wrap break-words font-mono text-xs">
+                  <div dir="ltr" className="relative flex-1 min-h-[260px] sm:min-h-[300px] rounded-xl border border-white/10 bg-[#080D15] p-3 sm:p-4 overflow-y-auto font-mono text-xs leading-relaxed text-emerald-300/90 scrollbar-thin text-left">
+                    <pre className="whitespace-pre-wrap break-words font-mono text-xs text-left">
                       {JSON.stringify(responseOutput, null, 2)}
                     </pre>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </SpotlightCard>
         </Reveal>
       </div>
     </section>

@@ -34,6 +34,10 @@
   font-family: var(--font-mono);
 }
 
+.font-vazirmatn {
+  font-family: 'Vazirmatn', var(--font-sans);
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

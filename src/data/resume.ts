@@ -14,7 +14,12 @@ export interface ProfileData {
   resumeUrl: string;
   summary: string;
   summary2: string;
+  summary2Fa?: string;
   faSummary?: string;
+  heroHook?: string;
+  heroHookFa?: string;
+  aboutStory?: string;
+  aboutStoryFa?: string;
 }
 
 export interface SocialLink {
@@ -85,8 +90,18 @@ export const PROFILE: ProfileData = {
     "Dynamic Backend Developer with 4+ years of experience engineering scalable microservices, RESTful APIs, and asynchronous data pipelines. Highly skilled in Python (FastAPI, Django) and modern data engineering, with proven expertise in building complex automated scraping architectures, ERP portals, and workflow orchestration systems.",
   summary2:
     "Proficient in designing AI agent architectures and leveraging advanced LLM orchestration tools to build intelligent, production-grade workflows. Passionate about solving structural challenges and building high-performance, AI-driven solutions.",
+  summary2Fa:
+    "مسلط به طراحی معماری‌های مبتنی بر ایجنت‌های هوش مصنوعی (AI Agents) و ابزارهای پیشرفته ارکستراسیون LLM برای اتوماسیون فرآیندهای پیچیده سازمانی با تمرکز بر بازدهی، بهینه‌سازی توکن و قابلیت اطمینان بالا.",
   faSummary:
     "توسعه‌دهنده باک‌اند با بیش از ۴ سال تجربه تخصصی در طراحی و پیاده‌سازی مایکروسرویس‌های مقیاس‌پذیر، وب‌سرویس‌های RESTful و خطوط داده ناهمگام (Async Data Pipelines). مسلط به پایتون (FastAPI و Django)، خزش داده خودکار با Scrapy، معماری‌های Enterprise ERP، سیستم‌های ارکستراسیون ورک‌فلو و تلفیق ایجنت‌های هوش مصنوعی.",
+  heroHook:
+    "Specialized in high-throughput backend infrastructure, asynchronous event-driven pipelines, and production FastAPI microservices. Designing fault-tolerant architectures processing 500K+ records with sub-25ms response latencies and autonomous AI workflow integrations.",
+  heroHookFa:
+    "متخصص طراحی زیرساخت‌های پرترافیک بک‌اند، خطوط لوله رویداد-محور (Event-Driven) و میکروسرویس‌های پرسرعت FastAPI. با سابقه پیاده‌سازی سیستم‌های پردازش داده با حجم بیش از ۵۰۰ هزار رکورد، پاسخ‌دهی زیر ۲۵ میلی‌ثانیه و ارکستراسیون ایجنت‌های هوش مصنوعی.",
+  aboutStory:
+    "With 4+ years of production experience, my engineering philosophy centers on architectural resilience, strict data integrity, and deterministic system behavior. From architecting end-to-end enterprise ERP backends to managing distributed crawler fleets and LLM agents, I build maintainable services designed to thrive under heavy concurrent load.",
+  aboutStoryFa:
+    "در طول بیش از ۴ سال مهندسی نرم‌افزار در محیط‌های پروداکشن، فلسفه کاری من بر پایه تاب‌آوری معماری، یکپارچگی داده و پایداری قطعی سیستم شکل گرفته است. از طراحی و استقرار پورتال‌های جامع ERP و کلاسترهای خزش داده نیم‌میلیونی گرفته تا ارکستراسیون ایجنت‌های هوش مصنوعی، تمرکز من بر ساخت سرویس‌های ماژولار و مقیاس‌پذیری است که زیر بار ترافیک همزمان سنگین بدون افت کارایی عمل می‌کنند.",
 };
 
 export const SOCIALS: SocialLink[] = [

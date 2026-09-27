@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform, useSpring } from "motion/react";
 import { EXPERIENCE } from "../data/resume";
 import SectionHeading from "./SectionHeading";
 import Reveal from "./Reveal";
+import SpotlightCard from "./SpotlightCard";
 import { MapPin } from "lucide-react";
 
 interface ExperienceProps {
@@ -11,6 +12,7 @@ interface ExperienceProps {
 
 export default function Experience({ lang }: ExperienceProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const isRtl = lang === "fa";
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -29,21 +31,34 @@ export default function Experience({ lang }: ExperienceProps) {
     <section id="experience" data-testid="experience-section" className="py-24 sm:py-32 relative">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          index="03"
+          index="04"
           eyebrow={lang === "fa" ? "گاه‌شمار شغلی" : "Chronology"}
           title={lang === "fa" ? "سوابق کاری و نقش‌های سازمانی" : "Work history & roles"}
           testid="experience-heading"
         />
 
-        {/* Timeline Container */}
-        <div ref={containerRef} className="relative ml-2 sm:ml-8 pl-6 sm:pl-12 space-y-8 sm:space-y-16">
+        {/* Timeline Container with RTL/LTR awareness */}
+        <div
+          ref={containerRef}
+          className={`relative ${
+            isRtl
+              ? "mr-2 sm:mr-8 pr-6 sm:pr-12"
+              : "ml-2 sm:ml-8 pl-6 sm:pl-12"
+          } space-y-8 sm:space-y-16`}
+        >
           {/* Base Background Track Line */}
-          <div className="absolute left-0 top-6 bottom-6 w-[2px] bg-slate-800/80 -translate-x-1/2" />
+          <div
+            className={`absolute ${
+              isRtl ? "right-0 translate-x-1/2" : "left-0 -translate-x-1/2"
+            } top-6 bottom-6 w-[2px] bg-slate-800/80`}
+          />
 
           {/* Active Fill Line */}
           <motion.div
             style={{ height: fillHeight }}
-            className="absolute left-0 top-6 w-[2px] -translate-x-1/2 bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.9)] origin-top z-0"
+            className={`absolute ${
+              isRtl ? "right-0 translate-x-1/2" : "left-0 -translate-x-1/2"
+            } top-6 w-[2px] bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.9)] origin-top z-0`}
           />
 
           {EXPERIENCE.map((exp, idx) => (
@@ -53,9 +68,10 @@ export default function Experience({ lang }: ExperienceProps) {
                   index={idx}
                   total={EXPERIENCE.length}
                   progress={smoothProgress}
+                  isRtl={isRtl}
                 />
 
-                <div className="rounded-2xl border border-white/10 bg-[#0B111D]/80 hover:border-emerald-500/30 transition-all p-5 sm:p-8 backdrop-blur-md">
+                <SpotlightCard className="p-5 sm:p-8">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 pb-4">
                     <div>
                       <h3 className="font-display font-bold text-xl sm:text-2xl text-white tracking-tight">
@@ -100,7 +116,7 @@ export default function Experience({ lang }: ExperienceProps) {
                       </span>
                     ))}
                   </div>
-                </div>
+                </SpotlightCard>
               </div>
             </Reveal>
           ))}
@@ -114,10 +130,12 @@ function TimelineNode({
   index,
   total,
   progress,
+  isRtl,
 }: {
   index: number;
   total: number;
   progress: any;
+  isRtl: boolean;
 }) {
   const threshold = index / Math.max(1, total - 1);
   const nodeScale = useTransform(
@@ -145,7 +163,11 @@ function TimelineNode({
   );
 
   return (
-    <div className="absolute -left-[33px] sm:-left-[57px] top-6 flex items-center justify-center z-10">
+    <div
+      className={`absolute ${
+        isRtl ? "-right-[33px] sm:-right-[57px]" : "-left-[33px] sm:-left-[57px]"
+      } top-6 flex items-center justify-center z-10`}
+    >
       <motion.div
         style={{
           scale: nodeScale,
