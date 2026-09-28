@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from "react";
+import { motion } from "motion/react";
 import { PROJECTS, ProjectItem } from "../data/resume";
 import SectionHeading from "./SectionHeading";
-import Reveal from "./Reveal";
 import SpotlightCard from "./SpotlightCard";
-import { ExternalLink, Sparkles, FolderGit2, Search, X, CheckCircle2, ArrowRight } from "lucide-react";
+import SectionContainer, { SectionItem, sectionItemVariants } from "./SectionContainer";
+import { ExternalLink, FolderGit2, Search, X, CheckCircle2, ArrowRight } from "lucide-react";
 
 interface ProjectsProps {
   lang: "en" | "fa";
@@ -37,17 +38,21 @@ export default function Projects({ lang }: ProjectsProps) {
   }, [selectedTag, searchQuery]);
 
   return (
-    <section id="projects" data-testid="projects-section" className="py-24 sm:py-32 bg-[#0D1420]/40 relative">
+    <SectionContainer
+      id="projects"
+      dataTestId="projects-section"
+      className="py-24 sm:py-32 bg-[#0D1420]/40 relative"
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          index="04"
+          index="05"
           eyebrow={lang === "fa" ? "پروژه‌های شاخص" : "Portfolio"}
           title={lang === "fa" ? "پروژه‌های کلیدی و معماری‌های توسعه‌یافته" : "Featured engineering projects"}
           testid="projects-heading"
         />
 
         {/* Filter and Search Bar */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <SectionItem className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           {/* Tags */}
           <div className="flex items-center gap-1.5 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
             {allTags.map((tag) => (
@@ -84,12 +89,16 @@ export default function Projects({ lang }: ProjectsProps) {
               </button>
             )}
           </div>
-        </div>
+        </SectionItem>
 
-        {/* Projects Grid */}
+        {/* Projects Grid with Staggered Entrance */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-          {filteredProjects.map((proj, i) => (
-            <Reveal key={proj.testid} delay={i * 0.1} className="h-full">
+          {filteredProjects.map((proj) => (
+            <motion.div
+              key={proj.testid}
+              variants={sectionItemVariants}
+              className="h-full"
+            >
               <SpotlightCard
                 data-testid={proj.testid}
                 onClick={() => setActiveProjectModal(proj)}
@@ -158,7 +167,7 @@ export default function Projects({ lang }: ProjectsProps) {
                   </div>
                 </div>
               </SpotlightCard>
-            </Reveal>
+            </motion.div>
           ))}
         </div>
 
@@ -178,34 +187,34 @@ export default function Projects({ lang }: ProjectsProps) {
               className="relative w-full max-w-2xl bg-[#0D1420] border border-white/15 rounded-2xl shadow-2xl p-6 sm:p-8 overflow-hidden space-y-6"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-4">
+              <div className="flex items-start justify-between">
                 <div>
-                  <span className="font-mono text-xs text-emerald-400 uppercase tracking-widest">
-                    Project // {activeProjectModal.index} · {activeProjectModal.period}
+                  <span className="font-mono text-xs text-emerald-400">
+                    PROJECT // {activeProjectModal.index}
                   </span>
-                  <h3 className="font-display font-bold text-2xl text-white mt-1">
+                  <h3 className="text-2xl font-display font-bold text-white mt-1">
                     {lang === "fa" && activeProjectModal.titleFa
                       ? activeProjectModal.titleFa
                       : activeProjectModal.title}
                   </h3>
-                  <div className="text-slate-400 font-mono text-xs mt-1">
-                    {activeProjectModal.role}
-                  </div>
+                  <p className="text-slate-400 text-xs font-mono mt-1">
+                    {activeProjectModal.role} · {activeProjectModal.period}
+                  </p>
                 </div>
 
                 <button
                   onClick={() => setActiveProjectModal(null)}
-                  className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/10"
+                  className="p-1.5 rounded-lg border border-white/10 text-slate-400 hover:text-white bg-white/5"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-4 h-4" />
                 </button>
               </div>
 
               <div>
                 <h4 className="font-mono text-xs uppercase tracking-wider text-slate-400 mb-2">
-                  {lang === "fa" ? "شرح معماری و چالش‌های فنی" : "Architecture & Engineering Scope"}
+                  {lang === "fa" ? "خلاصه معماری و نقش در پروژه" : "Architecture & Contributions"}
                 </h4>
-                <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+                <p className="text-slate-200 text-sm leading-relaxed">
                   {lang === "fa" && activeProjectModal.descriptionFa
                     ? activeProjectModal.descriptionFa
                     : activeProjectModal.description}
@@ -257,6 +266,6 @@ export default function Projects({ lang }: ProjectsProps) {
           </div>
         )}
       </div>
-    </section>
+    </SectionContainer>
   );
 }

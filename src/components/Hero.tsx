@@ -5,7 +5,9 @@ import Terminal from "./Terminal";
 import TerminalTyping from "./TerminalTyping";
 import Canvas3DScene from "./Canvas3DScene";
 import TiltCard from "./TiltCard";
-import { Download, Mail, Linkedin, Github, Send, Check, Copy } from "lucide-react";
+import LottieAnimation from "./LottieAnimation";
+import { HERO_PIPELINE_LOTTIE } from "../data/lottieAnimations";
+import { Download, Mail, Linkedin, Github, Send, Check, Copy, Activity } from "lucide-react";
 
 interface HeroProps {
   lang: "en" | "fa";
@@ -140,6 +142,41 @@ export default function Hero({ lang, onOpenCvModal }: HeroProps) {
           >
             {lang === "fa" ? PROFILE.heroHookFa : PROFILE.heroHook}
           </motion.p>
+
+          {/* Interactive Lottie Microservices Pipeline Telemetry */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.25 }}
+            className="mt-6 p-3 sm:p-4 rounded-xl border border-white/10 bg-[#0E1524]/60 backdrop-blur-md max-w-xl shadow-lg"
+          >
+            <div className="flex items-center justify-between pb-2.5 border-b border-white/5 font-mono text-[11px] text-slate-400">
+              <span className="flex items-center gap-2 text-emerald-400 font-semibold tracking-wide">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                </span>
+                {lang === "fa" ? "خط لوله داده و مایکروسرویس‌های فعال" : "ASYNC EVENT BUS // LIVE TELEMETRY"}
+              </span>
+              <span className="text-[10px] text-slate-500 font-mono">
+                {lang === "fa" ? "پاسخ‌دهی زیر ۲۵ میلی‌ثانیه" : "LATENCY < 25ms"}
+              </span>
+            </div>
+            
+            <div className="pt-2 flex items-center justify-between gap-3">
+              <div className="w-full max-w-[320px] sm:max-w-[340px] h-[58px] flex items-center justify-center">
+                <LottieAnimation
+                  animationData={HERO_PIPELINE_LOTTIE}
+                  className="w-full h-full"
+                  ariaLabel={lang === "fa" ? "جریان بسته داده در میکروسرویس‌ها" : "Microservices event pipeline packet stream"}
+                />
+              </div>
+              <div className="hidden sm:flex flex-col items-end gap-0.5 text-[10px] font-mono shrink-0">
+                <span className="text-emerald-400 font-semibold">FastAPI → RabbitMQ</span>
+                <span className="text-cyan-400 font-semibold">Postgres · 500K+ Crawled</span>
+              </div>
+            </div>
+          </motion.div>
 
           {/* Action Buttons (Download Resume + Email copy + Socials) */}
           <motion.div

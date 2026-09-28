@@ -78,7 +78,7 @@ export const PROFILE: ProfileData = {
   firstName: "MOHAMMADREZA",
   lastName: "SALEHI",
   fullName: "Mohammadreza Salehi",
-  photo: PROFILE_PHOTO_BASE64,
+  photo: "/profile.jpg",
   role: "Backend Developer",
   tagline: "PYTHON · FASTAPI · MICROSERVICES · AI PIPELINES",
   email: "mohammadsalehi8138@gmail.com",

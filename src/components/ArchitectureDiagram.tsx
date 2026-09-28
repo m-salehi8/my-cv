@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import SectionHeading from "./SectionHeading";
-import Reveal from "./Reveal";
+import SectionContainer, { SectionItem } from "./SectionContainer";
 import SpotlightCard from "./SpotlightCard";
 import { Server, Database, Cpu, Layers, ShieldCheck, Activity, ArrowRight, CheckCircle2, Zap, Code, Terminal, Sparkles } from "lucide-react";
 
@@ -285,7 +285,11 @@ def process_scraped_dataset(self, match_data: dict):
   const activeNode = nodes.find((n) => n.id === activeNodeId) || nodes[1];
 
   return (
-    <section id="architecture" data-testid="architecture-section" className="py-24 sm:py-32 bg-[#090E17]/60 relative">
+    <SectionContainer
+      id="architecture"
+      dataTestId="architecture-section"
+      className="py-24 sm:py-32 bg-[#090E17]/60 relative"
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           index="06"
@@ -294,16 +298,16 @@ def process_scraped_dataset(self, match_data: dict):
           testid="architecture-heading"
         />
 
-        <Reveal delay={0.1}>
+        <SectionItem>
           <p className="text-slate-300 text-sm sm:text-base max-w-3xl mb-10 leading-relaxed">
             {lang === "fa"
               ? "دیداری جامع از نحوه تعامل لایه‌ها در پروژه‌های پروداکشن: از دریافت ترافیک در دروازه ورودی تا پردازش غیرهمگام در FastAPI، کشینگ چندسطحی با Redis، پایگاه‌داده PostgreSQL و صف‌های تسک RabbitMQ. روی هر بخش کلیک کرده و کد اسنیپت واقعی را بررسی کنید."
               : "An interactive topology of the distributed architectures I design and operate: from reverse proxy SSL termination to asynchronous FastAPI microservices, sub-millisecond Redis caching, resilient PostgreSQL connection pools, and Celery task queues."}
           </p>
-        </Reveal>
+        </SectionItem>
 
         {/* Animated Data Stream Flow Indicator */}
-        <div className="mb-8 p-3 rounded-2xl bg-black/40 border border-white/10 flex items-center justify-between overflow-x-auto scrollbar-none font-mono text-xs">
+        <SectionItem className="mb-8 p-3 rounded-2xl bg-black/40 border border-white/10 flex items-center justify-between overflow-x-auto scrollbar-none font-mono text-xs">
           <div className="flex items-center gap-2 text-slate-400 shrink-0">
             <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
             <span className="text-emerald-400 font-bold">{lang === "fa" ? "جریان زنده داده:" : "Active Data Flow:"}</span>
@@ -322,10 +326,10 @@ def process_scraped_dataset(self, match_data: dict):
             <span className="text-emerald-400">➔</span>
             <span className="px-2 py-0.5 rounded bg-fuchsia-950/60 text-fuchsia-300 border border-fuchsia-500/30">RabbitMQ / Celery</span>
           </div>
-        </div>
+        </SectionItem>
 
         {/* Interactive Architecture Flow View */}
-        <div className="space-y-8">
+        <SectionItem className="space-y-8">
           {/* Node Selector Row */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {nodes.map((node, index) => {
@@ -362,7 +366,7 @@ def process_scraped_dataset(self, match_data: dict):
           </div>
 
           {/* Active Node Detail Card with Spotlight */}
-          <Reveal delay={0.15}>
+          <div>
             <SpotlightCard className="p-6 sm:p-8">
               <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 pb-6 border-b border-white/10">
                 <div className="space-y-2 max-w-2xl">
@@ -465,9 +469,9 @@ def process_scraped_dataset(self, match_data: dict):
                 )}
               </div>
             </SpotlightCard>
-          </Reveal>
-        </div>
+          </div>
+        </SectionItem>
       </div>
-    </section>
+    </SectionContainer>
   );
 }

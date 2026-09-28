@@ -1,6 +1,6 @@
 {
-  "name": "Mohammadreza Salehi — Backend Developer Portfolio & CV",
-  "description": "Professional CV and engineering portfolio of Mohammadreza Salehi: Python, FastAPI, microservices, and AI data pipelines.",
+  "name": "محمدرضا صالحی | توسعه‌دهنده بک‌اند و مهندس پایتون — Mohammadreza Salehi",
+  "description": "وب‌سایت و رزومه رسمی محمدرضا صالحی: برنامه‌نویس پایتون، توسعه‌دهنده ارشد بک‌اند، متخصص FastAPI، جنگو، داکر، میکروسرویس، خزش خودکار وب و خطوط داده هوش مصنوعی.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

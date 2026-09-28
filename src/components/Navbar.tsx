@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useSpring } from "motion/react";
-import { PROFILE } from "../data/resume";
 import { Download, Globe, Menu, X } from "lucide-react";
 
 interface NavbarProps {
@@ -18,10 +17,33 @@ export default function Navbar({ lang, onToggleLang, onOpenCvModal }: NavbarProp
     damping: 25,
   });
 
+  const [activeSection, setActiveSection] = useState<string>("");
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const ids = ["about", "stack", "api-playground", "experience", "projects", "architecture", "contact"];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActiveSection(`#${entry.target.id}`);
+          }
+        }
+      },
+      { rootMargin: "-40% 0px -55% 0px" }
+    );
+
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   const navLinks = [
@@ -77,13 +99,17 @@ export default function Navbar({ lang, onToggleLang, onOpenCvModal }: NavbarProp
           <span className="font-semibold text-slate-100 tracking-wide">~/salehi</span>
         </button>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Navigation with Active Section highlighting */}
         <nav className="hidden lg:flex items-center gap-1 bg-white/[0.03] border border-white/5 p-1 rounded-xl">
           {navLinks.map((link) => (
             <button
               key={link.index}
               onClick={() => handleNavClick(link.href)}
-              className="font-mono text-xs tracking-wider text-slate-300 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-lg transition-all"
+              className={`font-mono text-xs tracking-wider px-3 py-1.5 rounded-lg transition-all ${
+                activeSection === link.href
+                  ? "text-emerald-300 bg-emerald-500/15"
+                  : "text-slate-300 hover:text-white hover:bg-white/10"
+              }`}
             >
               {link.label}
             </button>

@@ -23,8 +23,9 @@ export default function Terminal({ onOpenCvModal, lang = "en" }: TerminalProps) 
     },
   ]);
 
-  const terminalEndRef = useRef<HTMLDivElement>(null);
+  const terminalBodyRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const isFirstRender = useRef(true);
 
   const handleSelectTab = (idx: number) => {
     setActiveTab(idx);
@@ -120,9 +121,18 @@ export default function Terminal({ onOpenCvModal, lang = "en" }: TerminalProps) 
     }
   };
 
-  // Auto-scroll terminal output to bottom
+  // Auto-scroll internal terminal buffer only when history is added (prevent scrolling window/page)
   useEffect(() => {
-    terminalEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    if (terminalBodyRef.current) {
+      terminalBodyRef.current.scrollTo({
+        top: terminalBodyRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }, [history]);
 
   const quickPills = [
@@ -179,7 +189,8 @@ export default function Terminal({ onOpenCvModal, lang = "en" }: TerminalProps) 
 
       {/* Scrollable Terminal Output Buffer */}
       <div
-        onClick={() => inputRef.current?.focus()}
+        ref={terminalBodyRef}
+        onClick={() => inputRef.current?.focus({ preventScroll: true })}
         className="p-4 sm:p-5 h-[280px] sm:h-[320px] overflow-y-auto space-y-4 scrollbar-thin cursor-text"
       >
         <div className="text-[11px] text-slate-500 mb-2">
@@ -242,8 +253,6 @@ export default function Terminal({ onOpenCvModal, lang = "en" }: TerminalProps) 
             className="flex-1 bg-transparent border-none outline-none text-slate-100 font-mono text-xs sm:text-sm placeholder:text-slate-600 focus:ring-0"
           />
         </div>
-
-        <div ref={terminalEndRef} />
       </div>
 
       {/* Mobile Quick Tap Action Bar */}

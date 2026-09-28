@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { PROFILE, SKILLS, PROJECTS } from "../data/resume";
 import SectionHeading from "./SectionHeading";
-import Reveal from "./Reveal";
+import SectionContainer, { SectionItem } from "./SectionContainer";
 import SpotlightCard from "./SpotlightCard";
 import { useToast } from "./Toast";
 import { Play, Copy, Check, Terminal, Clock, Server, Send, ArrowRight } from "lucide-react";
@@ -202,7 +202,11 @@ export default function ApiPlayground({ lang }: ApiPlaygroundProps) {
   };
 
   return (
-    <section id="api-playground" data-testid="api-playground-section" className="py-24 sm:py-32 relative">
+    <SectionContainer
+      id="api-playground"
+      dataTestId="api-playground-section"
+      className="py-24 sm:py-32 relative"
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           index="03"
@@ -211,15 +215,15 @@ export default function ApiPlayground({ lang }: ApiPlaygroundProps) {
           testid="api-playground-heading"
         />
 
-        <Reveal delay={0.1}>
+        <SectionItem>
           <p className="text-slate-300 text-sm sm:text-base max-w-3xl mb-8 leading-relaxed">
             {lang === "fa"
               ? "به عنوان مهندس باک‌اند، تمامی داده‌های این رزومه از طریق قراردادهای تمیز RESTful و مدل‌های Pydantic ساختاریافته در دسترس هستند. روی هر اندپوینت کلیک کرده یا درخواست POST ارسال کنید تا پاسخ سریع سرور را بررسی نمایید."
               : "Experience the backend architecture firsthand. As a FastAPI specialist, all portfolio metrics, services, and inquiry pipelines are exposed through high-performance RESTful endpoints with sub-25ms response latencies."}
           </p>
-        </Reveal>
+        </SectionItem>
 
-        <Reveal delay={0.2}>
+        <SectionItem>
           <SpotlightCard className="shadow-2xl overflow-hidden">
             {/* Top Toolbar */}
             <div className="flex flex-wrap items-center justify-between gap-3 px-4 sm:px-6 py-3.5 border-b border-white/10 bg-[#080D15]/80">
@@ -409,8 +413,8 @@ export default function ApiPlayground({ lang }: ApiPlaygroundProps) {
               </div>
             </div>
           </SpotlightCard>
-        </Reveal>
+        </SectionItem>
       </div>
-    </section>
+    </SectionContainer>
   );
 }

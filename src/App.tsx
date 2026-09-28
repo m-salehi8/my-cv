@@ -10,26 +10,56 @@ import Projects from "./components/Projects";
 import ArchitectureDiagram from "./components/ArchitectureDiagram";
 import Footer from "./components/Footer";
 import CvModal from "./components/CvModal";
+import ContactModal from "./components/ContactModal";
+import FloatingContactFab from "./components/FloatingContactFab";
 import MobileQuickBar from "./components/MobileQuickBar";
+import SeoHead from "./components/SeoHead";
 import { ToastProvider } from "./components/Toast";
+import { ArrowUp } from "lucide-react";
 
 export default function App() {
   const [lang, setLang] = useState<"en" | "fa">(() => {
     try {
-      const saved = localStorage.getItem("preferred_lang");
-      return saved === "fa" || saved === "en" ? saved : "en";
+      if (typeof window !== "undefined") {
+        const params = new URLSearchParams(window.location.search);
+        const urlLang = params.get("lang");
+        if (urlLang === "fa" || urlLang === "en") return urlLang;
+        const saved = localStorage.getItem("preferred_lang");
+        if (saved === "fa" || saved === "en") return saved;
+      }
     } catch {
-      return "en";
+      // ignore
     }
+    return "fa";
   });
 
   const [cvModalOpen, setCvModalOpen] = useState(false);
+  const [contactModalOpen, setContactModalOpen] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "manual";
+      }
+      window.scrollTo(0, 0);
+    }
+
+    const onScroll = () => setShowBackToTop(window.scrollY > 600);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const handleToggleLang = () => {
     setLang((prev) => {
       const next = prev === "en" ? "fa" : "en";
       try {
         localStorage.setItem("preferred_lang", next);
+        if (typeof window !== "undefined") {
+          const url = new URL(window.location.href);
+          url.searchParams.set("lang", next);
+          window.history.replaceState({}, "", url.toString());
+        }
       } catch {
         // ignore
       }
@@ -44,6 +74,7 @@ export default function App() {
 
   return (
     <ToastProvider>
+      <SeoHead lang={lang} />
       <div
         className={`min-h-screen bg-[#0A0E17] text-slate-100 antialiased selection:bg-emerald-500/30 selection:text-emerald-200 overflow-x-hidden w-full relative ${
           lang === "fa" ? "font-vazirmatn" : ""
@@ -70,14 +101,25 @@ export default function App() {
           <Experience lang={lang} />
           <Projects lang={lang} />
           <ArchitectureDiagram lang={lang} />
-          <Footer lang={lang} onOpenCvModal={() => setCvModalOpen(true)} />
+          <Footer
+            lang={lang}
+            onOpenCvModal={() => setCvModalOpen(true)}
+            onOpenContactModal={() => setContactModalOpen(true)}
+          />
         </main>
+
+        {/* Floating Action Button with 'Available for work' pulse indicator */}
+        <FloatingContactFab
+          lang={lang}
+          onOpenContactModal={() => setContactModalOpen(true)}
+        />
 
         {/* Mobile Floating Thumb Quick Navigation */}
         <MobileQuickBar
           lang={lang}
           onToggleLang={handleToggleLang}
           onOpenCvModal={() => setCvModalOpen(true)}
+          onOpenContactModal={() => setContactModalOpen(true)}
         />
 
         {/* CV PDF Viewer Modal */}
@@ -86,6 +128,26 @@ export default function App() {
           onClose={() => setCvModalOpen(false)}
           lang={lang}
         />
+
+        {/* Contact Form Modal */}
+        <ContactModal
+          isOpen={contactModalOpen}
+          onClose={() => setContactModalOpen(false)}
+          lang={lang}
+        />
+
+        {/* Floating Back to Top Button */}
+        {showBackToTop && (
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            aria-label={lang === "fa" ? "بازگشت به بالا" : "Back to top"}
+            className={`fixed bottom-24 lg:bottom-8 ${
+              lang === "fa" ? "right-4 lg:right-8" : "right-4 lg:right-8"
+            } z-40 h-11 w-11 rounded-xl border border-emerald-500/30 bg-[#0B111D]/90 backdrop-blur-xl text-emerald-400 hover:bg-emerald-500/15 hover:border-emerald-400/60 transition-all shadow-lg shadow-black/50 flex items-center justify-center animate-in fade-in zoom-in-95 cursor-pointer`}
+          >
+            <ArrowUp className="w-4 h-4" />
+          </button>
+        )}
       </div>
     </ToastProvider>
   );

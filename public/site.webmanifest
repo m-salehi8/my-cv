@@ -1,0 +1,16 @@
+{
+  "name": "محمدرضا صالحی | Mohammadreza Salehi — Backend Developer",
+  "short_name": "M. Salehi",
+  "description": "پورتفولیو و رزومه مهندسی محمدرضا صالحی: برنامه‌نویس پایتون، متخصص FastAPI، جنگو، میکروسرویس و خطوط لوله هوش مصنوعی.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A0E17",
+  "theme_color": "#0A0E17",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

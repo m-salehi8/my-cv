@@ -1,14 +1,50 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import {defineConfig} from 'vite';
+import fs from 'fs';
+import {defineConfig, Plugin} from 'vite';
+
+function avatarUploadPlugin(): Plugin {
+  return {
+    name: 'avatar-upload-plugin',
+    configureServer(server) {
+      server.middlewares.use('/api/upload-avatar', (req, res, next) => {
+        if (req.method === 'POST') {
+          let body = '';
+          req.on('data', chunk => {
+            body += chunk;
+          });
+          req.on('end', () => {
+            try {
+              const { imageBase64 } = JSON.parse(body);
+              if (imageBase64) {
+                const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
+                const buffer = Buffer.from(base64Data, 'base64');
+                fs.writeFileSync(path.resolve(process.cwd(), 'public/profile.jpg'), buffer);
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: true, path: '/profile.jpg' }));
+                return;
+              }
+            } catch (err) {
+              console.error('Avatar upload error:', err);
+            }
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Invalid payload' }));
+          });
+        } else {
+          next();
+        }
+      });
+    },
+  };
+}
 
 export default defineConfig(() => {
   return {
-    plugins: [react(), tailwindcss()],
+    plugins: [react(), tailwindcss(), avatarUploadPlugin()],
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, '.'),
+        '@': path.resolve(import.meta.dirname, '.'),
       },
     },
     server: {
