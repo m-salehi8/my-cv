@@ -36,6 +36,12 @@ cd <پوشه_پروژه>
 npm install
 ```
 
+> **نکته در صورت بروز خطای ERESOLVE:**  
+> اگر در نسخه‌های قدیمی‌تر npm با خطای peer dependency مواجه شدید، می‌توانید از فلگ `--legacy-peer-deps` استفاده کنید:
+> ```bash
+> npm install --legacy-peer-deps
+> ```
+
 #### گام سوم: تنظیم متغیرهای محیطی (Environment Variables) - اختیاری
 در صورت نیاز به فعال‌سازی قابلیت‌های سرور یا کلید Gemini:
 1. فایل `.env.example` را به `.env` یا `.env.local` کپی کنید:
