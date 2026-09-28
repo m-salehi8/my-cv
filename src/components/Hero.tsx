@@ -5,17 +5,17 @@ import Terminal from "./Terminal";
 import TerminalTyping from "./TerminalTyping";
 import Canvas3DScene from "./Canvas3DScene";
 import TiltCard from "./TiltCard";
-import LottieAnimation from "./LottieAnimation";
 import { HERO_PIPELINE_LOTTIE } from "../data/lottieAnimations";
-import { Download, Mail, Linkedin, Github, Send, Check, Copy, Activity, Film, Sparkles } from "lucide-react";
+import { Download, Mail, Linkedin, Github, Send, Check, Copy, Activity } from "lucide-react";
+
+const LottieAnimation = React.lazy(() => import("./LottieAnimation"));
 
 interface HeroProps {
   lang: "en" | "fa";
   onOpenCvModal: () => void;
-  onOpenMotionTourModal?: () => void;
 }
 
-export default function Hero({ lang, onOpenCvModal, onOpenMotionTourModal }: HeroProps) {
+export default function Hero({ lang, onOpenCvModal }: HeroProps) {
   const [copied, setCopied] = useState(false);
   const { scrollY } = useScroll();
   const glowY = useTransform(scrollY, [0, 700], [0, 160]);
@@ -166,11 +166,19 @@ export default function Hero({ lang, onOpenCvModal, onOpenMotionTourModal }: Her
             
             <div className="pt-2 flex items-center justify-between gap-3">
               <div className="w-full max-w-[320px] sm:max-w-[340px] h-[58px] flex items-center justify-center">
-                <LottieAnimation
-                  animationData={HERO_PIPELINE_LOTTIE}
-                  className="w-full h-full"
-                  ariaLabel={lang === "fa" ? "جریان بسته داده در میکروسرویس‌ها" : "Microservices event pipeline packet stream"}
-                />
+                <React.Suspense
+                  fallback={
+                    <div className="w-full h-[58px] flex items-center justify-center">
+                      <div className="h-1.5 w-24 bg-white/10 rounded-full animate-pulse" />
+                    </div>
+                  }
+                >
+                  <LottieAnimation
+                    animationData={HERO_PIPELINE_LOTTIE}
+                    className="w-full h-full"
+                    ariaLabel={lang === "fa" ? "جریان بسته داده در میکروسرویس‌ها" : "Microservices event pipeline packet stream"}
+                  />
+                </React.Suspense>
               </div>
               <div className="hidden sm:flex flex-col items-end gap-0.5 text-[10px] font-mono shrink-0">
                 <span className="text-emerald-400 font-semibold">FastAPI → RabbitMQ</span>
@@ -195,17 +203,6 @@ export default function Hero({ lang, onOpenCvModal, onOpenMotionTourModal }: Her
                 <Download className="w-4 h-4 shrink-0" />
                 <span>{lang === "fa" ? "مشاهده و دریافت فایل رزومه" : "Download Resume"}</span>
               </button>
-
-              {/* AI Motion Tour Button */}
-              {onOpenMotionTourModal && (
-                <button
-                  onClick={onOpenMotionTourModal}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-cyan-400/40 bg-gradient-to-r from-cyan-950/60 to-emerald-950/60 hover:border-cyan-400 hover:from-cyan-900/60 hover:to-emerald-900/60 px-4 py-3 font-mono text-xs sm:text-sm font-semibold text-cyan-300 transition-all shadow-lg shadow-cyan-500/10 active:scale-95 w-full sm:w-auto text-center cursor-pointer min-h-[44px]"
-                >
-                  <Film className="w-4 h-4 text-cyan-400 shrink-0" />
-                  <span>{lang === "fa" ? "تور موشن‌گرافی پروژه (Veo 3)" : "AI Motion Tour (Veo 3)"}</span>
-                </button>
-              )}
 
               {/* Email Pill Button with copy */}
               <button

@@ -43,8 +43,38 @@ export default defineConfig(() => {
   return {
     plugins: [react(), tailwindcss(), avatarUploadPlugin()],
     resolve: {
-      alias: {
-        '@': path.resolve(import.meta.dirname, '.'),
+      alias: [
+        { find: '@', replacement: path.resolve(import.meta.dirname, '.') },
+        {
+          find: /^lottie-web(\/build\/player\/(lottie|lottie_svg)(\.js)?)?$/,
+          replacement: path.resolve(import.meta.dirname, 'node_modules/lottie-web/build/player/lottie_light.js'),
+        },
+      ],
+    },
+    build: {
+      rolldownOptions: {
+        output: {
+          codeSplitting: {
+            groups: [
+              {
+                name: 'vendor-react',
+                test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+              },
+              {
+                name: 'vendor-motion',
+                test: /[\\/]node_modules[\\/]motion[\\/]/,
+              },
+              {
+                name: 'vendor-lottie',
+                test: /[\\/]node_modules[\\/](lottie-web|lottie-react)[\\/]/,
+              },
+              {
+                name: 'vendor-pdf',
+                test: /[\\/]node_modules[\\/]pdf-lib[\\/]/,
+              },
+            ],
+          },
+        },
       },
     },
     server: {

@@ -9,14 +9,14 @@ import Experience from "./components/Experience";
 import Projects from "./components/Projects";
 import ArchitectureDiagram from "./components/ArchitectureDiagram";
 import Footer from "./components/Footer";
-import CvModal from "./components/CvModal";
-import ContactModal from "./components/ContactModal";
-import MotionTourModal from "./components/MotionTourModal";
 import FloatingContactFab from "./components/FloatingContactFab";
 import MobileQuickBar from "./components/MobileQuickBar";
 import SeoHead from "./components/SeoHead";
 import { ToastProvider } from "./components/Toast";
 import { ArrowUp } from "lucide-react";
+
+const CvModal = React.lazy(() => import("./components/CvModal"));
+const ContactModal = React.lazy(() => import("./components/ContactModal"));
 
 export default function App() {
   const [lang, setLang] = useState<"en" | "fa">(() => {
@@ -36,7 +36,6 @@ export default function App() {
 
   const [cvModalOpen, setCvModalOpen] = useState(false);
   const [contactModalOpen, setContactModalOpen] = useState(false);
-  const [motionTourModalOpen, setMotionTourModalOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
@@ -91,16 +90,11 @@ export default function App() {
           lang={lang}
           onToggleLang={handleToggleLang}
           onOpenCvModal={() => setCvModalOpen(true)}
-          onOpenMotionTourModal={() => setMotionTourModalOpen(true)}
         />
 
         {/* Main Sections */}
         <main className="pb-28 lg:pb-0">
-          <Hero
-            lang={lang}
-            onOpenCvModal={() => setCvModalOpen(true)}
-            onOpenMotionTourModal={() => setMotionTourModalOpen(true)}
-          />
+          <Hero lang={lang} onOpenCvModal={() => setCvModalOpen(true)} />
           <Marquee />
           <About lang={lang} />
           <Skills lang={lang} />
@@ -129,26 +123,24 @@ export default function App() {
           onOpenContactModal={() => setContactModalOpen(true)}
         />
 
-        {/* Motion Tour Veo 3 Video Modal */}
-        <MotionTourModal
-          isOpen={motionTourModalOpen}
-          onClose={() => setMotionTourModalOpen(false)}
-          lang={lang}
-        />
+        {/* Lazy-loaded Modals */}
+        <React.Suspense fallback={null}>
+          {cvModalOpen && (
+            <CvModal
+              isOpen={cvModalOpen}
+              onClose={() => setCvModalOpen(false)}
+              lang={lang}
+            />
+          )}
 
-        {/* CV PDF Viewer Modal */}
-        <CvModal
-          isOpen={cvModalOpen}
-          onClose={() => setCvModalOpen(false)}
-          lang={lang}
-        />
-
-        {/* Contact Form Modal */}
-        <ContactModal
-          isOpen={contactModalOpen}
-          onClose={() => setContactModalOpen(false)}
-          lang={lang}
-        />
+          {contactModalOpen && (
+            <ContactModal
+              isOpen={contactModalOpen}
+              onClose={() => setContactModalOpen(false)}
+              lang={lang}
+            />
+          )}
+        </React.Suspense>
 
         {/* Floating Back to Top Button */}
         {showBackToTop && (

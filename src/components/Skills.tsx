@@ -4,9 +4,10 @@ import { SKILLS } from "../data/resume";
 import SectionHeading from "./SectionHeading";
 import SpotlightCard from "./SpotlightCard";
 import SectionContainer, { SectionItem, sectionItemVariants } from "./SectionContainer";
-import LottieAnimation from "./LottieAnimation";
 import { SKILLS_TECH_RADAR_LOTTIE } from "../data/lottieAnimations";
 import { Code, Database, Server, Bug, Sparkles, Layers, Check } from "lucide-react";
+
+const LottieAnimation = React.lazy(() => import("./LottieAnimation"));
 
 interface SkillsProps {
   lang: "en" | "fa";
@@ -55,11 +56,13 @@ export default function Skills({ lang }: SkillsProps) {
               <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-5 w-full">
                 {/* Lottie Tech Radar Canvas */}
                 <div className="relative shrink-0 w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center rounded-2xl bg-[#070B14]/90 border border-emerald-500/20 shadow-inner">
-                  <LottieAnimation
-                    animationData={SKILLS_TECH_RADAR_LOTTIE}
-                    className="w-full h-full"
-                    ariaLabel={lang === "fa" ? "رادار پایش فناوری‌ها" : "Tech radar telemetry scanner"}
-                  />
+                  <React.Suspense fallback={<div className="w-full h-full animate-pulse bg-emerald-500/5 rounded-2xl" />}>
+                    <LottieAnimation
+                      animationData={SKILLS_TECH_RADAR_LOTTIE}
+                      className="w-full h-full"
+                      ariaLabel={lang === "fa" ? "رادار پایش فناوری‌ها" : "Tech radar telemetry scanner"}
+                    />
+                  </React.Suspense>
                   <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-emerald-500/10 to-transparent pointer-events-none" />
                 </div>
 
