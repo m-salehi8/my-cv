@@ -11,6 +11,7 @@ import ArchitectureDiagram from "./components/ArchitectureDiagram";
 import Footer from "./components/Footer";
 import CvModal from "./components/CvModal";
 import ContactModal from "./components/ContactModal";
+import MotionTourModal from "./components/MotionTourModal";
 import FloatingContactFab from "./components/FloatingContactFab";
 import MobileQuickBar from "./components/MobileQuickBar";
 import SeoHead from "./components/SeoHead";
@@ -35,6 +36,7 @@ export default function App() {
 
   const [cvModalOpen, setCvModalOpen] = useState(false);
   const [contactModalOpen, setContactModalOpen] = useState(false);
+  const [motionTourModalOpen, setMotionTourModalOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
@@ -89,11 +91,16 @@ export default function App() {
           lang={lang}
           onToggleLang={handleToggleLang}
           onOpenCvModal={() => setCvModalOpen(true)}
+          onOpenMotionTourModal={() => setMotionTourModalOpen(true)}
         />
 
         {/* Main Sections */}
         <main className="pb-28 lg:pb-0">
-          <Hero lang={lang} onOpenCvModal={() => setCvModalOpen(true)} />
+          <Hero
+            lang={lang}
+            onOpenCvModal={() => setCvModalOpen(true)}
+            onOpenMotionTourModal={() => setMotionTourModalOpen(true)}
+          />
           <Marquee />
           <About lang={lang} />
           <Skills lang={lang} />
@@ -120,6 +127,13 @@ export default function App() {
           onToggleLang={handleToggleLang}
           onOpenCvModal={() => setCvModalOpen(true)}
           onOpenContactModal={() => setContactModalOpen(true)}
+        />
+
+        {/* Motion Tour Veo 3 Video Modal */}
+        <MotionTourModal
+          isOpen={motionTourModalOpen}
+          onClose={() => setMotionTourModalOpen(false)}
+          lang={lang}
         />
 
         {/* CV PDF Viewer Modal */}

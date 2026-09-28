@@ -1,20 +1,140 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# پورتفولیو و رزومه تعاملی محمدرضا صالحی | Mohammadreza Salehi Portfolio
 
-# Run and deploy your AI Studio app
+وب‌سایت شخصی و پورتفولیوی تعاملی مهندس ارشد بک‌اند و سیستم‌های داده و هوش مصنوعی (Senior Backend & AI Data Engineer).  
+طراحی شده با استانداردهای مدرن وب، پشتیبانی کامل از دو زبان فارسی و انگلیسی (RTL / LTR)، انیمیشن‌های سبک و مهندسی‌شده Lottie، شبیه‌ساز ترمینال لینوکس و تعاملات سه‌بعدی.
 
-This contains everything you need to run your app locally.
+---
 
-View your app in AI Studio: https://ai.studio/apps/154c33a5-f6a0-431f-b24a-b66971314a97
+## 🚀 راهنمای اجرای محلی پروژه (How to Run Locally)
 
-## Run Locally
+### ۱. پیش‌نیازها (Prerequisites)
+برای اجرای این پروژه، نیاز دارید که ابزارهای زیر بر روی سیستم شما نصب باشند:
+- **Node.js**: نسخه 18 یا بالاتر (نسخه 20 LTS پیشنهاد می‌شود)
+- **npm** (یا `pnpm` / `yarn`)
+- **Git**
 
-**Prerequisites:**  Node.js
+برای بررسی نسخه‌های نصب شده در ترمینال:
+```bash
+node -v
+npm -v
+```
 
+---
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### ۲. مراحل نصب و راه‌اندازی (Step-by-step Setup)
+
+#### گام اول: کلون یا دریافت پروژه
+اگر مخزن را کلون نکرده‌اید:
+```bash
+git clone <URL_مخزن_شما>
+cd <پوشه_پروژه>
+```
+
+#### گام دوم: نصب بسته‌ها و وابستگی‌ها (Install Dependencies)
+دستور زیر را برای نصب تمامی پکیج‌های پروژه اجرا کنید:
+```bash
+npm install
+```
+
+#### گام سوم: تنظیم متغیرهای محیطی (Environment Variables) - اختیاری
+در صورت نیاز به فعال‌سازی قابلیت‌های سرور یا کلید Gemini:
+1. فایل `.env.example` را به `.env` یا `.env.local` کپی کنید:
+   ```bash
+   cp .env.example .env.local
+   ```
+2. متغیرهای مورد نظر مانند `GEMINI_API_KEY` را در صورت استفاده مقداردهی نمایید.
+
+---
+
+### ۳. اجرای محیط توسعه (Run Development Server)
+
+برای راه‌اندازی سرور لوکال با قابلیت بارگذاری آنی (Hot Reload):
+```bash
+npm run dev
+```
+
+پس از اجرای دستور، خروجی به شکل زیر خواهد بود:
+```text
+  VITE v8.3.1  ready in ~200 ms
+
+  ➜  Local:   http://localhost:3000/
+  ➜  Network: http://<ip-address>:3000/
+```
+
+اکنون مرورگر خود را باز کرده و آدرس زیر را وارد کنید:
+👉 **`http://localhost:3000`**
+
+---
+
+### ۴. دستورات کمکی در پروژه (Available Scripts)
+
+در فایل `package.json` اسکریپت‌های زیر برای توسعه و انتشار در دسترس هستند:
+
+| دستور (Command) | کاربرد (Description) |
+| :--- | :--- |
+| `npm run dev` | اجرای برنامه در حالت توسعه روی پورت `3000` با دسترسی شبکه محلی |
+| `npm run build` | بهینه‌سازی و بیلد نهایی پروژه در پوشه `dist/` برای سرور پروداکشن |
+| `npm run preview` | تست و مشاهده نسخه بیلد نهایی (`dist`) به شکل لوکال |
+| `npm run lint` | بررسی استاتیک تایپ‌ها و کدهای تایپ‌اسکریپت (`tsc --noEmit`) |
+| `npm run clean` | پاک‌سازی پوشه بیلد و فایل‌های موقت |
+
+---
+
+### ۵. ساخت و انتشار برای پروداکشن (Production Build)
+
+برای ایجاد خروجی بهینه و کامپایل شده برای سرور، هاستینگ استاتیک (مانند Vercel، Netlify، Cloudflare Pages، Docker یا Nginx):
+```bash
+npm run build
+```
+پوشه تولید شده `dist/` شامل تمامی فایل‌های HTML، CSS مینیمایز شده، جاوااسکریپت بهینه‌سازی شده و فایل‌های انیمیشن Lottie (`/animations/*.json`) می‌باشد.
+
+برای تست محلی فایل‌های بیلد شده قبل از استقرار:
+```bash
+npm run preview
+```
+
+---
+
+## 🛠 پشته فناوری‌ها (Tech Stack)
+
+- **Frontend Core:** React 19, TypeScript
+- **Bundler & Tooling:** Vite 8, Tailwind CSS v4, PostCSS
+- **Animations & Micro-interactions:** Motion (Framer Motion), Lottie-React (Lightweight SVG engine)
+- **Icons & UI:** Lucide React
+- **Document Management:** PDF-Lib (تولید و دانلود داینامیک فایل رزومه)
+- **Internationalization:** پشتیبانی کامل و واکنش‌گرا از زبان‌های انگلیسی و فارسی با چیدمان استاندارد RTL/LTR
+
+---
+
+## 📁 ساختار پوشه‌های پروژه (Project Structure)
+
+```text
+├── public/                 # دارایی‌های استاتیک و عمومی
+│   ├── animations/         # فایل‌های Lottie JSON (hero-pipeline.json, skills-radar.json)
+│   ├── favicon.svg         # آیکون سایت
+│   └── og-image.png        # تصویر پیش‌نمایش شبکه‌های اجتماعی
+├── src/
+│   ├── components/         # کامپوننت‌های رابط کاربری
+│   │   ├── Hero.tsx        # بخش اصلی هیرو به همراه تله‌متری لایو
+│   │   ├── LottieAnimation.tsx # کامپوننت ماژولار و بهینه اجرای انیمیشن‌های Lottie
+│   │   ├── Skills.tsx      # ماتریس مهارت‌ها و رادار اکوسیستم فناوری
+│   │   ├── Projects.tsx    # گالری پروژه‌ها با قابلیت فیلتر و مشاهده جزییات
+│   │   ├── Experience.tsx  # خط زمان سوابق کاری و دستاوردهای کلیدی
+│   │   ├── Terminal.tsx    # شبیه‌ساز تعاملی خط فرمان با دستورات اختصاصی
+│   │   ├── Canvas3DScene.tsx # پس‌زمینه ذره‌ای و شبکه سه‌بعدی تعاملی
+│   │   └── Navbar.tsx      # ناوبری شناور با سوئیچ سریع زبان و تب‌ها
+│   ├── data/               # دیتای رزومه، پروژه‌ها و تعاریف انیمیشن‌ها
+│   ├── index.css           # پیکربندی استایل‌های گلوبال و فونت‌ها
+│   └── App.tsx             # کامپوننت ریشه و مدیریت استیت زبان و مودال‌ها
+├── index.html              # نقطه ورود HTML و متاتگ‌های SEO
+├── package.json            # وابستگی‌ها و اسکریپت‌های اجرایی
+└── README.md               # مستندات و راهنمای پروژه
+```
+
+---
+
+## 📬 تماس و ارتباط (Contact)
+
+- **ایمیل:** `mamadreza8138@gmail.com`
+- **لینکدین:** [Mohammadreza Salehi](https://linkedin.com/in/mohammadreza-salehi)
+- **گیت‌هاب:** [github.com/mamadreza8138](https://github.com/mamadreza8138)

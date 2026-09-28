@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useSpring } from "motion/react";
-import { Download, Globe, Menu, X } from "lucide-react";
+import { Download, Globe, Menu, X, Film } from "lucide-react";
 
 interface NavbarProps {
   lang: "en" | "fa";
   onToggleLang: () => void;
   onOpenCvModal: () => void;
+  onOpenMotionTourModal?: () => void;
 }
 
-export default function Navbar({ lang, onToggleLang, onOpenCvModal }: NavbarProps) {
+export default function Navbar({
+  lang,
+  onToggleLang,
+  onOpenCvModal,
+  onOpenMotionTourModal,
+}: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollYProgress } = useScroll();
@@ -128,6 +134,17 @@ export default function Navbar({ lang, onToggleLang, onOpenCvModal }: NavbarProp
             <Globe className="w-3.5 h-3.5 text-emerald-400" />
             <span className="font-bold">{lang === "fa" ? "EN" : "فا"}</span>
           </button>
+
+          {onOpenMotionTourModal && (
+            <button
+              onClick={onOpenMotionTourModal}
+              className="inline-flex items-center gap-1.5 rounded-xl border border-cyan-500/40 bg-cyan-950/40 hover:bg-cyan-900/60 px-2.5 sm:px-3 py-1.5 font-mono text-xs font-semibold text-cyan-300 transition-all shadow-md shadow-cyan-500/15 active:scale-95 min-h-[36px] cursor-pointer"
+              title={lang === "fa" ? "تور موشن‌گرافی ویدیویی پروژه (Veo 3)" : "AI Motion Tour (Veo 3)"}
+            >
+              <Film className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+              <span className="hidden md:inline">{lang === "fa" ? "موشن‌گرافی" : "Motion Tour"}</span>
+            </button>
+          )}
 
           <button
             onClick={onOpenCvModal}
