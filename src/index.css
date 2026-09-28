@@ -116,3 +116,50 @@
     animation: none;
   }
 }
+
+/* Telemetry Pipeline & Radar Custom Animations */
+@keyframes pipelineFlow {
+  from {
+    stroke-dashoffset: 32;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes radarSweep {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes radarWave {
+  0% {
+    transform: scale(0.25);
+    opacity: 0.8;
+  }
+  60% {
+    opacity: 0.25;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+.animate-radar-sweep {
+  animation: radarSweep 3.5s linear infinite;
+  transform-origin: center center;
+}
+
+.animate-radar-wave {
+  animation: radarWave 2.6s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+
+.animate-pipeline-flow {
+  animation: pipelineFlow 1.2s linear infinite;
+}
+

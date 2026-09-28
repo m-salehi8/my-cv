@@ -1,5 +1,3 @@
-import { PROFILE_PHOTO_BASE64, RESUME_PDF_BASE64 } from "./assetsBase64";
-
 export interface ProfileData {
   firstName: string;
   lastName: string;
@@ -85,7 +83,7 @@ export const PROFILE: ProfileData = {
   phone: "+98 935 255 4850",
   phoneHref: "tel:+989352554850",
   location: "Tehran, Iran",
-  resumeUrl: RESUME_PDF_BASE64,
+  resumeUrl: "/Mohammadreza_Salehi_CV.pdf",
   summary:
     "Dynamic Backend Developer with 4+ years of experience engineering scalable microservices, RESTful APIs, and asynchronous data pipelines. Highly skilled in Python (FastAPI, Django) and modern data engineering, with proven expertise in building complex automated scraping architectures, ERP portals, and workflow orchestration systems.",
   summary2:

@@ -165,20 +165,35 @@ export default function Hero({ lang, onOpenCvModal }: HeroProps) {
             </div>
             
             <div className="pt-2 flex items-center justify-between gap-3">
-              <div className="w-full max-w-[320px] sm:max-w-[340px] h-[58px] flex items-center justify-center">
+              <div className="relative w-full max-w-[320px] sm:max-w-[340px] h-[58px] flex items-center justify-center rounded-lg bg-[#060A12]/80 border border-emerald-500/20 shadow-inner overflow-hidden group">
+                {/* Animated Bus Track and Moving Light Packets */}
+                <div className="absolute inset-0 pointer-events-none">
+                  {/* Circuit Flow Line */}
+                  <svg className="w-full h-full opacity-50" preserveAspectRatio="none" viewBox="0 0 340 58">
+                    <line x1="30" y1="29" x2="310" y2="29" stroke="rgba(16, 185, 129, 0.3)" strokeWidth="1.5" strokeDasharray="6 6" className="animate-pipeline-flow" />
+                  </svg>
+                  {/* Glowing traveling packet pulses */}
+                  <span className="absolute top-1/2 -translate-y-1/2 left-[15%] w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_10px_#10B981] animate-ping opacity-60" />
+                  <span className="absolute top-1/2 -translate-y-1/2 left-[50%] w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_#06B6D4] animate-pulse opacity-80" />
+                  <span className="absolute top-1/2 -translate-y-1/2 right-[15%] w-2 h-2 rounded-full bg-indigo-400 shadow-[0_0_10px_#6366F1] animate-ping opacity-50" />
+                </div>
+
                 <React.Suspense
                   fallback={
                     <div className="w-full h-[58px] flex items-center justify-center">
-                      <div className="h-1.5 w-24 bg-white/10 rounded-full animate-pulse" />
+                      <div className="h-1.5 w-24 bg-emerald-500/20 rounded-full animate-pulse" />
                     </div>
                   }
                 >
                   <LottieAnimation
                     animationData={HERO_PIPELINE_LOTTIE}
-                    className="w-full h-full"
+                    className="w-full h-full relative z-10"
                     ariaLabel={lang === "fa" ? "جریان بسته داده در میکروسرویس‌ها" : "Microservices event pipeline packet stream"}
                   />
                 </React.Suspense>
+
+                {/* Subtle Ambient Edge Glow */}
+                <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-emerald-500/5 via-cyan-500/5 to-indigo-500/5 pointer-events-none" />
               </div>
               <div className="hidden sm:flex flex-col items-end gap-0.5 text-[10px] font-mono shrink-0">
                 <span className="text-emerald-400 font-semibold">FastAPI → RabbitMQ</span>

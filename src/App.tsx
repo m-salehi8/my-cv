@@ -4,10 +4,8 @@ import Hero from "./components/Hero";
 import Marquee from "./components/Marquee";
 import About from "./components/About";
 import Skills from "./components/Skills";
-import ApiPlayground from "./components/ApiPlayground";
 import Experience from "./components/Experience";
 import Projects from "./components/Projects";
-import ArchitectureDiagram from "./components/ArchitectureDiagram";
 import Footer from "./components/Footer";
 import FloatingContactFab from "./components/FloatingContactFab";
 import MobileQuickBar from "./components/MobileQuickBar";
@@ -15,8 +13,16 @@ import SeoHead from "./components/SeoHead";
 import { ToastProvider } from "./components/Toast";
 import { ArrowUp } from "lucide-react";
 
+// Lazy-loaded heavy below-the-fold sections and modals
+const ApiPlayground = React.lazy(() => import("./components/ApiPlayground"));
+const ArchitectureDiagram = React.lazy(() => import("./components/ArchitectureDiagram"));
 const CvModal = React.lazy(() => import("./components/CvModal"));
 const ContactModal = React.lazy(() => import("./components/ContactModal"));
+
+// Preload helper for hover/scroll anticipation
+const preloadSection = (factory: () => Promise<any>) => {
+  factory();
+};
 
 export default function App() {
   const [lang, setLang] = useState<"en" | "fa">(() => {
@@ -40,13 +46,35 @@ export default function App() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      if ("scrollRestoration" in window.history) {
-        window.history.scrollRestoration = "manual";
+      const hash = window.location.hash;
+      if (hash) {
+        // If loaded with a hash (e.g. #architecture, #api-playground), scroll to target
+        const checkTarget = () => {
+          const el = document.querySelector(hash);
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth" });
+          }
+        };
+        setTimeout(checkTarget, 100);
+        setTimeout(checkTarget, 500);
+      } else {
+        if ("scrollRestoration" in window.history) {
+          window.history.scrollRestoration = "manual";
+        }
+        window.scrollTo(0, 0);
       }
-      window.scrollTo(0, 0);
     }
 
-    const onScroll = () => setShowBackToTop(window.scrollY > 600);
+    // Preload below-the-fold components as user scrolls down past 200px
+    let preloaded = false;
+    const onScroll = () => {
+      setShowBackToTop(window.scrollY > 600);
+      if (!preloaded && window.scrollY > 200) {
+        preloaded = true;
+        import("./components/ApiPlayground");
+        import("./components/ArchitectureDiagram");
+      }
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -98,10 +126,32 @@ export default function App() {
           <Marquee />
           <About lang={lang} />
           <Skills lang={lang} />
-          <ApiPlayground lang={lang} />
+          <React.Suspense
+            fallback={
+              <section
+                id="api-playground"
+                className="py-24 sm:py-32 relative min-h-[750px] flex items-center justify-center"
+              >
+                <div className="w-12 h-12 rounded-full border-2 border-emerald-500/20 border-t-emerald-400 animate-spin" />
+              </section>
+            }
+          >
+            <ApiPlayground lang={lang} />
+          </React.Suspense>
           <Experience lang={lang} />
           <Projects lang={lang} />
-          <ArchitectureDiagram lang={lang} />
+          <React.Suspense
+            fallback={
+              <section
+                id="architecture"
+                className="py-24 sm:py-32 bg-[#090E17]/60 relative min-h-[850px] flex items-center justify-center"
+              >
+                <div className="w-12 h-12 rounded-full border-2 border-emerald-500/20 border-t-emerald-400 animate-spin" />
+              </section>
+            }
+          >
+            <ArchitectureDiagram lang={lang} />
+          </React.Suspense>
           <Footer
             lang={lang}
             onOpenCvModal={() => setCvModalOpen(true)}

@@ -82,26 +82,23 @@ export default function About({ lang }: AboutProps) {
             <SpotlightCard className="p-3 sm:p-4">
               {/* Photo frame */}
               <div className="relative overflow-hidden rounded-xl bg-slate-900 border border-white/10 shadow-2xl">
-                <img
-                  data-testid="about-profile-photo"
-                  src={PROFILE.photo}
-                  alt={
-                    lang === "fa"
-                      ? "محمدرضا صالحی — توسعه‌دهنده بک‌اند پایتون و مهندس نرم‌افزار"
-                      : "Mohammadreza Salehi — Senior Python Backend Developer"
-                  }
-                  width="953"
-                  height="1022"
-                  loading="lazy"
-                  decoding="async"
-                  className="w-full aspect-[4/5] object-cover object-top transition-transform duration-700 hover:scale-105"
-                  onError={(e) => {
-                    const target = e.currentTarget;
-                    if (target.src !== window.location.origin + "/profile.jpg") {
-                      target.src = "/profile.jpg";
+                <picture>
+                  <source srcSet="/profile.webp" type="image/webp" />
+                  <img
+                    data-testid="about-profile-photo"
+                    src="/profile.jpg"
+                    alt={
+                      lang === "fa"
+                        ? "محمدرضا صالحی — توسعه‌دهنده بک‌اند پایتون و مهندس نرم‌افزار"
+                        : "Mohammadreza Salehi — Senior Python Backend Developer"
                     }
-                  }}
-                />
+                    width="760"
+                    height="815"
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full aspect-[4/5] object-cover object-top transition-transform duration-700 hover:scale-105"
+                  />
+                </picture>
 
                 {/* Gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0A0E17] via-transparent to-transparent opacity-85" />

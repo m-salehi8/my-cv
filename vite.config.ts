@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import fs from 'fs';
 import {defineConfig, Plugin} from 'vite';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 function avatarUploadPlugin(): Plugin {
   return {
@@ -39,19 +40,40 @@ function avatarUploadPlugin(): Plugin {
   };
 }
 
-export default defineConfig(() => {
+export default defineConfig(({ command, mode }) => {
+  const isAnalyze = process.env.ANALYZE === 'true';
+
   return {
-    plugins: [react(), tailwindcss(), avatarUploadPlugin()],
+    define: {
+      'process.env.NODE_ENV': JSON.stringify(command === 'build' ? 'production' : (process.env.NODE_ENV || 'development')),
+    },
+    plugins: [
+      react(),
+      tailwindcss(),
+      avatarUploadPlugin(),
+      ...(isAnalyze
+        ? [
+            visualizer({
+              filename: 'dist/stats.html',
+              gzipSize: true,
+              brotliSize: true,
+              open: false,
+            }),
+          ]
+        : []),
+    ],
     resolve: {
       alias: [
         { find: '@', replacement: path.resolve(import.meta.dirname, '.') },
         {
-          find: /^lottie-web(\/build\/player\/(lottie|lottie_svg)(\.js)?)?$/,
-          replacement: path.resolve(import.meta.dirname, 'node_modules/lottie-web/build/player/lottie_light.js'),
+          find: /^lottie-web(\/build\/player\/(lottie|lottie_svg|lottie_light)(\.js)?)?$/,
+          replacement: path.resolve(import.meta.dirname, 'node_modules/lottie-web/build/player/esm/lottie_light.min.js'),
         },
       ],
     },
     build: {
+      target: 'es2022',
+      sourcemap: false,
       rolldownOptions: {
         output: {
           codeSplitting: {
@@ -67,10 +89,6 @@ export default defineConfig(() => {
               {
                 name: 'vendor-lottie',
                 test: /[\\/]node_modules[\\/](lottie-web|lottie-react)[\\/]/,
-              },
-              {
-                name: 'vendor-pdf',
-                test: /[\\/]node_modules[\\/]pdf-lib[\\/]/,
               },
             ],
           },

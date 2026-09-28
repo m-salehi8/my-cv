@@ -28,6 +28,7 @@ export default function LottieAnimation({
 }: LottieAnimationProps) {
   const lottieRef = useRef<LottieHandle>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const isVisibleRef = useRef(true);
   const [hasError, setHasError] = useState(false);
 
   const animationSource = (src ?? path ?? animationData) as any;
@@ -39,6 +40,7 @@ export default function LottieAnimation({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
+        isVisibleRef.current = entry.isIntersecting;
         if (lottieRef.current) {
           if (entry.isIntersecting) {
             lottieRef.current.play();
@@ -65,7 +67,7 @@ export default function LottieAnimation({
     }
   }, [speed]);
 
-  // 2. Accessibility: Respect prefers-reduced-motion
+  // 3. Accessibility: Respect prefers-reduced-motion
   useEffect(() => {
     if (typeof window === "undefined") return;
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -94,6 +96,17 @@ export default function LottieAnimation({
         src={animationSource}
         loop={loop}
         autoplay={autoplay}
+        subscriptions={{
+          ready: () => {
+            if (lottieRef.current && isVisibleRef.current && autoplay) {
+              try {
+                lottieRef.current.play();
+              } catch {
+                // ignore
+              }
+            }
+          },
+        }}
         style={{
           width: "100%",
           height: "100%",
