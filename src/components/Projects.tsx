@@ -1,9 +1,8 @@
 import React, { useState, useMemo } from "react";
-import { motion } from "motion/react";
 import { PROJECTS, ProjectItem } from "../data/resume";
 import SectionHeading from "./SectionHeading";
 import SpotlightCard from "./SpotlightCard";
-import SectionContainer, { SectionItem, sectionItemVariants } from "./SectionContainer";
+import SectionContainer, { SectionItem } from "./SectionContainer";
 import { ExternalLink, FolderGit2, Search, X, CheckCircle2, ArrowRight } from "lucide-react";
 
 interface ProjectsProps {
@@ -93,12 +92,8 @@ export default function Projects({ lang }: ProjectsProps) {
 
         {/* Projects Grid with Staggered Entrance */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-          {filteredProjects.map((proj) => (
-            <motion.div
-              key={proj.testid}
-              variants={sectionItemVariants}
-              className="h-full"
-            >
+          {filteredProjects.map((proj, i) => (
+            <SectionItem key={proj.testid} index={i} className="h-full">
               <SpotlightCard
                 data-testid={proj.testid}
                 onClick={() => setActiveProjectModal(proj)}
@@ -167,7 +162,7 @@ export default function Projects({ lang }: ProjectsProps) {
                   </div>
                 </div>
               </SpotlightCard>
-            </motion.div>
+            </SectionItem>
           ))}
         </div>
 

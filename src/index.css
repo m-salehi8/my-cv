@@ -2,9 +2,9 @@
 
 @layer base {
   :root {
-    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    --font-display: 'Outfit', 'Plus Jakarta Sans', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Outfit Variable', 'Vazirmatn Variable', system-ui, -apple-system, sans-serif;
+    --font-display: 'Outfit Variable', 'Vazirmatn Variable', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono Variable', 'Vazirmatn Variable', ui-monospace, monospace;
   }
 
   html {
@@ -35,7 +35,7 @@
 }
 
 .font-vazirmatn {
-  font-family: 'Vazirmatn', var(--font-sans);
+  font-family: 'Vazirmatn Variable', var(--font-sans);
 }
 
 /* Custom Scrollbar */
@@ -163,3 +163,62 @@
   animation: pipelineFlow 1.2s linear infinite;
 }
 
+
+/* ---------- Motion primitives (CSS-only, no animation library) ---------- */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(15px) scale(0.95); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes fab-in {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Content stays visible without JS; the `js` class is set in index.html. */
+.js .reveal { opacity: 0; }
+.js .reveal.in {
+  animation: rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 80ms);
+}
+
+.animate-fade-in { animation: fade-in 0.2s ease-out both; }
+.animate-modal-in { animation: modal-in 0.25s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.animate-fab-in { animation: fab-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.8s both; }
+
+/* Timeline nodes */
+.timeline-node > div { border-color: #334155; transition: border-color 0.4s, box-shadow 0.4s; }
+.timeline-node .node-dot { background: #334155; transition: background 0.4s; }
+.timeline-node.reached > div { border-color: #34d399; box-shadow: 0 0 10px rgba(52, 211, 153, 0.8); }
+.timeline-node.reached .node-dot { background: #34d399; }
+.timeline-node .node-live { animation: node-pulse 3s ease-in-out infinite; }
+@keyframes node-pulse { 50% { transform: scale(1.15); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal { opacity: 1; }
+  .js .reveal.in, .animate-fade-in, .animate-modal-in, .animate-fab-in, .timeline-node .node-live {
+    animation: none;
+  }
+}
+
+.hero-rise { animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@media (prefers-reduced-motion: reduce) { .hero-rise { animation: none; } }
+
+/* ---------- Layout/perf polish ---------- */
+section[id], footer[id] { scroll-margin-top: 5.5rem; }
+
+/* Skip layout/paint work for sections that are far off-screen. */
+#about, #stack, #experience, #projects {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+:focus-visible {
+  outline: 2px solid #34d399;
+  outline-offset: 3px;
+  border-radius: 6px;
+}

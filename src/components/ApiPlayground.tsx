@@ -180,7 +180,7 @@ export default function ApiPlayground({ lang }: ApiPlaygroundProps) {
     }, 180);
   };
 
-  const curlCommand = `curl -X ${activeEp.method} "https://salehi.dev${activeEp.path}" \\
+  const curlCommand = `curl -X ${activeEp.method} "https://salehi.my${activeEp.path}" \\
   -H "Accept: application/json"${
     activeEp.method === "POST"
       ? ` \\\n  -H "Content-Type: application/json" \\\n  -d '${requestBodyText.replace(/\n/g, "")}'`

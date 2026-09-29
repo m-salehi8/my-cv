@@ -26,6 +26,9 @@ export default function Terminal({ onOpenCvModal, lang = "en" }: TerminalProps) 
   const terminalBodyRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const isFirstRender = useRef(true);
+  // Set after mount so the prerendered HTML doesn't bake in the build date.
+  const [today, setToday] = useState("");
+  useEffect(() => setToday(new Date().toLocaleDateString()), []);
 
   const handleSelectTab = (idx: number) => {
     setActiveTab(idx);
@@ -63,6 +66,7 @@ export default function Terminal({ onOpenCvModal, lang = "en" }: TerminalProps) 
         "  curl /health        Simulate REST API healthcheck response",
         "  cv | resume         Launch CV viewer and PDF download modal",
         "  clear               Reset terminal output buffer",
+        "  (there are a few hidden ones: try ls, git log, coffee)",
       ];
     } else if (lower === "info" || lower === "whoami" || lower === "salehi --info") {
       output = TERMINAL_COMMANDS[0].output;
@@ -96,6 +100,30 @@ export default function Terminal({ onOpenCvModal, lang = "en" }: TerminalProps) 
       } else {
         output = [`Resume PDF available at: ${PROFILE.email}`];
       }
+    } else if (lower === "ls" || lower === "ls -la") {
+      output = ["drwxr-xr-x  projects/", "drwxr-xr-x  experience/", "-rw-r--r--  cv.pdf", "-rw-r--r--  README.md"];
+    } else if (lower === "pwd") {
+      output = ["/home/salehi/istanbul"];
+    } else if (lower === "date") {
+      output = [new Date().toString()];
+    } else if (lower === "git log" || lower === "git log --oneline") {
+      output = ["e4c9a1f (HEAD -> main) ship it", "7b20d3c add retry with backoff", "a91f5e8 it works on my machine", "3d6c0b2 initial commit"];
+    } else if (lower === "coffee" || lower === "brew coffee") {
+      output = ["HTTP/1.1 418 I'm a teapot", "The requested entity body is short and stout."];
+    } else if (lower.startsWith("sudo")) {
+      output = ["salehi is not in the sudoers file. This incident will be reported."];
+      isError = true;
+    } else if (lower.startsWith("rm ")) {
+      output = ["nice try. backups are on a cron job, and the cron job has backups."];
+      isError = true;
+    } else if (lower === "vim" || lower === "vi") {
+      output = ["You are now in vim. There is no escape.", "(just kidding: type :q)"];
+    } else if (lower === ":q" || lower === "exit") {
+      output = ["logout: nothing to leave, this is a website."];
+    } else if (lower.startsWith("hire") || lower === "sudo hire me") {
+      output = ["200 OK  offer_accepted=pending", "Try `contact` for the fastest route."];
+    } else if (lower.startsWith("echo ")) {
+      output = [raw.slice(5)];
     } else {
       isError = true;
       output = [
@@ -194,7 +222,7 @@ export default function Terminal({ onOpenCvModal, lang = "en" }: TerminalProps) 
         className="p-4 sm:p-5 h-[280px] sm:h-[320px] overflow-y-auto space-y-4 scrollbar-thin cursor-text"
       >
         <div className="text-[11px] text-slate-500 mb-2">
-          Last login: {new Date().toLocaleDateString()} on ttys004 · Type <span className="text-emerald-400 font-semibold">'help'</span> for available commands.
+          Last login: {today || "—"} on ttys004 · Type <span className="text-emerald-400 font-semibold">'help'</span> for available commands.
         </div>
 
         {history.map((entry, idx) => (

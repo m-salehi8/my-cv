@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { useElementProgress } from "../lib/scroll";
 import { PROFILE, SOCIALS } from "../data/resume";
 import SectionHeading from "./SectionHeading";
-import { sectionContainerVariants, sectionItemVariants } from "./SectionContainer";
+import { SectionItem } from "./SectionContainer";
 import SpotlightCard from "./SpotlightCard";
 import { useToast } from "./Toast";
 import { Copy, Check, Download, Mail, Phone, ExternalLink, ArrowUp, Send, User, MessageSquare, Sparkles, Linkedin, Github } from "lucide-react";
@@ -25,12 +25,7 @@ export default function Footer({ lang, onOpenCvModal, onOpenContactModal }: Foot
 
   const footerRef = useRef<HTMLElement>(null);
 
-  const { scrollYProgress } = useScroll({
-    target: footerRef,
-    offset: ["start end", "end start"],
-  });
-
-  const bgX = useTransform(scrollYProgress, [0, 1], ["5%", "-15%"]);
+  useElementProgress(footerRef, 1, 0);
 
   const copyEmail = async () => {
     try {
@@ -87,27 +82,23 @@ export default function Footer({ lang, onOpenCvModal, onOpenContactModal }: Foot
   };
 
   return (
-    <motion.footer
+    <footer
       id="contact"
-      ref={footerRef as any}
+      ref={footerRef}
       data-testid="contact-section"
-      variants={sectionContainerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-60px" }}
       className="relative overflow-hidden py-24 sm:py-32 border-t border-white/10"
     >
       {/* Background Watermark */}
-      <motion.span
+      <span
         aria-hidden="true"
         style={{
-          x: bgX,
+          transform: "translateX(calc(5% - var(--p, 0) * 20%))",
           WebkitTextStroke: "1px rgba(148, 163, 184, 0.08)",
         }}
         className="pointer-events-none select-none absolute top-4 left-0 font-display font-black text-[18vw] leading-none text-transparent whitespace-nowrap"
       >
         SALEHI · BACKEND
-      </motion.span>
+      </span>
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
@@ -119,7 +110,7 @@ export default function Footer({ lang, onOpenCvModal, onOpenContactModal }: Foot
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
           {/* Left Column: Direct Info & Quick Copy Buttons */}
-          <motion.div variants={sectionItemVariants} className="lg:col-span-7 space-y-6">
+          <SectionItem className="lg:col-span-7 space-y-6">
             <p className="text-slate-300 text-base sm:text-lg font-normal leading-relaxed">
               {lang === "fa"
                 ? "آماده همکاری در موقعیت‌های توسعه بک‌اند (Senior / Lead)، طراحی خطوط لوله داده و مایکروسرویس‌های توزیع‌شده با کارایی بالا در سراسر جهان یا استانبول."
@@ -221,10 +212,10 @@ export default function Footer({ lang, onOpenCvModal, onOpenContactModal }: Foot
                 ))}
               </div>
             </div>
-          </motion.div>
+          </SectionItem>
 
           {/* Right Column: Direct Contact Form */}
-          <motion.div variants={sectionItemVariants} className="lg:col-span-5">
+          <SectionItem index={1} className="lg:col-span-5">
             <SpotlightCard className="p-6 sm:p-7 shadow-2xl relative">
               <h3 className="font-display font-bold text-lg text-white mb-1 flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-emerald-400" />
@@ -327,7 +318,7 @@ export default function Footer({ lang, onOpenCvModal, onOpenContactModal }: Foot
                 </div>
               </form>
             </SpotlightCard>
-          </motion.div>
+          </SectionItem>
         </div>
 
         {/* Bottom Bar */}
@@ -345,6 +336,6 @@ export default function Footer({ lang, onOpenCvModal, onOpenContactModal }: Foot
           </button>
         </div>
       </div>
-    </motion.footer>
+    </footer>
   );
 }

@@ -1,13 +1,9 @@
 import React, { useState } from "react";
-import { motion } from "motion/react";
 import { SKILLS } from "../data/resume";
 import SectionHeading from "./SectionHeading";
 import SpotlightCard from "./SpotlightCard";
-import SectionContainer, { SectionItem, sectionItemVariants } from "./SectionContainer";
-import { SKILLS_TECH_RADAR_LOTTIE } from "../data/lottieAnimations";
+import SectionContainer, { SectionItem } from "./SectionContainer";
 import { Code, Database, Server, Bug, Sparkles, Layers, Check } from "lucide-react";
-
-const LottieAnimation = React.lazy(() => import("./LottieAnimation"));
 
 interface SkillsProps {
   lang: "en" | "fa";
@@ -92,15 +88,6 @@ export default function Skills({ lang }: SkillsProps) {
                     </div>
                   </div>
 
-                  {/* Lottie Radar Canvas Layer */}
-                  <React.Suspense fallback={<div className="w-full h-full animate-pulse bg-emerald-500/5 rounded-2xl" />}>
-                    <LottieAnimation
-                      animationData={SKILLS_TECH_RADAR_LOTTIE}
-                      className="w-full h-full relative z-10"
-                      ariaLabel={lang === "fa" ? "رادار پایش فناوری‌ها" : "Tech radar telemetry scanner"}
-                    />
-                  </React.Suspense>
-
                   {/* High-tech HUD Corner Brackets */}
                   <div className="absolute top-1.5 left-1.5 w-2 h-2 border-t border-l border-emerald-400/40 pointer-events-none" />
                   <div className="absolute top-1.5 right-1.5 w-2 h-2 border-t border-r border-emerald-400/40 pointer-events-none" />
@@ -148,12 +135,8 @@ export default function Skills({ lang }: SkillsProps) {
 
         {/* Category Cards Grid with Staggered Entrance */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {SKILLS.map((cat) => (
-            <motion.div
-              key={cat.testid}
-              variants={sectionItemVariants}
-              className="h-full"
-            >
+          {SKILLS.map((cat, i) => (
+            <SectionItem key={cat.testid} index={i % 3} className="h-full">
               <SpotlightCard className="h-full p-6 flex flex-col justify-between group">
                 <div>
                   {/* Header */}
@@ -201,7 +184,7 @@ export default function Skills({ lang }: SkillsProps) {
                   <span>High Concurrency</span>
                 </div>
               </SpotlightCard>
-            </motion.div>
+            </SectionItem>
           ))}
         </div>
       </div>

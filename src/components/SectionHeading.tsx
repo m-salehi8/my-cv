@@ -1,6 +1,5 @@
 import React from "react";
-import { motion } from "motion/react";
-import { sectionItemVariants } from "./SectionContainer";
+import { SectionItem } from "./SectionContainer";
 
 interface SectionHeadingProps {
   index: string;
@@ -18,11 +17,7 @@ export default function SectionHeading({
   subtitle,
 }: SectionHeadingProps) {
   return (
-    <motion.div
-      variants={sectionItemVariants}
-      data-testid={testid}
-      className="mb-12 sm:mb-16"
-    >
+    <SectionItem data-testid={testid} className="mb-12 sm:mb-16">
       <div className="flex items-center gap-4">
         <span className="font-mono text-xs sm:text-sm font-bold text-emerald-400 px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20">
           {index}
@@ -42,6 +37,6 @@ export default function SectionHeading({
           {subtitle}
         </p>
       )}
-    </motion.div>
+    </SectionItem>
   );
 }

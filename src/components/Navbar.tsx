@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { motion, useScroll, useSpring } from "motion/react";
 import { Download, Globe, Menu, X, Film } from "lucide-react";
 
 interface NavbarProps {
@@ -17,11 +16,6 @@ export default function Navbar({
 }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { scrollYProgress } = useScroll();
-  const progress = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 25,
-  });
 
   const [activeSection, setActiveSection] = useState<string>("");
 
@@ -76,9 +70,10 @@ export default function Navbar({
       className="fixed top-0 left-0 right-0 z-50 pt-2.5 sm:pt-4 px-3 sm:px-6 pointer-events-none transition-all duration-300"
     >
       {/* Scroll indicator line */}
-      <motion.div
-        className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-500 origin-left pointer-events-auto"
-        style={{ scaleX: progress }}
+      <div
+        aria-hidden="true"
+        className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-500 origin-left transition-transform duration-100 ease-out"
+        style={{ transform: "scaleX(var(--scroll, 0))" }}
       />
 
       <div

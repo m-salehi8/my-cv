@@ -1,14 +1,11 @@
-import React, { useState } from "react";
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from "motion/react";
+import React, { useRef, useState } from "react";
 import { PROFILE, SOCIALS } from "../data/resume";
 import Terminal from "./Terminal";
 import TerminalTyping from "./TerminalTyping";
-import Canvas3DScene from "./Canvas3DScene";
 import TiltCard from "./TiltCard";
-import { HERO_PIPELINE_LOTTIE } from "../data/lottieAnimations";
+import PipelineViz from "./PipelineViz";
+import IstanbulClock from "./IstanbulClock";
 import { Download, Mail, Linkedin, Github, Send, Check, Copy, Activity } from "lucide-react";
-
-const LottieAnimation = React.lazy(() => import("./LottieAnimation"));
 
 interface HeroProps {
   lang: "en" | "fa";
@@ -17,23 +14,14 @@ interface HeroProps {
 
 export default function Hero({ lang, onOpenCvModal }: HeroProps) {
   const [copied, setCopied] = useState(false);
-  const { scrollY } = useScroll();
-  const glowY = useTransform(scrollY, [0, 700], [0, 160]);
-  const fade = useTransform(scrollY, [0, 500], [1, 0.15]);
+  const sectionRef = useRef<HTMLElement>(null);
 
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const smx = useSpring(mx, { stiffness: 55, damping: 18 });
-  const smy = useSpring(my, { stiffness: 55, damping: 18 });
-
-  const orbX = useTransform(smx, [-0.5, 0.5], [45, -45]);
-  const orbY = useTransform(smy, [-0.5, 0.5], [28, -28]);
-  const gridX = useTransform(smx, [-0.5, 0.5], [12, -12]);
-  const gridY = useTransform(smy, [-0.5, 0.5], [8, -8]);
-
+  // Mouse parallax: write normalized pointer position to CSS variables (no re-render).
   const handleMouse = (e: React.MouseEvent<HTMLElement>) => {
-    mx.set(e.clientX / window.innerWidth - 0.5);
-    my.set(e.clientY / window.innerHeight - 0.5);
+    const el = sectionRef.current;
+    if (!el) return;
+    el.style.setProperty("--mx", (e.clientX / window.innerWidth - 0.5).toFixed(3));
+    el.style.setProperty("--my", (e.clientY / window.innerHeight - 0.5).toFixed(3));
   };
 
   const copyEmail = () => {
@@ -44,25 +32,28 @@ export default function Hero({ lang, onOpenCvModal }: HeroProps) {
 
   return (
     <section
+      ref={sectionRef}
       id="hero"
       data-testid="hero-section"
       onMouseMove={handleMouse}
       className="relative min-h-[92vh] flex items-center overflow-hidden pt-28 pb-16 lg:py-32"
     >
       {/* Background Interactive Grid */}
-      <motion.div
-        style={{ x: gridX, y: gridY }}
-        className="hero-grid absolute -inset-8 pointer-events-none opacity-40"
+      <div
+        aria-hidden="true"
+        style={{ transform: "translate(calc(var(--mx, 0) * -24px), calc(var(--my, 0) * -16px))" }}
+        className="hero-grid absolute -inset-8 pointer-events-none opacity-40 transition-transform duration-300 ease-out"
       />
 
       {/* Atmospheric Glowing Orbs */}
-      <motion.div
-        style={{ y: glowY, opacity: fade }}
+      <div
+        aria-hidden="true"
         className="absolute -top-32 right-[-10%] h-[480px] w-[480px] rounded-full bg-emerald-500/10 blur-[150px] pointer-events-none"
       />
-      <motion.div
-        style={{ x: orbX, y: orbY }}
-        className="absolute bottom-[-20%] left-[-10%] h-[420px] w-[420px] rounded-full bg-cyan-500/10 blur-[150px] pointer-events-none"
+      <div
+        aria-hidden="true"
+        style={{ transform: "translate(calc(var(--mx, 0) * -90px), calc(var(--my, 0) * -56px))" }}
+        className="absolute bottom-[-20%] left-[-10%] h-[420px] w-[420px] rounded-full bg-cyan-500/10 blur-[150px] pointer-events-none transition-transform duration-500 ease-out"
       />
 
       {/* Floating Technology Pills in Background (from screenshot: FastAPI, Docker, RabbitMQ) */}
@@ -86,11 +77,9 @@ export default function Hero({ lang, onOpenCvModal }: HeroProps) {
         {/* Left Column: Bio & Title */}
         <div className="lg:col-span-7">
           {/* Status Badge: ● AVAILABLE FOR OPPORTUNITIES */}
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="flex items-center gap-2 mb-6"
+          <div
+            style={{ animationDelay: "0s" }}
+            className="hero-rise flex items-center gap-2 mb-6"
           >
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -99,13 +88,14 @@ export default function Hero({ lang, onOpenCvModal }: HeroProps) {
             <span className="font-mono text-[11px] tracking-widest uppercase text-emerald-400 font-medium">
               {lang === "fa" ? "آماده برای فرصت‌های شغلی و پروژه‌های جدید" : "AVAILABLE FOR OPPORTUNITIES"}
             </span>
-          </motion.div>
+            <span aria-hidden="true" className="text-slate-700">/</span>
+            <IstanbulClock lang={lang} />
+          </div>
 
           {/* Heading: MOHAMMADREZA SALEHI */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
+          <div
+            style={{ animationDelay: "0.1s" }}
+          className="hero-rise"
           >
             <h1 className="font-display font-black tracking-tight text-4xl sm:text-6xl lg:text-7xl leading-[1.05]">
               <span className="text-white block">{lang === "fa" ? "محمدرضا" : "MOHAMMADREZA"}</span>
@@ -132,24 +122,20 @@ export default function Hero({ lang, onOpenCvModal }: HeroProps) {
                 className="text-xs sm:text-sm text-slate-300 font-mono tracking-wider sm:tracking-widest uppercase break-words"
               />
             </div>
-          </motion.div>
+          </div>
 
           {/* Bio text */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="mt-5 sm:mt-6 text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl font-normal"
+          <p
+            style={{ animationDelay: "0.2s" }}
+            className="hero-rise mt-5 sm:mt-6 text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl font-normal"
           >
             {lang === "fa" ? PROFILE.heroHookFa : PROFILE.heroHook}
-          </motion.p>
+          </p>
 
           {/* Interactive Lottie Microservices Pipeline Telemetry */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.25 }}
-            className="mt-6 p-3 sm:p-4 rounded-xl border border-white/10 bg-[#0E1524]/60 backdrop-blur-md max-w-xl shadow-lg"
+          <div
+            style={{ animationDelay: "0.25s" }}
+            className="hero-rise mt-6 p-3 sm:p-4 rounded-xl border border-white/10 bg-[#0E1524]/60 backdrop-blur-md max-w-xl shadow-lg"
           >
             <div className="flex items-center justify-between pb-2.5 border-b border-white/5 font-mono text-[11px] text-slate-400">
               <span className="flex items-center gap-2 text-emerald-400 font-semibold tracking-wide">
@@ -164,50 +150,15 @@ export default function Hero({ lang, onOpenCvModal }: HeroProps) {
               </span>
             </div>
             
-            <div className="pt-2 flex items-center justify-between gap-3">
-              <div className="relative w-full max-w-[320px] sm:max-w-[340px] h-[58px] flex items-center justify-center rounded-lg bg-[#060A12]/80 border border-emerald-500/20 shadow-inner overflow-hidden group">
-                {/* Animated Bus Track and Moving Light Packets */}
-                <div className="absolute inset-0 pointer-events-none">
-                  {/* Circuit Flow Line */}
-                  <svg className="w-full h-full opacity-50" preserveAspectRatio="none" viewBox="0 0 340 58">
-                    <line x1="30" y1="29" x2="310" y2="29" stroke="rgba(16, 185, 129, 0.3)" strokeWidth="1.5" strokeDasharray="6 6" className="animate-pipeline-flow" />
-                  </svg>
-                  {/* Glowing traveling packet pulses */}
-                  <span className="absolute top-1/2 -translate-y-1/2 left-[15%] w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_10px_#10B981] animate-ping opacity-60" />
-                  <span className="absolute top-1/2 -translate-y-1/2 left-[50%] w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_#06B6D4] animate-pulse opacity-80" />
-                  <span className="absolute top-1/2 -translate-y-1/2 right-[15%] w-2 h-2 rounded-full bg-indigo-400 shadow-[0_0_10px_#6366F1] animate-ping opacity-50" />
-                </div>
-
-                <React.Suspense
-                  fallback={
-                    <div className="w-full h-[58px] flex items-center justify-center">
-                      <div className="h-1.5 w-24 bg-emerald-500/20 rounded-full animate-pulse" />
-                    </div>
-                  }
-                >
-                  <LottieAnimation
-                    animationData={HERO_PIPELINE_LOTTIE}
-                    className="w-full h-full relative z-10"
-                    ariaLabel={lang === "fa" ? "جریان بسته داده در میکروسرویس‌ها" : "Microservices event pipeline packet stream"}
-                  />
-                </React.Suspense>
-
-                {/* Subtle Ambient Edge Glow */}
-                <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-emerald-500/5 via-cyan-500/5 to-indigo-500/5 pointer-events-none" />
-              </div>
-              <div className="hidden sm:flex flex-col items-end gap-0.5 text-[10px] font-mono shrink-0">
-                <span className="text-emerald-400 font-semibold">FastAPI → RabbitMQ</span>
-                <span className="text-cyan-400 font-semibold">Postgres · 500K+ Crawled</span>
-              </div>
+            <div className="pt-3">
+              <PipelineViz lang={lang} />
             </div>
-          </motion.div>
+          </div>
 
           {/* Action Buttons (Download Resume + Email copy + Socials) */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="mt-7 sm:mt-8 flex flex-col gap-4 sm:gap-5"
+          <div
+            style={{ animationDelay: "0.3s" }}
+            className="hero-rise mt-7 sm:mt-8 flex flex-col gap-4 sm:gap-5"
           >
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
               {/* Solid Green Download Resume button */}
@@ -252,24 +203,20 @@ export default function Hero({ lang, onOpenCvModal }: HeroProps) {
                 </a>
               ))}
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Right Column: Interactive Terminal matching screenshot */}
         <div className="lg:col-span-5 relative">
-          {/* Subtle 3D particle lattice behind terminal */}
-          <Canvas3DScene className="absolute -top-16 -left-12 w-[130%] h-[130%] opacity-40 pointer-events-none" />
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative z-10"
+          <div
+            style={{ animationDelay: "0.2s" }}
+            className="hero-rise relative z-10"
           >
             <TiltCard max={8}>
               <Terminal onOpenCvModal={onOpenCvModal} lang={lang} />
             </TiltCard>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

@@ -2,8 +2,7 @@ import React from "react";
 import { PROFILE, STATS } from "../data/resume";
 import SectionHeading from "./SectionHeading";
 import SpotlightCard from "./SpotlightCard";
-import SectionContainer, { SectionItem, sectionItemVariants } from "./SectionContainer";
-import { motion } from "motion/react";
+import SectionContainer, { SectionItem } from "./SectionContainer";
 import {
   MapPin,
   Mail,
@@ -62,8 +61,8 @@ export default function About({ lang }: AboutProps) {
 
             {/* Stats Counter Cards with Spotlight */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 items-stretch">
-              {STATS.map((s) => (
-                <motion.div key={s.testid} variants={sectionItemVariants} className="h-full">
+              {STATS.map((s, i) => (
+                <SectionItem key={s.testid} index={i} className="h-full">
                   <SpotlightCard className="h-full p-4 text-center flex flex-col justify-center items-center">
                     <div className="font-display font-extrabold text-2xl sm:text-3xl text-emerald-400">
                       {s.value}
@@ -72,7 +71,7 @@ export default function About({ lang }: AboutProps) {
                       {lang === "fa" ? s.labelFa : s.label}
                     </div>
                   </SpotlightCard>
-                </motion.div>
+                </SectionItem>
               ))}
             </div>
           </SectionItem>

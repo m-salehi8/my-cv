@@ -1,7 +1,6 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Allow: /
-Disallow: /api/
 
 # Sitemaps
-Sitemap: https://ais-pre-rwfrk7255nxetkvukofrnj-832476879685.europe-west2.run.app/sitemap.xml
+Sitemap: https://salehi.my/sitemap.xml

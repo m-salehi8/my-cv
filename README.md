@@ -1,7 +1,7 @@
 # پورتفولیو و رزومه تعاملی محمدرضا صالحی | Mohammadreza Salehi Portfolio
 
 وب‌سایت شخصی و پورتفولیوی تعاملی مهندس ارشد بک‌اند و سیستم‌های داده و هوش مصنوعی (Senior Backend & AI Data Engineer).  
-طراحی شده با استانداردهای مدرن وب، پشتیبانی کامل از دو زبان فارسی و انگلیسی (RTL / LTR)، انیمیشن‌های سبک و مهندسی‌شده Lottie، شبیه‌ساز ترمینال لینوکس و تعاملات سه‌بعدی.
+طراحی شده با استانداردهای مدرن وب، پشتیبانی کامل از دو زبان فارسی و انگلیسی (RTL / LTR)، انیمیشن‌های سبک CSS/SVG، شبیه‌ساز ترمینال لینوکس و تعاملات سه‌بعدی.
 
 ---
 
@@ -79,7 +79,8 @@ npm run dev
 | دستور (Command) | کاربرد (Description) |
 | :--- | :--- |
 | `npm run dev` | اجرای برنامه در حالت توسعه روی پورت `3000` با دسترسی شبکه محلی |
-| `npm run build` | بهینه‌سازی و بیلد نهایی پروژه در پوشه `dist/` برای سرور پروداکشن |
+| `npm run build` | بیلد `vite` و سپس پیش‌رندر HTML هر دو زبان (`scripts/prerender.mjs`) در `dist/` |
+| `npm start` | اجرای `server.js` (Express) برای سرو `dist/` با کش و gzip |
 | `npm run preview` | تست و مشاهده نسخه بیلد نهایی (`dist`) به شکل لوکال |
 | `npm run lint` | بررسی استاتیک تایپ‌ها و کدهای تایپ‌اسکریپت (`tsc --noEmit`) |
 | `npm run clean` | پاک‌سازی پوشه بیلد و فایل‌های موقت |
@@ -105,9 +106,9 @@ npm run preview
 
 - **Frontend Core:** React 19, TypeScript
 - **Bundler & Tooling:** Vite 8, Tailwind CSS v4, PostCSS
-- **Animations & Micro-interactions:** Motion (Framer Motion), Lottie-React (Lightweight SVG engine)
+- **Animations & Micro-interactions:** فقط CSS/SVG و IntersectionObserver (بدون کتابخانه انیمیشن)
+- **SEO & Performance:** پیش‌رندر زمان بیلد برای `/` (فارسی) و `/en/` (انگلیسی)، فونت‌های self-host، فشرده‌سازی gzip و کش طولانی برای assets
 - **Icons & UI:** Lucide React
-- **Document Management:** PDF-Lib (تولید و دانلود داینامیک فایل رزومه)
 - **Internationalization:** پشتیبانی کامل و واکنش‌گرا از زبان‌های انگلیسی و فارسی با چیدمان استاندارد RTL/LTR
 
 ---
@@ -116,18 +117,16 @@ npm run preview
 
 ```text
 ├── public/                 # دارایی‌های استاتیک و عمومی
-│   ├── animations/         # فایل‌های Lottie JSON (hero-pipeline.json, skills-radar.json)
-│   ├── favicon.svg         # آیکون سایت
-│   └── og-image.png        # تصویر پیش‌نمایش شبکه‌های اجتماعی
+│   ├── favicon.svg / icon-*.png  # آیکون‌ها
+│   └── og-image.png        # تصویر پیش‌نمایش (ساخته‌شده از scripts/og-image.html)
 ├── src/
 │   ├── components/         # کامپوننت‌های رابط کاربری
 │   │   ├── Hero.tsx        # بخش اصلی هیرو به همراه تله‌متری لایو
-│   │   ├── LottieAnimation.tsx # کامپوننت ماژولار و بهینه اجرای انیمیشن‌های Lottie
+│   │   ├── PipelineViz.tsx # پایپ‌لاین SVG تعاملی با شبیه‌ساز خرابی
 │   │   ├── Skills.tsx      # ماتریس مهارت‌ها و رادار اکوسیستم فناوری
 │   │   ├── Projects.tsx    # گالری پروژه‌ها با قابلیت فیلتر و مشاهده جزییات
 │   │   ├── Experience.tsx  # خط زمان سوابق کاری و دستاوردهای کلیدی
 │   │   ├── Terminal.tsx    # شبیه‌ساز تعاملی خط فرمان با دستورات اختصاصی
-│   │   ├── Canvas3DScene.tsx # پس‌زمینه ذره‌ای و شبکه سه‌بعدی تعاملی
 │   │   └── Navbar.tsx      # ناوبری شناور با سوئیچ سریع زبان و تب‌ها
 │   ├── data/               # دیتای رزومه، پروژه‌ها و تعاریف انیمیشن‌ها
 │   ├── index.css           # پیکربندی استایل‌های گلوبال و فونت‌ها

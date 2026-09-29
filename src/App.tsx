@@ -12,6 +12,8 @@ import MobileQuickBar from "./components/MobileQuickBar";
 import SeoHead from "./components/SeoHead";
 import { ToastProvider } from "./components/Toast";
 import { ArrowUp } from "lucide-react";
+import { useRootScrollProgress } from "./lib/scroll";
+import { Lang, SEO } from "./data/seo";
 
 // Lazy-loaded heavy below-the-fold sections and modals
 const ApiPlayground = React.lazy(() => import("./components/ApiPlayground"));
@@ -19,26 +21,22 @@ const ArchitectureDiagram = React.lazy(() => import("./components/ArchitectureDi
 const CvModal = React.lazy(() => import("./components/CvModal"));
 const ContactModal = React.lazy(() => import("./components/ContactModal"));
 
-// Preload helper for hover/scroll anticipation
-const preloadSection = (factory: () => Promise<any>) => {
-  factory();
-};
+function SectionPlaceholder({ id, className }: { id: string; className: string }) {
+  return (
+    <section id={id} aria-hidden="true" className={`py-24 sm:py-32 relative flex items-center justify-center ${className}`}>
+      <div className="w-12 h-12 rounded-full border-2 border-emerald-500/20 border-t-emerald-400 animate-spin" />
+    </section>
+  );
+}
 
-export default function App() {
-  const [lang, setLang] = useState<"en" | "fa">(() => {
-    try {
-      if (typeof window !== "undefined") {
-        const params = new URLSearchParams(window.location.search);
-        const urlLang = params.get("lang");
-        if (urlLang === "fa" || urlLang === "en") return urlLang;
-        const saved = localStorage.getItem("preferred_lang");
-        if (saved === "fa" || saved === "en") return saved;
-      }
-    } catch {
-      // ignore
-    }
-    return "fa";
-  });
+export default function App({ initialLang = "fa" }: { initialLang?: Lang }) {
+  const [lang, setLang] = useState<Lang>(initialLang);
+
+  useRootScrollProgress();
+
+  // Heavy demo sections load after hydration; the prerendered HTML holds a same-size placeholder.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const [cvModalOpen, setCvModalOpen] = useState(false);
   const [contactModalOpen, setContactModalOpen] = useState(false);
@@ -80,20 +78,10 @@ export default function App() {
   }, []);
 
   const handleToggleLang = () => {
-    setLang((prev) => {
-      const next = prev === "en" ? "fa" : "en";
-      try {
-        localStorage.setItem("preferred_lang", next);
-        if (typeof window !== "undefined") {
-          const url = new URL(window.location.href);
-          url.searchParams.set("lang", next);
-          window.history.replaceState({}, "", url.toString());
-        }
-      } catch {
-        // ignore
-      }
-      return next;
-    });
+    const next: Lang = lang === "en" ? "fa" : "en";
+    setLang(next);
+    // Each language has its own URL (`/` and `/en/`), matching the prerendered pages.
+    window.history.replaceState({}, "", SEO[next].path + window.location.hash);
   };
 
   useEffect(() => {
@@ -126,32 +114,22 @@ export default function App() {
           <Marquee />
           <About lang={lang} />
           <Skills lang={lang} />
-          <React.Suspense
-            fallback={
-              <section
-                id="api-playground"
-                className="py-24 sm:py-32 relative min-h-[750px] flex items-center justify-center"
-              >
-                <div className="w-12 h-12 rounded-full border-2 border-emerald-500/20 border-t-emerald-400 animate-spin" />
-              </section>
-            }
-          >
-            <ApiPlayground lang={lang} />
-          </React.Suspense>
+          {mounted ? (
+            <React.Suspense fallback={<SectionPlaceholder id="api-playground" className="min-h-[750px]" />}>
+              <ApiPlayground lang={lang} />
+            </React.Suspense>
+          ) : (
+            <SectionPlaceholder id="api-playground" className="min-h-[750px]" />
+          )}
           <Experience lang={lang} />
           <Projects lang={lang} />
-          <React.Suspense
-            fallback={
-              <section
-                id="architecture"
-                className="py-24 sm:py-32 bg-[#090E17]/60 relative min-h-[850px] flex items-center justify-center"
-              >
-                <div className="w-12 h-12 rounded-full border-2 border-emerald-500/20 border-t-emerald-400 animate-spin" />
-              </section>
-            }
-          >
-            <ArchitectureDiagram lang={lang} />
-          </React.Suspense>
+          {mounted ? (
+            <React.Suspense fallback={<SectionPlaceholder id="architecture" className="min-h-[850px] bg-[#090E17]/60" />}>
+              <ArchitectureDiagram lang={lang} />
+            </React.Suspense>
+          ) : (
+            <SectionPlaceholder id="architecture" className="min-h-[850px] bg-[#090E17]/60" />
+          )}
           <Footer
             lang={lang}
             onOpenCvModal={() => setCvModalOpen(true)}

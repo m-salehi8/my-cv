@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
 import { PROFILE, SOCIALS } from "../data/resume";
 import { useToast } from "./Toast";
 import {
@@ -72,28 +71,18 @@ export default function ContactModal({ isOpen, onClose, lang }: ContactModalProp
     }, 700);
   };
 
-  const telegramLink = SOCIALS.find((s) => s.id === "telegram")?.href || "https://t.me/salehi_dev";
+  const telegramLink = SOCIALS.find((s) => s.id === "telegram")?.href || "https://t.me/mohammadsalehi81";
 
   return (
-    <AnimatePresence>
+    <>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6 overflow-y-auto">
+        <div role="dialog" aria-modal="true" aria-label={lang === "fa" ? "تماس" : "Contact"} className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6 overflow-y-auto">
           {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="fixed inset-0 bg-black/80 backdrop-blur-md"
-          />
+          <div onClick={onClose} className="fixed inset-0 bg-black/80 animate-fade-in" />
 
           {/* Modal Container */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 15 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 15 }}
-            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className={`relative w-full max-w-lg bg-[#0C121E] border border-white/15 rounded-2xl shadow-2xl overflow-hidden z-10 my-auto ${
+          <div
+            className={`animate-modal-in relative w-full max-w-lg bg-[#0C121E] border border-white/15 rounded-2xl shadow-2xl overflow-hidden z-10 my-auto ${
               isRtl ? "text-right" : "text-left"
             }`}
           >
@@ -267,9 +256,9 @@ export default function ContactModal({ isOpen, onClose, lang }: ContactModalProp
                 {PROFILE.location}
               </span>
             </div>
-          </motion.div>
+          </div>
         </div>
       )}
-    </AnimatePresence>
+    </>
   );
 }

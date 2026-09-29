@@ -1,71 +1,38 @@
 import React, { ReactNode } from "react";
-import { motion, Variants } from "motion/react";
-
-export const sectionContainerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.05,
-    },
-  },
-};
-
-export const sectionItemVariants: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.65,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  },
-};
+import { useReveal } from "../lib/reveal";
 
 interface SectionContainerProps {
   id: string;
   dataTestId?: string;
   className?: string;
   children: ReactNode;
-  viewportMargin?: string;
 }
 
-export default function SectionContainer({
-  id,
-  dataTestId,
-  className = "",
-  children,
-  viewportMargin = "-60px",
-}: SectionContainerProps) {
+export default function SectionContainer({ id, dataTestId, className = "", children }: SectionContainerProps) {
   return (
-    <motion.section
-      id={id}
-      data-testid={dataTestId}
-      variants={sectionContainerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: viewportMargin as any }}
-      className={className}
-    >
+    <section id={id} data-testid={dataTestId} className={className}>
       {children}
-    </motion.section>
+    </section>
   );
 }
 
-export function SectionItem({
-  children,
-  className = "",
-  variants = sectionItemVariants,
-}: {
+interface SectionItemProps extends React.HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   className?: string;
-  variants?: Variants;
-}) {
+  /** Stagger position; each step delays the entrance by 80ms. */
+  index?: number;
+}
+
+export function SectionItem({ children, className = "", index = 0, style, ...rest }: SectionItemProps) {
+  const ref = useReveal<HTMLDivElement>();
   return (
-    <motion.div variants={variants} className={className}>
+    <div
+      ref={ref}
+      className={`reveal ${className}`}
+      style={{ "--i": index, ...style } as React.CSSProperties}
+      {...rest}
+    >
       {children}
-    </motion.div>
+    </div>
   );
 }

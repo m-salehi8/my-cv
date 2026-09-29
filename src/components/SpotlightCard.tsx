@@ -36,7 +36,7 @@ export default function SpotlightCard({
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`relative overflow-hidden rounded-2xl border border-white/10 bg-[#0B111D]/80 backdrop-blur-xl transition-all duration-300 hover:border-emerald-500/40 hover:shadow-[0_8px_30px_rgba(0,0,0,0.4)] ${className}`}
+      className={`relative overflow-hidden rounded-2xl border border-white/10 bg-[#0B111D]/80 transition-all duration-300 hover:border-emerald-500/40 hover:shadow-[0_8px_30px_rgba(0,0,0,0.4)] ${className}`}
       {...props}
     >
       {/* Dynamic Radial Spotlight Following Mouse */}

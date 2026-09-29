@@ -1,0 +1,27 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:O;src:url(../node_modules/@fontsource-variable/outfit/files/outfit-latin-wght-normal.woff2);font-weight:100 900}
+@font-face{font-family:M;src:url(../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2);font-weight:100 800}
+@font-face{font-family:V;src:url(../node_modules/@fontsource-variable/vazirmatn/files/vazirmatn-arabic-wght-normal.woff2);font-weight:100 900}
+*{box-sizing:border-box;margin:0}
+body{width:1200px;height:630px;background:#0A0E17;color:#f1f5f9;font-family:O,V,sans-serif;position:relative;overflow:hidden}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:64px 64px;-webkit-mask-image:radial-gradient(ellipse 90% 80% at 30% 40%,#000 30%,transparent 80%)}
+.glow{position:absolute;right:-120px;top:-160px;width:620px;height:620px;border-radius:50%;background:rgba(16,185,129,.16);filter:blur(120px)}
+.wrap{position:absolute;inset:0;padding:72px 84px;display:flex;flex-direction:column;justify-content:space-between}
+.prompt{font-family:M;font-size:26px;color:#94a3b8;display:flex;gap:14px;align-items:center}
+.prompt b{color:#34d399;font-weight:600}
+h1{font-size:112px;line-height:1;font-weight:800;letter-spacing:-.03em}
+h1 span{display:block;color:#34d399}
+.fa{text-align:left;font-family:V;font-size:44px;font-weight:700;color:#cbd5e1;margin-top:26px}
+.foot{display:flex;justify-content:space-between;align-items:flex-end;font-family:M;font-size:24px;color:#94a3b8}
+.tags{display:flex;gap:12px}
+.tags i{font-style:normal;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);padding:8px 16px;border-radius:10px;color:#cbd5e1}
+.url{color:#34d399;font-weight:600}
+</style></head><body>
+<div class="grid"></div><div class="glow"></div>
+<div class="wrap">
+  <div class="prompt"><b>➜</b> ~/salehi <span style="color:#475569">— backend engineer</span></div>
+  <div><h1>Mohammadreza<span>Salehi</span></h1><div class="fa" dir="rtl">محمدرضا صالحی · توسعه‌دهنده بک‌اند</div></div>
+  <div class="foot"><div class="tags"><i>Python</i><i>FastAPI</i><i>Microservices</i><i>AI pipelines</i></div><div class="url">salehi.my</div></div>
+</div></body></html>

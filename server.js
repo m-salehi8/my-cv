@@ -1,6 +1,6 @@
 import express from 'express';
+import compression from 'compression';
 import path from 'path';
-import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -9,39 +9,42 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json({ limit: '15mb' }));
+app.disable('x-powered-by');
+app.use(compression());
 
-// Avatar upload endpoint
-app.post('/api/upload-avatar', (req, res) => {
-  try {
-    const { imageBase64 } = req.body;
-    if (imageBase64) {
-      const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
-      const buffer = Buffer.from(base64Data, 'base64');
-      fs.writeFileSync(path.join(__dirname, 'public', 'profile.jpg'), buffer);
-      if (fs.existsSync(path.join(__dirname, 'dist'))) {
-        fs.writeFileSync(path.join(__dirname, 'dist', 'profile.jpg'), buffer);
-      }
-      return res.status(200).json({ success: true, path: '/profile.jpg' });
-    }
-    return res.status(400).json({ error: 'Missing imageBase64' });
-  } catch (err) {
-    console.error('Upload avatar error:', err);
-    return res.status(500).json({ error: 'Server error saving image' });
-  }
+app.use((_req, res, next) => {
+  res.set({
+    'X-Content-Type-Options': 'nosniff',
+    'Referrer-Policy': 'strict-origin-when-cross-origin',
+    'X-Frame-Options': 'SAMEORIGIN',
+  });
+  next();
 });
 
-// Serve static assets from dist
-app.use(express.static(path.join(__dirname, 'dist')));
+// Hashed build assets never change: cache for a year. Everything else revalidates.
+app.use(
+  express.static(path.join(__dirname, 'dist'), {
+    setHeaders(res, filePath) {
+      if (filePath.includes(`${path.sep}assets${path.sep}`)) {
+        res.set('Cache-Control', 'public, max-age=31536000, immutable');
+      } else if (/\.(?:jpe?g|webp|avif|png|svg|ico|pdf)$/i.test(filePath)) {
+        res.set('Cache-Control', 'public, max-age=86400');
+      } else {
+        res.set('Cache-Control', 'no-cache');
+      }
+    },
+  })
+);
 
 // Health check endpoint for Cloud Run
 app.get('/health', (_req, res) => {
   res.status(200).json({ status: 'healthy', uptime: process.uptime() });
 });
 
-// Single Page Application fallback to index.html
+// Unknown paths get a real 404 status (the page itself is served so visitors can navigate back).
 app.get('*', (_req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  res.set('Cache-Control', 'no-cache');
+  res.status(404).sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 app.listen(PORT, '0.0.0.0', () => {
