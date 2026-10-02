@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import SectionHeading from "./SectionHeading";
 import SectionContainer, { SectionItem } from "./SectionContainer";
 import SpotlightCard from "./SpotlightCard";
+import PipelineViz from "./PipelineViz";
 import { Server, Database, Cpu, Layers, ShieldCheck, Activity, ArrowRight, CheckCircle2, Zap, Code, Terminal, Sparkles } from "lucide-react";
 
 interface ArchitectureDiagramProps {
@@ -292,8 +293,8 @@ def process_scraped_dataset(self, match_data: dict):
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          index="06"
-          eyebrow={lang === "fa" ? "معماری سیستم" : "System Blueprint"}
+          route="/architecture"
+          meta={lang === "fa" ? `${nodes.length} سرویس` : `${nodes.length} services`}
           title={lang === "fa" ? "طراحی معماری میکروسرویس و پایپ‌لاین‌ها" : "Production Microservices Topology"}
           testid="architecture-heading"
         />
@@ -306,25 +307,10 @@ def process_scraped_dataset(self, match_data: dict):
           </p>
         </SectionItem>
 
-        {/* Animated Data Stream Flow Indicator */}
-        <SectionItem className="mb-8 p-3 rounded-2xl bg-black/40 border border-white/10 flex items-center justify-between overflow-x-auto scrollbar-none font-mono text-xs">
-          <div className="flex items-center gap-2 text-slate-400 shrink-0">
-            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
-            <span className="text-emerald-400 font-bold">{lang === "fa" ? "جریان زنده داده:" : "Active Data Flow:"}</span>
-          </div>
-
-          <div dir="ltr" className="flex items-center gap-2 sm:gap-3 shrink-0 ml-4">
-            <span className="px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-500/30">Client Traffic</span>
-            <span className="text-emerald-400">➔</span>
-            <span className="px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-500/30">Nginx Gateway</span>
-            <span className="text-emerald-400">➔</span>
-            <span className="px-2 py-0.5 rounded bg-cyan-950/60 text-cyan-300 border border-cyan-500/30">FastAPI Pods</span>
-            <span className="text-emerald-400">➔</span>
-            <span className="px-2 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-500/30">Redis Cache</span>
-            <span className="text-emerald-400">➔</span>
-            <span className="px-2 py-0.5 rounded bg-indigo-950/60 text-indigo-300 border border-indigo-500/30">PostgreSQL</span>
-            <span className="text-emerald-400">➔</span>
-            <span className="px-2 py-0.5 rounded bg-fuchsia-950/60 text-fuchsia-300 border border-fuchsia-500/30">RabbitMQ / Celery</span>
+        {/* Live request path with fault injection */}
+        <SectionItem className="mb-8 p-4 sm:p-5 rounded-2xl bg-black/40 border border-white/10">
+          <div className="max-w-2xl mx-auto">
+            <PipelineViz lang={lang} />
           </div>
         </SectionItem>
 

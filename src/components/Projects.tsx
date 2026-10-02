@@ -44,8 +44,8 @@ export default function Projects({ lang }: ProjectsProps) {
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          index="05"
-          eyebrow={lang === "fa" ? "پروژه‌های شاخص" : "Portfolio"}
+          route="/projects"
+          meta={lang === "fa" ? `${PROJECTS.length} پروژه` : `${PROJECTS.length} projects`}
           title={lang === "fa" ? "پروژه‌های کلیدی و معماری‌های توسعه‌یافته" : "Featured engineering projects"}
           testid="projects-heading"
         />

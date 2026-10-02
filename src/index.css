@@ -67,17 +67,6 @@
   -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, black 30%, transparent 75%);
 }
 
-/* Subtle Noise Overlay */
-.noise-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 40;
-  pointer-events: none;
-  opacity: 0.015;
-  background-image: radial-gradient(#fff 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-
 /* Infinite Marquee */
 @keyframes marquee {
   0% {
@@ -222,3 +211,65 @@ section[id], footer[id] { scroll-margin-top: 5.5rem; }
   outline-offset: 3px;
   border-radius: 6px;
 }
+
+/* ---------- Load trace (hero): replays the real navigation timing ---------- */
+.trace-track {
+  position: absolute;
+  inset: 0 3rem 0 7.5rem;
+  pointer-events: none;
+  container-type: inline-size;
+}
+.trace-playhead {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  left: 0;
+  width: 1px;
+  background: #6ee7b7;
+  box-shadow: 0 0 8px rgba(110, 231, 183, 0.8);
+  opacity: 0;
+  animation: trace-sweep var(--len) linear forwards;
+}
+@keyframes trace-sweep {
+  0% { opacity: 1; transform: translateX(0); }
+  92% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(100cqw); }
+}
+.trace-bar {
+  transform-origin: left center;
+  transform: scaleX(0);
+  animation: trace-grow var(--len) linear var(--d) forwards;
+}
+@keyframes trace-grow { to { transform: scaleX(1); } }
+.trace-fade {
+  opacity: 0;
+  animation: fade-in 0.3s ease-out var(--d) forwards;
+}
+
+/* ---------- Section headings as a request/response pair ---------- */
+.req-wire {
+  transform-origin: left center;
+}
+.js .req-wire { transform: scaleX(0); }
+.js .req-status { opacity: 0; }
+.js .in .req-wire { animation: trace-grow 0.55s cubic-bezier(0.5, 0, 0.2, 1) 0.15s forwards; }
+.js .in .req-status { animation: status-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) 0.7s forwards; }
+@keyframes status-in {
+  from { opacity: 0; transform: translateY(3px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- Pipeline backpressure: queued messages drain on recovery ---------- */
+.queue-dot { transition: transform 0.5s cubic-bezier(0.5, 0, 0.2, 1), opacity 0.5s; }
+.queue-dot.drain { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .trace-playhead { display: none; }
+  .trace-bar, .trace-fade,
+  .js .req-wire, .js .req-status,
+  .js .in .req-wire, .js .in .req-status { animation: none; transform: none; opacity: 1; }
+  .queue-dot { transition: none; }
+}
+
+/* Off-screen loops cost nothing when paused. */
+.marquee-track.is-paused { animation-play-state: paused; }

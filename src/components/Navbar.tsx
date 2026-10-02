@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { SEO } from "../data/seo";
 import { Download, Globe, Menu, X, Film } from "lucide-react";
 
 interface NavbarProps {
@@ -91,7 +92,6 @@ export default function Navbar({
           className="font-mono text-xs sm:text-sm text-slate-200 hover:text-emerald-400 transition-all flex items-center gap-2 group min-h-[38px] px-2.5 sm:px-3 py-1.5 rounded-xl bg-white/[0.04] border border-white/10 hover:border-emerald-500/40 hover:bg-emerald-500/10 shadow-sm"
         >
           <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
           </span>
           <span className="text-emerald-400 group-hover:translate-x-0.5 transition-transform font-bold">
@@ -120,15 +120,22 @@ export default function Navbar({
         {/* Actions: Language Switcher + CV Modal Button */}
         <div className="flex items-center gap-2 sm:gap-2.5">
           {/* Language Toggle Button */}
-          <button
-            onClick={onToggleLang}
+          <a
+            href={SEO[lang === "fa" ? "en" : "fa"].path}
+            hrefLang={lang === "fa" ? "en" : "fa"}
+            onClick={(e) => {
+              // Plain clicks switch in place; modified clicks open the other language's URL normally.
+              if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+              e.preventDefault();
+              onToggleLang();
+            }}
             data-testid="lang-toggle-btn"
             className="flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 px-2.5 sm:px-3 py-1.5 font-mono text-xs text-slate-300 hover:text-emerald-300 transition-colors min-h-[36px]"
             title={lang === "fa" ? "Switch to English" : "تغییر به فارسی"}
           >
             <Globe className="w-3.5 h-3.5 text-emerald-400" />
             <span className="font-bold">{lang === "fa" ? "EN" : "فا"}</span>
-          </button>
+          </a>
 
           {onOpenMotionTourModal && (
             <button

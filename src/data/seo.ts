@@ -2,13 +2,14 @@ export type Lang = "en" | "fa";
 
 export const SITE_URL = "https://salehi.my";
 
-export const SEO: Record<Lang, { title: string; description: string; path: string; locale: string }> = {
+export const SEO: Record<Lang, { title: string; description: string; path: string; locale: string; imageAlt: string }> = {
   fa: {
     title: "محمدرضا صالحی | توسعه‌دهنده بک‌اند و مهندس پایتون — Mohammadreza Salehi",
     description:
       "وب‌سایت و رزومه رسمی محمدرضا صالحی: برنامه‌نویس پایتون، توسعه‌دهنده ارشد بک‌اند، متخصص FastAPI، جنگو، داکر، میکروسرویس، خزش خودکار وب و خطوط داده هوش مصنوعی.",
     path: "/",
     locale: "fa_IR",
+    imageAlt: "محمدرضا صالحی، توسعه‌دهنده بک‌اند پایتون",
   },
   en: {
     title: "Mohammadreza Salehi — Senior Backend Developer & Python Engineer",
@@ -16,6 +17,7 @@ export const SEO: Record<Lang, { title: string; description: string; path: strin
       "Portfolio and CV of Mohammadreza Salehi: Python backend developer specializing in FastAPI, Django, microservices, high-throughput web scraping, and AI data pipelines.",
     path: "/en/",
     locale: "en_US",
+    imageAlt: "Mohammadreza Salehi, Python backend developer",
   },
 };
 

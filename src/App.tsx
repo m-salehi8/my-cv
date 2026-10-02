@@ -98,9 +98,6 @@ export default function App({ initialLang = "fa" }: { initialLang?: Lang }) {
         }`}
         dir={lang === "fa" ? "rtl" : "ltr"}
       >
-        {/* Background subtle noise and glow */}
-        <div className="noise-overlay" />
-
         {/* Top Navbar */}
         <Navbar
           lang={lang}

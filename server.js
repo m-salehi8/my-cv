@@ -2,6 +2,7 @@ import express from 'express';
 import compression from 'compression';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { contactRouter } from './server/contact.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,6 +22,18 @@ app.use((_req, res, next) => {
   next();
 });
 
+// One origin and one URL per language: www → apex, and the old `?lang=` URLs → their real paths.
+app.use((req, res, next) => {
+  const host = req.headers.host || '';
+  if (host.startsWith('www.')) {
+    return res.redirect(301, `https://${host.slice(4)}${req.originalUrl}`);
+  }
+  if (req.path === '/' && (req.query.lang === 'en' || req.query.lang === 'fa')) {
+    return res.redirect(301, req.query.lang === 'en' ? '/en/' : '/');
+  }
+  next();
+});
+
 // Hashed build assets never change: cache for a year. Everything else revalidates.
 app.use(
   express.static(path.join(__dirname, 'dist'), {
@@ -36,6 +49,8 @@ app.use(
   })
 );
 
+app.use(contactRouter);
+
 // Health check endpoint for Cloud Run
 app.get('/health', (_req, res) => {
   res.status(200).json({ status: 'healthy', uptime: process.uptime() });
@@ -43,7 +58,7 @@ app.get('/health', (_req, res) => {
 
 // Unknown paths get a real 404 status (the page itself is served so visitors can navigate back).
 app.get('*', (_req, res) => {
-  res.set('Cache-Control', 'no-cache');
+  res.set({ 'Cache-Control': 'no-cache', 'X-Robots-Tag': 'noindex' });
   res.status(404).sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 

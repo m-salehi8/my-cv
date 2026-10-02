@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { PROFILE, SOCIALS } from "../data/resume";
 import { useToast } from "./Toast";
+import { sendContact } from "../lib/sendContact";
 import {
   X,
   Send,
@@ -46,29 +47,36 @@ export default function ContactModal({ isOpen, onClose, lang }: ContactModalProp
     };
   }, [isOpen, onClose]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !contactInfo.trim() || !message.trim()) return;
 
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitted(true);
+    const ok = await sendContact({ name, contact: contactInfo, message, type: inquiryType });
+    setIsSubmitting(false);
+    if (!ok) {
       showToast(
-        lang === "fa" ? "پیام ارسال شد" : "Message Dispatched",
-        lang === "fa"
-          ? "پیام شما به صندوق دریافت محمدرضا با موفقیت منتقل شد."
-          : "Your inquiry was transmitted to Mohammadreza's priority queue.",
-        "success"
+        lang === "fa" ? "ارسال ناموفق بود" : "Send failed",
+        lang === "fa" ? "لطفاً دوباره تلاش کنید یا مستقیم ایمیل بزنید." : "Please try again or email directly.",
+        "error"
       );
-      setTimeout(() => {
-        setSubmitted(false);
-        setName("");
-        setContactInfo("");
-        setMessage("");
-        onClose();
-      }, 2200);
-    }, 700);
+      return;
+    }
+    setSubmitted(true);
+    showToast(
+      lang === "fa" ? "پیام ارسال شد" : "Message Dispatched",
+      lang === "fa"
+        ? "پیام شما به صندوق دریافت محمدرضا با موفقیت منتقل شد."
+        : "Your inquiry was transmitted to Mohammadreza's priority queue.",
+      "success"
+    );
+    setTimeout(() => {
+      setSubmitted(false);
+      setName("");
+      setContactInfo("");
+      setMessage("");
+      onClose();
+    }, 2200);
   };
 
   const telegramLink = SOCIALS.find((s) => s.id === "telegram")?.href || "https://t.me/mohammadsalehi81";

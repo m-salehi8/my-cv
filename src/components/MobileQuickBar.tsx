@@ -1,4 +1,5 @@
 import React from "react";
+import { SEO } from "../data/seo";
 import { Download, Terminal, Mail, Globe } from "lucide-react";
 
 interface MobileQuickBarProps {
@@ -62,15 +63,22 @@ export default function MobileQuickBar({
         </button>
 
         {/* Language Toggle */}
-        <button
-          onClick={onToggleLang}
+        <a
+          href={SEO[lang === "fa" ? "en" : "fa"].path}
+          hrefLang={lang === "fa" ? "en" : "fa"}
+          onClick={(e) => {
+            // Plain clicks switch in place; modified clicks open the other language's URL normally.
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+            e.preventDefault();
+            onToggleLang();
+          }}
           className="group flex flex-col items-center gap-1 p-2 rounded-xl text-slate-300 hover:text-emerald-400 active:scale-95 transition-all min-h-[44px] justify-center cursor-pointer"
         >
           <div className="flex items-center justify-center transition-transform duration-300 ease-out group-hover:scale-125 group-active:scale-95">
             <Globe className="w-4 h-4 text-emerald-400 transition-colors" />
           </div>
           <span className="text-[10px] font-bold group-hover:text-emerald-300 transition-colors">{lang === "fa" ? "EN" : "فا"}</span>
-        </button>
+        </a>
       </div>
     </div>
   );

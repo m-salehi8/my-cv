@@ -209,8 +209,8 @@ export default function ApiPlayground({ lang }: ApiPlaygroundProps) {
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          index="03"
-          eyebrow={lang === "fa" ? "شبیه‌ساز وب‌سرویس" : "Interactive API Explorer"}
+          route="/api/v1"
+          meta={lang === "fa" ? `${endpoints.length} اندپوینت` : `${endpoints.length} endpoints`}
           title={lang === "fa" ? "تست زنده اندپوینت‌های FastAPI" : "Live FastAPI REST Simulator"}
           testid="api-playground-heading"
         />
@@ -238,7 +238,7 @@ export default function ApiPlayground({ lang }: ApiPlaygroundProps) {
 
               <div className="flex items-center gap-2 font-mono text-xs">
                 <span className="text-emerald-400 flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="h-2 w-2 rounded-full bg-emerald-400" />
                   <span>200 OK</span>
                 </span>
                 <span className="text-slate-500">·</span>

@@ -22,8 +22,8 @@ export default function About({ lang }: AboutProps) {
     <SectionContainer id="about" dataTestId="about-section" className="py-24 sm:py-32 relative">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          index="01"
-          eyebrow={lang === "fa" ? "مانیفست مهندسی" : "Manifesto"}
+          route="/about"
+          meta={lang === "fa" ? "۴+ سال سابقه" : "4+ years in production"}
           title={lang === "fa" ? "فلسفه و رویکرد توسعه" : "Engineering philosophy"}
           testid="about-heading"
         />

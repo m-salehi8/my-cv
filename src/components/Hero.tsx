@@ -3,9 +3,9 @@ import { PROFILE, SOCIALS } from "../data/resume";
 import Terminal from "./Terminal";
 import TerminalTyping from "./TerminalTyping";
 import TiltCard from "./TiltCard";
-import PipelineViz from "./PipelineViz";
+import LoadTrace from "./LoadTrace";
 import IstanbulClock from "./IstanbulClock";
-import { Download, Mail, Linkedin, Github, Send, Check, Copy, Activity } from "lucide-react";
+import { Download, Mail, Linkedin, Github, Send, Check } from "lucide-react";
 
 interface HeroProps {
   lang: "en" | "fa";
@@ -36,7 +36,7 @@ export default function Hero({ lang, onOpenCvModal }: HeroProps) {
       id="hero"
       data-testid="hero-section"
       onMouseMove={handleMouse}
-      className="relative min-h-[92vh] flex items-center overflow-hidden pt-28 pb-16 lg:py-32"
+      className="relative min-h-[92vh] lg:min-h-[calc(100svh-3.875rem)] flex items-center overflow-hidden pt-28 pb-16 lg:pt-24 lg:pb-10"
     >
       {/* Background Interactive Grid */}
       <div
@@ -56,30 +56,13 @@ export default function Hero({ lang, onOpenCvModal }: HeroProps) {
         className="absolute bottom-[-20%] left-[-10%] h-[420px] w-[420px] rounded-full bg-cyan-500/10 blur-[150px] pointer-events-none transition-transform duration-500 ease-out"
       />
 
-      {/* Floating Technology Pills in Background (from screenshot: FastAPI, Docker, RabbitMQ) */}
-      <div className="hidden lg:block absolute right-10 top-28 pointer-events-none">
-        <span className="px-3.5 py-1.5 rounded-full border border-emerald-500/20 bg-emerald-950/20 text-emerald-400 font-mono text-xs">
-          FastAPI
-        </span>
-      </div>
-      <div className="hidden lg:block absolute left-8 top-1/2 pointer-events-none">
-        <span className="px-3.5 py-1.5 rounded-full border border-slate-700/50 bg-[#0B111D]/80 text-slate-400 font-mono text-xs">
-          Docker
-        </span>
-      </div>
-      <div className="hidden lg:block absolute right-1/3 bottom-10 pointer-events-none">
-        <span className="px-3.5 py-1.5 rounded-full border border-slate-700/50 bg-[#0B111D]/80 text-slate-400 font-mono text-xs">
-          RabbitMQ
-        </span>
-      </div>
-
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
         {/* Left Column: Bio & Title */}
         <div className="lg:col-span-7">
           {/* Status Badge: ● AVAILABLE FOR OPPORTUNITIES */}
           <div
             style={{ animationDelay: "0s" }}
-            className="hero-rise flex items-center gap-2 mb-6"
+            className="hero-rise flex items-center gap-2 mb-6 lg:mb-4"
           >
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -97,13 +80,15 @@ export default function Hero({ lang, onOpenCvModal }: HeroProps) {
             style={{ animationDelay: "0.1s" }}
           className="hero-rise"
           >
-            <h1 className="font-display font-black tracking-tight text-4xl sm:text-6xl lg:text-7xl leading-[1.05]">
+            <h1 className="font-display font-black tracking-tight text-4xl sm:text-6xl lg:text-[3.75rem] xl:text-[4rem] leading-[1.05]">
               <span className="text-white block">{lang === "fa" ? "محمدرضا" : "MOHAMMADREZA"}</span>
               <span className="text-emerald-400 block mt-0.5 sm:mt-1">{lang === "fa" ? "صالحی" : "SALEHI"}</span>
+              {/* The visible role line is animated (empty in the static HTML), so the heading states it too. */}
+              <span className="sr-only">{lang === "fa" ? "، توسعه‌دهنده بک‌اند پایتون" : ", Python backend developer"}</span>
             </h1>
 
             {/* Terminal Typing Subtitle: $ MICROSERVICES & ASYNC PIPELINES */}
-            <div className="mt-4 sm:mt-5 flex items-center">
+            <div className="mt-4 sm:mt-5 lg:mt-3 flex items-center">
               <TerminalTyping
                 prefix="$"
                 phrases={
@@ -127,38 +112,23 @@ export default function Hero({ lang, onOpenCvModal }: HeroProps) {
           {/* Bio text */}
           <p
             style={{ animationDelay: "0.2s" }}
-            className="hero-rise mt-5 sm:mt-6 text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl font-normal"
+            className="hero-rise mt-5 sm:mt-6 lg:mt-4 text-slate-300 text-sm sm:text-base lg:text-[15px] leading-relaxed max-w-xl lg:max-w-2xl font-normal"
           >
             {lang === "fa" ? PROFILE.heroHookFa : PROFILE.heroHook}
           </p>
 
-          {/* Interactive Lottie Microservices Pipeline Telemetry */}
+          {/* Real navigation timing of this very page load */}
           <div
             style={{ animationDelay: "0.25s" }}
-            className="hero-rise mt-6 p-3 sm:p-4 rounded-xl border border-white/10 bg-[#0E1524]/60 backdrop-blur-md max-w-xl shadow-lg"
+            className="hero-rise mt-6 lg:mt-5 p-3 sm:p-4 lg:p-3.5 rounded-xl border border-white/10 bg-[#0E1524]/80 max-w-xl shadow-lg"
           >
-            <div className="flex items-center justify-between pb-2.5 border-b border-white/5 font-mono text-[11px] text-slate-400">
-              <span className="flex items-center gap-2 text-emerald-400 font-semibold tracking-wide">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-                </span>
-                {lang === "fa" ? "خط لوله داده و مایکروسرویس‌های فعال" : "ASYNC EVENT BUS // LIVE TELEMETRY"}
-              </span>
-              <span className="text-[10px] text-slate-500 font-mono">
-                {lang === "fa" ? "پاسخ‌دهی زیر ۲۵ میلی‌ثانیه" : "LATENCY < 25ms"}
-              </span>
-            </div>
-            
-            <div className="pt-3">
-              <PipelineViz lang={lang} />
-            </div>
+            <LoadTrace lang={lang} />
           </div>
 
           {/* Action Buttons (Download Resume + Email copy + Socials) */}
           <div
             style={{ animationDelay: "0.3s" }}
-            className="hero-rise mt-7 sm:mt-8 flex flex-col gap-4 sm:gap-5"
+            className="hero-rise mt-7 sm:mt-8 lg:mt-5 flex flex-col lg:flex-row lg:items-center gap-4 sm:gap-5 lg:gap-3"
           >
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
               {/* Solid Green Download Resume button */}
@@ -187,7 +157,7 @@ export default function Hero({ lang, onOpenCvModal }: HeroProps) {
             </div>
 
             {/* Social Icons row (LinkedIn, GitHub, Telegram) */}
-            <div className="flex items-center gap-3 pt-1">
+            <div className="flex items-center gap-3 pt-1 lg:pt-0">
               {SOCIALS.map((soc) => (
                 <a
                   key={soc.id}

@@ -1,10 +1,24 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import {defineConfig, Plugin} from 'vite';
+import {defineConfig, loadEnv, Plugin} from 'vite';
+import express from 'express';
 import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig(({ command, mode }) => {
+  // Expose .env to the dev-only contact API (same handler production uses).
+  Object.assign(process.env, loadEnv(mode, process.cwd(), ''));
+  const contactApi: Plugin = {
+    name: 'contact-api',
+    apply: 'serve',
+    async configureServer(server) {
+      const { contactRouter } = await import('./server/contact.js');
+      const api = express();
+      api.use(contactRouter);
+      server.middlewares.use(api);
+    },
+  };
+
   const isAnalyze = process.env.ANALYZE === 'true';
 
   return {
@@ -13,6 +27,7 @@ export default defineConfig(({ command, mode }) => {
     },
     plugins: [
       react(),
+      contactApi,
       tailwindcss(),
       ...(isAnalyze
         ? [

@@ -23,8 +23,8 @@ export default function Experience({ lang }: ExperienceProps) {
     <SectionContainer id="experience" dataTestId="experience-section" className="py-24 sm:py-32 relative">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          index="04"
-          eyebrow={lang === "fa" ? "گاه‌شمار شغلی" : "Chronology"}
+          route="/experience"
+          meta={lang === "fa" ? `${EXPERIENCE.length} نقش` : `${EXPERIENCE.length} roles`}
           title={lang === "fa" ? "سوابق کاری و نقش‌های سازمانی" : "Work history & roles"}
           testid="experience-heading"
         />

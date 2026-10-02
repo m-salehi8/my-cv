@@ -19,7 +19,7 @@ const setMeta = (nameOrProperty: string, value: string, isProperty = false) => {
 /** Keeps head tags in sync when the language is switched client-side (the static HTML is prerendered per language). */
 export default function SeoHead({ lang }: SeoHeadProps) {
   useEffect(() => {
-    const { title, description, path, locale } = SEO[lang];
+    const { title, description, path, locale, imageAlt } = SEO[lang];
     const url = `${SITE_URL}${path}`;
 
     document.title = title;
@@ -28,6 +28,9 @@ export default function SeoHead({ lang }: SeoHeadProps) {
     setMeta("og:description", description, true);
     setMeta("og:url", url, true);
     setMeta("og:locale", locale, true);
+    setMeta("og:locale:alternate", SEO[lang === "fa" ? "en" : "fa"].locale, true);
+    setMeta("og:image:alt", imageAlt, true);
+    setMeta("twitter:image:alt", imageAlt);
     setMeta("twitter:title", title);
     setMeta("twitter:description", description);
 

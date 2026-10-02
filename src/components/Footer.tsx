@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { sendContact } from "../lib/sendContact";
 import { useElementProgress } from "../lib/scroll";
 import { PROFILE, SOCIALS } from "../data/resume";
 import SectionHeading from "./SectionHeading";
@@ -57,24 +58,31 @@ export default function Footer({ lang, onOpenCvModal, onOpenContactModal }: Foot
     }
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formName || !formEmail || !formMessage) return;
 
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitSuccess(true);
+    const ok = await sendContact({ name: formName, contact: formEmail, message: formMessage });
+    setIsSubmitting(false);
+    if (!ok) {
       showToast(
-        lang === "fa" ? "پیام ارسال شد" : "Message Dispatched",
-        lang === "fa" ? "پیام شما در صف بررسی قرار گرفت." : "Your inquiry has been queued for immediate review.",
-        "success"
+        lang === "fa" ? "ارسال ناموفق بود" : "Send failed",
+        lang === "fa" ? "لطفاً دوباره تلاش کنید یا مستقیم ایمیل بزنید." : "Please try again or email directly.",
+        "error"
       );
-      setFormName("");
-      setFormEmail("");
-      setFormMessage("");
-      setTimeout(() => setSubmitSuccess(false), 4000);
-    }, 600);
+      return;
+    }
+    setSubmitSuccess(true);
+    showToast(
+      lang === "fa" ? "پیام ارسال شد" : "Message Dispatched",
+      lang === "fa" ? "پیام شما در صف بررسی قرار گرفت." : "Your inquiry has been queued for immediate review.",
+      "success"
+    );
+    setFormName("");
+    setFormEmail("");
+    setFormMessage("");
+    setTimeout(() => setSubmitSuccess(false), 4000);
   };
 
   const scrollToTop = () => {
@@ -102,8 +110,10 @@ export default function Footer({ lang, onOpenCvModal, onOpenContactModal }: Foot
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          index="07"
-          eyebrow={lang === "fa" ? "سیگنال ارتباطی" : "Signal"}
+          method="POST"
+          route="/contact"
+          code="202"
+          meta={lang === "fa" ? "پیام‌ها پذیرفته می‌شوند" : "accepting messages"}
           title={lang === "fa" ? "بیایید سیستمی مقیاس‌پذیر و پایدار بسازیم" : "Let's build something reliable & scalable"}
           testid="contact-heading"
         />

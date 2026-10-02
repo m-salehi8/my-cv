@@ -39,8 +39,8 @@ export default function Skills({ lang }: SkillsProps) {
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          index="02"
-          eyebrow={lang === "fa" ? "جعبه ابزار" : "Toolbox"}
+          route="/stack"
+          meta={lang === "fa" ? `${SKILLS.length} حوزه · ${SKILLS.reduce((n, c) => n + c.items.length, 0)} ابزار` : `${SKILLS.length} domains · ${SKILLS.reduce((n, c) => n + c.items.length, 0)} tools`}
           title={lang === "fa" ? "ماتریس فناوری‌ها و مهارت‌ها" : "Tech stack matrix"}
           testid="skills-heading"
         />
@@ -52,11 +52,8 @@ export default function Skills({ lang }: SkillsProps) {
               <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-5 w-full">
                 {/* Lottie Tech Radar Canvas */}
                 <div className="relative shrink-0 w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center rounded-2xl bg-[#070B14]/95 border border-emerald-500/30 shadow-inner overflow-hidden group">
-                  {/* Concentric Radar Grid Rings & Expanding Wave */}
+                  {/* Concentric radar rings */}
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    {/* Expanding sonar ripple */}
-                    <div className="absolute w-12 h-12 rounded-full border border-emerald-400/40 animate-radar-wave pointer-events-none" />
-                    
                     {/* Fixed concentric radar guide rings */}
                     <div className="w-20 h-20 sm:w-22 sm:h-22 rounded-full border border-emerald-500/20" />
                     <div className="absolute w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-emerald-500/25 border-dashed" />
@@ -67,23 +64,11 @@ export default function Skills({ lang }: SkillsProps) {
                     <div className="absolute w-full h-[1px] bg-emerald-500/15" />
                     <div className="absolute h-full w-[1px] bg-emerald-500/15" />
 
-                    {/* Rotating Scanning Radar Sweep Beam */}
-                    <div className="absolute inset-0 flex items-center justify-center animate-radar-sweep pointer-events-none">
-                      <div
-                        className="w-full h-full rounded-full"
-                        style={{
-                          background: "conic-gradient(from 0deg, rgba(16, 185, 129, 0.35) 0deg, rgba(6, 182, 212, 0.1) 45deg, transparent 70deg, transparent 360deg)",
-                        }}
-                      />
-                    </div>
-
-                    {/* Pinging active tech blips */}
+                    {/* Tech blips */}
                     <div className="absolute top-[28%] right-[24%] flex items-center justify-center">
-                      <span className="absolute w-2 h-2 rounded-full bg-emerald-400 animate-ping opacity-75" />
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#10B981]" />
                     </div>
                     <div className="absolute bottom-[30%] left-[26%] flex items-center justify-center">
-                      <span className="absolute w-2 h-2 rounded-full bg-cyan-400 animate-ping opacity-60 [animation-delay:0.7s]" />
                       <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_6px_#06B6D4]" />
                     </div>
                   </div>
@@ -101,7 +86,6 @@ export default function Skills({ lang }: SkillsProps) {
                 <div className={lang === "fa" ? "sm:text-right" : "sm:text-left"}>
                   <div className="flex items-center justify-center sm:justify-start gap-2 font-mono text-[11px] text-emerald-400 font-semibold tracking-wider">
                     <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
                     </span>
                     <span>{lang === "fa" ? "رادار پایش هسته زیرساخت" : "ACTIVE ARCHITECTURE RADAR"}</span>
@@ -121,14 +105,6 @@ export default function Skills({ lang }: SkillsProps) {
                 </div>
               </div>
 
-              <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center w-full md:w-auto shrink-0 border-t md:border-t-0 pt-4 md:pt-0 border-white/5 gap-2.5 font-mono">
-                <span className="px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/25 text-emerald-300 text-xs font-semibold">
-                  6 DOMAINS ACTIVE
-                </span>
-                <span className="text-[11px] text-slate-400">
-                  25+ PRODUCTION TOOLS
-                </span>
-              </div>
             </div>
           </SpotlightCard>
         </SectionItem>
