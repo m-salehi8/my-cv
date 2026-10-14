@@ -23,7 +23,7 @@ export default function About({ lang }: AboutProps) {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           route="/about"
-          meta={lang === "fa" ? "۴+ سال سابقه" : "4+ years in production"}
+          meta={lang === "fa" ? "۵ سال سابقه" : "5 years in production"}
           title={lang === "fa" ? "فلسفه و رویکرد توسعه" : "Engineering philosophy"}
           testid="about-heading"
         />
@@ -89,7 +89,7 @@ export default function About({ lang }: AboutProps) {
                     alt={
                       lang === "fa"
                         ? "محمدرضا صالحی — توسعه‌دهنده بک‌اند پایتون و مهندس نرم‌افزار"
-                        : "Mohammadreza Salehi — Senior Python Backend Developer"
+                        : "Mohammadreza Salehi — Python Backend Developer"
                     }
                     width="760"
                     height="815"

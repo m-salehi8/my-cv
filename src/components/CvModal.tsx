@@ -11,6 +11,11 @@ interface CvModalProps {
 export default function CvModal({ isOpen, onClose, lang }: CvModalProps) {
   if (!isOpen) return null;
 
+  const isFa = lang === "fa";
+  const cvUrl = isFa ? PROFILE.resumeUrlFa : PROFILE.resumeUrl;
+  const otherUrl = isFa ? PROFILE.resumeUrl : PROFILE.resumeUrlFa;
+  const fileName = cvUrl.slice(1);
+
   return (
     <div
       onClick={onClose}
@@ -28,7 +33,7 @@ export default function CvModal({ isOpen, onClose, lang }: CvModalProps) {
             </div>
             <div className="min-w-0">
               <h3 className="font-display font-bold text-sm sm:text-base text-white truncate">
-                Mohammadreza_Salehi_CV.pdf
+                {fileName}
               </h3>
               <p className="font-mono text-[11px] text-slate-400 truncate">
                 {lang === "fa" ? "مهندس بک‌اند · پایتون / FastAPI / میکروسرویس" : "Backend Developer · Python / FastAPI / Microservices"}
@@ -38,8 +43,8 @@ export default function CvModal({ isOpen, onClose, lang }: CvModalProps) {
 
           <div className="flex items-center gap-2 sm:gap-3 shrink-0 ml-2">
             <a
-              href={PROFILE.resumeUrl}
-              download="Mohammadreza_Salehi_CV.pdf"
+              href={cvUrl}
+              download={fileName}
               className="inline-flex items-center gap-1.5 sm:gap-2 rounded-xl bg-emerald-500 px-3 sm:px-4 py-2 font-mono text-xs font-semibold text-slate-950 hover:bg-emerald-400 transition-colors shadow-md shadow-emerald-500/20"
             >
               <Download className="w-4 h-4 shrink-0" />
@@ -60,7 +65,7 @@ export default function CvModal({ isOpen, onClose, lang }: CvModalProps) {
         {/* Modal Body / PDF Viewer Frame */}
         <div className="flex-1 min-h-[450px] sm:min-h-[550px] bg-slate-950 p-2 sm:p-4 overflow-y-auto">
           <object
-            data={PROFILE.resumeUrl}
+            data={cvUrl}
             type="application/pdf"
             className="w-full h-full min-h-[450px] sm:min-h-[550px] rounded-lg border border-white/5"
           >
@@ -75,8 +80,8 @@ export default function CvModal({ isOpen, onClose, lang }: CvModalProps) {
                   : "Your browser doesn't support direct PDF embedding in this view. Click below to view or download the complete CV file."}
               </p>
               <a
-                href={PROFILE.resumeUrl}
-                download="Mohammadreza_Salehi_CV.pdf"
+                href={cvUrl}
+                download={fileName}
                 className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-6 py-3 font-mono text-sm font-semibold text-slate-950 hover:bg-emerald-400 transition-all shadow-lg shadow-emerald-500/20"
               >
                 <Download className="w-4 h-4" />
@@ -92,7 +97,13 @@ export default function CvModal({ isOpen, onClose, lang }: CvModalProps) {
             <CheckCircle2 className="w-3.5 h-3.5" />
             <span>{lang === "fa" ? "نسخه رسمی و تاییدشده ۲۰۲۶" : "Verified 2026 Production Edition"}</span>
           </span>
-          <span className="hidden sm:inline">Istanbul / Remote Availability</span>
+          <a
+            href={otherUrl}
+            download={otherUrl.slice(1)}
+            className="hover:text-emerald-300 transition-colors"
+          >
+            {isFa ? "Download English CV" : "دانلود رزومه فارسی"}
+          </a>
         </div>
       </div>
     </div>
