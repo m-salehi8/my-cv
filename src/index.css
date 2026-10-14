@@ -67,26 +67,6 @@
   -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, black 30%, transparent 75%);
 }
 
-/* Infinite Marquee */
-@keyframes marquee {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-.marquee-track {
-  display: flex;
-  width: max-content;
-  animation: marquee 35s linear infinite;
-}
-
-.marquee-track:hover {
-  animation-play-state: paused;
-}
-
 /* Terminal Cursor Blink */
 @keyframes blink {
   0%, 100% { opacity: 1; }
@@ -98,60 +78,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track {
-    animation: none;
-  }
   .terminal-cursor {
     animation: none;
   }
 }
-
-/* Telemetry Pipeline & Radar Custom Animations */
-@keyframes pipelineFlow {
-  from {
-    stroke-dashoffset: 32;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes radarSweep {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes radarWave {
-  0% {
-    transform: scale(0.25);
-    opacity: 0.8;
-  }
-  60% {
-    opacity: 0.25;
-  }
-  100% {
-    transform: scale(1.4);
-    opacity: 0;
-  }
-}
-
-.animate-radar-sweep {
-  animation: radarSweep 3.5s linear infinite;
-  transform-origin: center center;
-}
-
-.animate-radar-wave {
-  animation: radarWave 2.6s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-}
-
-.animate-pipeline-flow {
-  animation: pipelineFlow 1.2s linear infinite;
-}
-
 
 /* ---------- Motion primitives (CSS-only, no animation library) ---------- */
 @keyframes rise {
@@ -159,12 +89,9 @@
   to { opacity: 1; transform: none; }
 }
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes trace-grow { to { transform: scaleX(1); } }
 @keyframes modal-in {
   from { opacity: 0; transform: translateY(15px) scale(0.95); }
-  to { opacity: 1; transform: none; }
-}
-@keyframes fab-in {
-  from { opacity: 0; transform: translateY(20px) scale(0.95); }
   to { opacity: 1; transform: none; }
 }
 
@@ -177,7 +104,6 @@
 
 .animate-fade-in { animation: fade-in 0.2s ease-out both; }
 .animate-modal-in { animation: modal-in 0.25s cubic-bezier(0.22, 1, 0.36, 1) both; }
-.animate-fab-in { animation: fab-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.8s both; }
 
 /* Timeline nodes */
 .timeline-node > div { border-color: #334155; transition: border-color 0.4s, box-shadow 0.4s; }
@@ -189,7 +115,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .js .reveal { opacity: 1; }
-  .js .reveal.in, .animate-fade-in, .animate-modal-in, .animate-fab-in, .timeline-node .node-live {
+  .js .reveal.in, .animate-fade-in, .animate-modal-in, .timeline-node .node-live {
     animation: none;
   }
 }
@@ -212,40 +138,6 @@ section[id], footer[id] { scroll-margin-top: 5.5rem; }
   border-radius: 6px;
 }
 
-/* ---------- Load trace (hero): replays the real navigation timing ---------- */
-.trace-track {
-  position: absolute;
-  inset: 0 3rem 0 7.5rem;
-  pointer-events: none;
-  container-type: inline-size;
-}
-.trace-playhead {
-  position: absolute;
-  top: -2px;
-  bottom: -2px;
-  left: 0;
-  width: 1px;
-  background: #6ee7b7;
-  box-shadow: 0 0 8px rgba(110, 231, 183, 0.8);
-  opacity: 0;
-  animation: trace-sweep var(--len) linear forwards;
-}
-@keyframes trace-sweep {
-  0% { opacity: 1; transform: translateX(0); }
-  92% { opacity: 1; }
-  100% { opacity: 0; transform: translateX(100cqw); }
-}
-.trace-bar {
-  transform-origin: left center;
-  transform: scaleX(0);
-  animation: trace-grow var(--len) linear var(--d) forwards;
-}
-@keyframes trace-grow { to { transform: scaleX(1); } }
-.trace-fade {
-  opacity: 0;
-  animation: fade-in 0.3s ease-out var(--d) forwards;
-}
-
 /* ---------- Section headings as a request/response pair ---------- */
 .req-wire {
   transform-origin: left center;
@@ -259,17 +151,8 @@ section[id], footer[id] { scroll-margin-top: 5.5rem; }
   to { opacity: 1; transform: none; }
 }
 
-/* ---------- Pipeline backpressure: queued messages drain on recovery ---------- */
-.queue-dot { transition: transform 0.5s cubic-bezier(0.5, 0, 0.2, 1), opacity 0.5s; }
-.queue-dot.drain { opacity: 0; }
-
 @media (prefers-reduced-motion: reduce) {
-  .trace-playhead { display: none; }
-  .trace-bar, .trace-fade,
   .js .req-wire, .js .req-status,
   .js .in .req-wire, .js .in .req-status { animation: none; transform: none; opacity: 1; }
-  .queue-dot { transition: none; }
 }
 
-/* Off-screen loops cost nothing when paused. */
-.marquee-track.is-paused { animation-play-state: paused; }

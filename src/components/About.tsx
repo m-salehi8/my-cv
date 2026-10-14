@@ -3,15 +3,7 @@ import { PROFILE, STATS } from "../data/resume";
 import SectionHeading from "./SectionHeading";
 import SpotlightCard from "./SpotlightCard";
 import SectionContainer, { SectionItem } from "./SectionContainer";
-import {
-  MapPin,
-  Mail,
-  Phone,
-  CheckCircle2,
-  ShieldCheck,
-  Terminal,
-  Cpu,
-} from "lucide-react";
+import { MapPin, Mail, Phone } from "lucide-react";
 
 interface AboutProps {
   lang: "en" | "fa";
@@ -39,28 +31,8 @@ export default function About({ lang }: AboutProps) {
               {lang === "fa" ? PROFILE.summary2Fa : PROFILE.summary2}
             </p>
 
-            {/* Quick architectural principles */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 py-3 border-y border-white/5 my-6">
-              <div className="flex items-start gap-2.5 text-xs text-slate-300 font-mono">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                <span>Fault-tolerant asynchronous job pipelines</span>
-              </div>
-              <div className="flex items-start gap-2.5 text-xs text-slate-300 font-mono">
-                <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                <span>Enterprise-grade security & clean REST contracts</span>
-              </div>
-              <div className="flex items-start gap-2.5 text-xs text-slate-300 font-mono">
-                <Terminal className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                <span>Microservices decoupled via message brokers</span>
-              </div>
-              <div className="flex items-start gap-2.5 text-xs text-slate-300 font-mono">
-                <Cpu className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                <span>AI Agent orchestration & token-optimized prompts</span>
-              </div>
-            </div>
-
             {/* Stats Counter Cards with Spotlight */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 items-stretch">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2 items-stretch">
               {STATS.map((s, i) => (
                 <SectionItem key={s.testid} index={i} className="h-full">
                   <SpotlightCard className="h-full p-4 text-center flex flex-col justify-center items-center">

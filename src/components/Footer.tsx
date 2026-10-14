@@ -6,15 +6,14 @@ import SectionHeading from "./SectionHeading";
 import { SectionItem } from "./SectionContainer";
 import SpotlightCard from "./SpotlightCard";
 import { useToast } from "./Toast";
-import { Copy, Check, Download, Mail, Phone, ExternalLink, ArrowUp, Send, User, MessageSquare, Sparkles, Linkedin, Github } from "lucide-react";
+import { Check, Download, Mail, Phone, ExternalLink, Send, User, Linkedin, Github } from "lucide-react";
 
 interface FooterProps {
   lang: "en" | "fa";
   onOpenCvModal: () => void;
-  onOpenContactModal?: () => void;
 }
 
-export default function Footer({ lang, onOpenCvModal, onOpenContactModal }: FooterProps) {
+export default function Footer({ lang, onOpenCvModal }: FooterProps) {
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
   const [formName, setFormName] = useState("");
@@ -75,18 +74,14 @@ export default function Footer({ lang, onOpenCvModal, onOpenContactModal }: Foot
     }
     setSubmitSuccess(true);
     showToast(
-      lang === "fa" ? "پیام ارسال شد" : "Message Dispatched",
-      lang === "fa" ? "پیام شما در صف بررسی قرار گرفت." : "Your inquiry has been queued for immediate review.",
+      lang === "fa" ? "پیام ارسال شد" : "Message sent",
+      lang === "fa" ? "پیام شما در صف بررسی قرار گرفت." : "Thanks — I will get back to you soon.",
       "success"
     );
     setFormName("");
     setFormEmail("");
     setFormMessage("");
     setTimeout(() => setSubmitSuccess(false), 4000);
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -96,18 +91,6 @@ export default function Footer({ lang, onOpenCvModal, onOpenContactModal }: Foot
       data-testid="contact-section"
       className="relative overflow-hidden py-24 sm:py-32 border-t border-white/10"
     >
-      {/* Background Watermark */}
-      <span
-        aria-hidden="true"
-        style={{
-          transform: "translateX(calc(5% - var(--p, 0) * 20%))",
-          WebkitTextStroke: "1px rgba(148, 163, 184, 0.08)",
-        }}
-        className="pointer-events-none select-none absolute top-4 left-0 font-display font-black text-[18vw] leading-none text-transparent whitespace-nowrap"
-      >
-        SALEHI · BACKEND
-      </span>
-
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           method="POST"
@@ -124,41 +107,15 @@ export default function Footer({ lang, onOpenCvModal, onOpenContactModal }: Foot
             <p className="text-slate-300 text-base sm:text-lg font-normal leading-relaxed">
               {lang === "fa"
                 ? "آماده همکاری در موقعیت‌های توسعه بک‌اند (Senior / Lead)، طراحی خطوط لوله داده و مایکروسرویس‌های توزیع‌شده با کارایی بالا در سراسر جهان یا استانبول."
-                : "Currently exploring backend engineering roles, high-throughput microservices, and AI-driven workflow infrastructure. Reach out directly or dispatch a message below:"}
+                : "Open to backend engineering roles, data pipelines and AI-driven workflow infrastructure. Reach out directly or send a message below."}
             </p>
 
-            {/* Subtle Available for work pulse indicator */}
-            <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-xl bg-emerald-950/20 border border-emerald-500/30 backdrop-blur-sm">
-              <div className="flex items-center gap-3">
-                <span className="relative flex h-3 w-3 shrink-0">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500 shadow-[0_0_8px_#10b981]" />
-                </span>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs font-bold text-emerald-300 uppercase tracking-wider">
-                      {lang === "fa" ? "آماده پذیرش پروژه‌های جدید و همکاری" : "Available for new roles & projects"}
-                    </span>
-                  </div>
-                  <span className="font-mono text-[11px] text-slate-400">
-                    {lang === "fa"
-                      ? "تمام‌وقت، دورکاری یا مشاوره‌ای · میانگین زمان پاسخ < ۲ ساعت"
-                      : "Full-time, Remote, or Contract · Avg. response < 2 hrs"}
-                  </span>
-                </div>
-              </div>
-
-              {onOpenContactModal && (
-                <button
-                  type="button"
-                  onClick={onOpenContactModal}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 font-mono text-xs transition-colors cursor-pointer"
-                >
-                  <MessageSquare className="w-3.5 h-3.5" />
-                  <span>{lang === "fa" ? "فرم سریع" : "Quick Form"}</span>
-                </button>
-              )}
-            </div>
+            <p className="flex items-center gap-2.5 font-mono text-xs font-semibold text-emerald-300">
+              <span className="relative flex h-2.5 w-2.5 shrink-0">
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 shadow-[0_0_8px_#10b981]" />
+              </span>
+              {lang === "fa" ? "آماده همکاری · تمام‌وقت، دورکاری یا مشاوره‌ای" : "Available · full-time, remote or contract"}
+            </p>
 
             {/* Direct Email & Phone Action Buttons */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
@@ -196,7 +153,7 @@ export default function Footer({ lang, onOpenCvModal, onOpenContactModal }: Foot
             {/* Social channels */}
             <div className="rounded-2xl border border-white/10 bg-[#0B111D]/80 p-5 backdrop-blur-md space-y-3">
               <div className="font-mono text-xs uppercase tracking-wider text-slate-400 pb-2 border-b border-white/5 flex items-center justify-between">
-                <span>{lang === "fa" ? "کانال‌های مستقیم و شبکه‌ها" : "Direct channels & profiles"}</span>
+                <span>{lang === "fa" ? "کانال‌های مستقیم و شبکه‌ها" : "Profiles"}</span>
                 <span className="text-[10px] text-emerald-400 font-semibold">{PROFILE.location}</span>
               </div>
 
@@ -228,13 +185,12 @@ export default function Footer({ lang, onOpenCvModal, onOpenContactModal }: Foot
           <SectionItem index={1} className="lg:col-span-5">
             <SpotlightCard className="p-6 sm:p-7 shadow-2xl relative">
               <h3 className="font-display font-bold text-lg text-white mb-1 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-emerald-400" />
-                <span>{lang === "fa" ? "ارسال پیام مستقیم" : "Send a Direct Message"}</span>
+                <span>{lang === "fa" ? "ارسال پیام مستقیم" : "Send a message"}</span>
               </h3>
               <p className="font-mono text-xs text-slate-400 mb-5">
                 {lang === "fa"
                   ? "پیام شما مستقیماً به تلگرام و ایمیل من ارسال می‌شود."
-                  : "Your message is dispatched immediately to my priority notification queue."}
+                  : "Your message goes straight to my Telegram and email."}
               </p>
 
               {submitSuccess && (
@@ -243,7 +199,7 @@ export default function Footer({ lang, onOpenCvModal, onOpenContactModal }: Foot
                   <span>
                     {lang === "fa"
                       ? "پیام شما دریافت شد و به زودی پاسخ داده خواهد شد. با تشکر!"
-                      : "Message transmitted successfully! I will respond promptly."}
+                      : "Message received. I will reply soon."}
                   </span>
                 </div>
               )}
@@ -259,6 +215,8 @@ export default function Footer({ lang, onOpenCvModal, onOpenContactModal }: Foot
                       <input
                         type="text"
                         required
+                        autoComplete="name"
+                        aria-label={lang === "fa" ? "نام شما" : "Your Name"}
                         value={formName}
                         onChange={(e) => setFormName(e.target.value)}
                         placeholder={lang === "fa" ? "علی رضایی" : "Alex Mercer"}
@@ -269,13 +227,15 @@ export default function Footer({ lang, onOpenCvModal, onOpenContactModal }: Foot
 
                   <div>
                     <label className="block font-mono text-[11px] uppercase tracking-wider text-slate-400 mb-1.5">
-                      {lang === "fa" ? "ایمیل یا آیدی تماس" : "Your Email"}
+                      {lang === "fa" ? "ایمیل" : "Your Email"}
                     </label>
                     <div className="relative">
                       <Mail className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
                       <input
                         type="email"
                         required
+                        autoComplete="email"
+                        aria-label={lang === "fa" ? "ایمیل" : "Your Email"}
                         value={formEmail}
                         onChange={(e) => setFormEmail(e.target.value)}
                         placeholder="name@company.com"
@@ -287,10 +247,11 @@ export default function Footer({ lang, onOpenCvModal, onOpenContactModal }: Foot
 
                 <div>
                   <label className="block font-mono text-[11px] uppercase tracking-wider text-slate-400 mb-1.5">
-                    {lang === "fa" ? "متن پیام یا شرح پروژه" : "Message / Project Inquiries"}
+                    {lang === "fa" ? "متن پیام یا شرح پروژه" : "Message"}
                   </label>
                   <textarea
                     required
+                    aria-label={lang === "fa" ? "متن پیام" : "Message"}
                     rows={4}
                     value={formMessage}
                     onChange={(e) => setFormMessage(e.target.value)}
@@ -323,7 +284,7 @@ export default function Footer({ lang, onOpenCvModal, onOpenContactModal }: Foot
                     ) : (
                       <Send className="w-3.5 h-3.5" />
                     )}
-                    <span>{isSubmitting ? (lang === "fa" ? "در حال ارسال..." : "Sending...") : (lang === "fa" ? "ارسال پیام" : "Dispatch Message")}</span>
+                    <span>{isSubmitting ? (lang === "fa" ? "در حال ارسال..." : "Sending...") : (lang === "fa" ? "ارسال پیام" : "Send message")}</span>
                   </button>
                 </div>
               </form>
@@ -332,18 +293,8 @@ export default function Footer({ lang, onOpenCvModal, onOpenContactModal }: Foot
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-20 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-slate-500">
-          <div>
-            © 2026 Mohammadreza Salehi — {lang === "fa" ? "توسعه‌یافته با دقت و استانداردهای FastAPI" : "built with FastAPI-grade precision"}
-          </div>
-
-          <button
-            onClick={scrollToTop}
-            className="flex items-center gap-2 text-slate-400 hover:text-emerald-400 transition-colors p-2 rounded-lg hover:bg-white/5"
-          >
-            <span>{lang === "fa" ? "بازگشت به بالا" : "Back to top"}</span>
-            <ArrowUp className="w-4 h-4" />
-          </button>
+        <div className="mt-20 pt-8 border-t border-white/10 font-mono text-xs text-slate-500">
+          © 2026 Mohammadreza Salehi
         </div>
       </div>
     </footer>

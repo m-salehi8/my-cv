@@ -1,17 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { SKILLS } from "../data/resume";
 import SectionHeading from "./SectionHeading";
 import SpotlightCard from "./SpotlightCard";
 import SectionContainer, { SectionItem } from "./SectionContainer";
-import { Code, Database, Server, Bug, Sparkles, Layers, Check } from "lucide-react";
+import { Code, Database, Server, Bug, Sparkles, Layers } from "lucide-react";
 
 interface SkillsProps {
   lang: "en" | "fa";
 }
 
 export default function Skills({ lang }: SkillsProps) {
-  const [selectedTag, setSelectedTag] = useState<string | null>(null);
-
   const getIcon = (iconName: string) => {
     switch (iconName) {
       case "code":
@@ -45,75 +43,11 @@ export default function Skills({ lang }: SkillsProps) {
           testid="skills-heading"
         />
 
-        {/* Live Tech Radar & Architecture Core Banner */}
-        <SectionItem className="mb-8">
-          <SpotlightCard className="p-5 sm:p-7 bg-gradient-to-r from-[#0C1322]/90 via-[#0A0F1D]/80 to-[#0C1322]/90 border border-white/10">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-5 w-full">
-                {/* Lottie Tech Radar Canvas */}
-                <div className="relative shrink-0 w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center rounded-2xl bg-[#070B14]/95 border border-emerald-500/30 shadow-inner overflow-hidden group">
-                  {/* Concentric radar rings */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    {/* Fixed concentric radar guide rings */}
-                    <div className="w-20 h-20 sm:w-22 sm:h-22 rounded-full border border-emerald-500/20" />
-                    <div className="absolute w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-emerald-500/25 border-dashed" />
-                    <div className="absolute w-8 h-8 rounded-full border border-cyan-500/30" />
-                    <div className="absolute w-2 h-2 rounded-full bg-emerald-400/80 shadow-[0_0_8px_#10B981]" />
-
-                    {/* Crosshair coordinate axes */}
-                    <div className="absolute w-full h-[1px] bg-emerald-500/15" />
-                    <div className="absolute h-full w-[1px] bg-emerald-500/15" />
-
-                    {/* Tech blips */}
-                    <div className="absolute top-[28%] right-[24%] flex items-center justify-center">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#10B981]" />
-                    </div>
-                    <div className="absolute bottom-[30%] left-[26%] flex items-center justify-center">
-                      <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_6px_#06B6D4]" />
-                    </div>
-                  </div>
-
-                  {/* High-tech HUD Corner Brackets */}
-                  <div className="absolute top-1.5 left-1.5 w-2 h-2 border-t border-l border-emerald-400/40 pointer-events-none" />
-                  <div className="absolute top-1.5 right-1.5 w-2 h-2 border-t border-r border-emerald-400/40 pointer-events-none" />
-                  <div className="absolute bottom-1.5 left-1.5 w-2 h-2 border-b border-l border-emerald-400/40 pointer-events-none" />
-                  <div className="absolute bottom-1.5 right-1.5 w-2 h-2 border-b border-r border-emerald-400/40 pointer-events-none" />
-
-                  {/* Vignette / Edge Depth */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-emerald-500/15 via-transparent to-transparent pointer-events-none" />
-                </div>
-
-                <div className={lang === "fa" ? "sm:text-right" : "sm:text-left"}>
-                  <div className="flex items-center justify-center sm:justify-start gap-2 font-mono text-[11px] text-emerald-400 font-semibold tracking-wider">
-                    <span className="relative flex h-2 w-2">
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-                    </span>
-                    <span>{lang === "fa" ? "رادار پایش هسته زیرساخت" : "ACTIVE ARCHITECTURE RADAR"}</span>
-                  </div>
-
-                  <h3 className="mt-1.5 font-display font-bold text-lg sm:text-xl text-white">
-                    {lang === "fa"
-                      ? "موتور پردازش همزمان و ارکستراسیون میکروسرویس‌ها"
-                      : "High-Concurrency Backend Core & Microservices"}
-                  </h3>
-
-                  <p className="mt-1 text-slate-400 text-xs sm:text-sm font-mono max-w-xl leading-relaxed">
-                    {lang === "fa"
-                      ? "پایتون، فست‌ای‌پی‌آی، پایگاه‌های داده ناهمگام و خطوط استخراج خودکار داده در تعامل پیوسته برای حداکثر پایداری و بازدهی."
-                      : "Synchronized Python event loops, distributed databases, message queues, and scraper fleets engineered for resilience."}
-                  </p>
-                </div>
-              </div>
-
-            </div>
-          </SpotlightCard>
-        </SectionItem>
-
         {/* Category Cards Grid with Staggered Entrance */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {SKILLS.map((cat, i) => (
             <SectionItem key={cat.testid} index={i % 3} className="h-full">
-              <SpotlightCard className="h-full p-6 flex flex-col justify-between group">
+              <SpotlightCard className="h-full p-6 group">
                 <div>
                   {/* Header */}
                   <div className="flex items-center justify-between pb-4 border-b border-white/5">
@@ -126,7 +60,7 @@ export default function Skills({ lang }: SkillsProps) {
                           {lang === "fa" ? cat.titleFa : cat.title}
                         </h3>
                         <span className="font-mono text-[10px] text-slate-500">
-                          {cat.items.length} TECHNOLOGIES
+                          {cat.items.length} {lang === "fa" ? "ابزار" : "TOOLS"}
                         </span>
                       </div>
                     </div>
@@ -134,31 +68,17 @@ export default function Skills({ lang }: SkillsProps) {
 
                   {/* Skill Tags List */}
                   <div className="mt-5 flex flex-wrap gap-2">
-                    {cat.items.map((item) => {
-                      const isSelected = selectedTag === item;
-                      return (
-                        <button
-                          key={item}
-                          onClick={() => setSelectedTag(isSelected ? null : item)}
-                          className={`px-3 py-1.5 rounded-lg font-mono text-xs transition-all ${
-                            isSelected
-                              ? "bg-emerald-500 text-slate-950 font-bold scale-105 shadow-md shadow-emerald-500/30"
-                              : "bg-white/5 text-slate-300 border border-white/5 hover:border-emerald-400/40 hover:text-emerald-300 hover:bg-white/10"
-                          }`}
-                        >
-                          {item}
-                        </button>
-                      );
-                    })}
+                    {cat.items.map((item) => (
+                      <span
+                        key={item}
+                        className="px-3 py-1.5 rounded-lg font-mono text-xs bg-white/5 text-slate-300 border border-white/5"
+                      >
+                        {item}
+                      </span>
+                    ))}
                   </div>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between font-mono text-[11px] text-slate-500">
-                  <span className="flex items-center gap-1.5 text-emerald-400/80">
-                    <Check className="w-3.5 h-3.5" /> Production Ready
-                  </span>
-                  <span>High Concurrency</span>
-                </div>
               </SpotlightCard>
             </SectionItem>
           ))}

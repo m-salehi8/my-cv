@@ -249,7 +249,7 @@ export const EXPERIENCE: ExperienceItem[] = [
     testid: "experience-card-1",
   },
   {
-    company: "Kelid Talaei (Golden Key)",
+    company: "Golden Key",
     role: "Backend Developer",
     period: "Nov 2021 — Aug 2022",
     location: "Tehran, Iran",
@@ -332,25 +332,6 @@ export const PROJECTS: ProjectItem[] = [
   },
 ];
 
-export const STACK_TICKER: string[] = [
-  "Python",
-  "FastAPI",
-  "Django",
-  "Celery",
-  "PostgreSQL",
-  "Redis",
-  "Elasticsearch",
-  "RabbitMQ",
-  "Docker",
-  "Microservices",
-  "Scrapy",
-  "AI Agents",
-  "LLM Orchestration",
-  "RAG",
-  "Pandas",
-  "Async Pipelines",
-];
-
 export const TERMINAL_COMMANDS: TerminalCommand[] = [
   {
     id: "info",
@@ -384,7 +365,7 @@ export const TERMINAL_COMMANDS: TerminalCommand[] = [
     output: [
       "▸ National Center for Cyberspace — Backend Dev & System Designer · 2025–now",
       "▸ Mobonews — Backend Dev · 2022–2025 (Carpel, Natelo)",
-      "▸ Kelid Talaei — Backend Dev · 2021–2022 (Vidamag, Transcoding)",
+      "▸ Golden Key — Backend Dev · 2021–2022 (Vidamag, Transcoding)",
     ],
   },
   {

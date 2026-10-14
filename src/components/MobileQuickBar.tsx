@@ -6,14 +6,12 @@ interface MobileQuickBarProps {
   lang: "en" | "fa";
   onToggleLang: () => void;
   onOpenCvModal: () => void;
-  onOpenContactModal?: () => void;
 }
 
 export default function MobileQuickBar({
   lang,
   onToggleLang,
   onOpenCvModal,
-  onOpenContactModal,
 }: MobileQuickBarProps) {
   const scrollTo = (id: string) => {
     const el = document.querySelector(id);
@@ -38,7 +36,7 @@ export default function MobileQuickBar({
 
         {/* Contact Modal Trigger with Pulse Indicator */}
         <button
-          onClick={onOpenContactModal || (() => scrollTo("#contact"))}
+          onClick={() => scrollTo("#contact")}
           className="group flex flex-col items-center gap-1 p-2 rounded-xl text-slate-300 hover:text-emerald-400 active:scale-95 transition-all min-h-[44px] justify-center relative cursor-pointer"
         >
           <span className="relative flex items-center justify-center transition-transform duration-300 ease-out group-hover:scale-125 group-active:scale-95">

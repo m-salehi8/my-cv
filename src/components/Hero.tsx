@@ -2,8 +2,6 @@ import React, { useRef, useState } from "react";
 import { PROFILE, SOCIALS } from "../data/resume";
 import Terminal from "./Terminal";
 import TerminalTyping from "./TerminalTyping";
-import TiltCard from "./TiltCard";
-import LoadTrace from "./LoadTrace";
 import IstanbulClock from "./IstanbulClock";
 import { Download, Mail, Linkedin, Github, Send, Check } from "lucide-react";
 
@@ -117,14 +115,6 @@ export default function Hero({ lang, onOpenCvModal }: HeroProps) {
             {lang === "fa" ? PROFILE.heroHookFa : PROFILE.heroHook}
           </p>
 
-          {/* Real navigation timing of this very page load */}
-          <div
-            style={{ animationDelay: "0.25s" }}
-            className="hero-rise mt-6 lg:mt-5 p-3 sm:p-4 lg:p-3.5 rounded-xl border border-white/10 bg-[#0E1524]/80 max-w-xl shadow-lg"
-          >
-            <LoadTrace lang={lang} />
-          </div>
-
           {/* Action Buttons (Download Resume + Email copy + Socials) */}
           <div
             style={{ animationDelay: "0.3s" }}
@@ -144,7 +134,7 @@ export default function Hero({ lang, onOpenCvModal }: HeroProps) {
               <button
                 onClick={copyEmail}
                 className="inline-flex items-center justify-center sm:justify-start gap-2 rounded-xl border border-white/10 bg-[#0E1524]/80 px-4 py-3 font-mono text-xs sm:text-sm text-slate-300 hover:border-emerald-500/40 hover:text-emerald-300 hover:bg-white/5 transition-all w-full sm:w-auto max-w-full overflow-hidden min-h-[44px]"
-                title="Click to copy email"
+                title={lang === "fa" ? "کپی ایمیل" : "Copy email"}
               >
                 <Mail className="w-4 h-4 text-slate-400 shrink-0" />
                 <span className="truncate">{PROFILE.email}</span>
@@ -176,16 +166,14 @@ export default function Hero({ lang, onOpenCvModal }: HeroProps) {
           </div>
         </div>
 
-        {/* Right Column: Interactive Terminal matching screenshot */}
+        {/* Right Column: Interactive Terminal */}
         <div className="lg:col-span-5 relative">
 
           <div
             style={{ animationDelay: "0.2s" }}
             className="hero-rise relative z-10"
           >
-            <TiltCard max={8}>
-              <Terminal onOpenCvModal={onOpenCvModal} lang={lang} />
-            </TiltCard>
+            <Terminal onOpenCvModal={onOpenCvModal} lang={lang} />
           </div>
         </div>
       </div>

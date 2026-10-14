@@ -1,43 +1,23 @@
-import React, { useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { PROJECTS, ProjectItem } from "../data/resume";
 import SectionHeading from "./SectionHeading";
 import SpotlightCard from "./SpotlightCard";
 import SectionContainer, { SectionItem } from "./SectionContainer";
-import { ExternalLink, FolderGit2, Search, X, CheckCircle2, ArrowRight, Sparkles } from "lucide-react";
+import { ExternalLink, FolderGit2, X, CheckCircle2, ArrowRight, Sparkles } from "lucide-react";
 
 interface ProjectsProps {
   lang: "en" | "fa";
 }
 
 export default function Projects({ lang }: ProjectsProps) {
-  const [selectedTag, setSelectedTag] = useState<string>("All");
-  const [searchQuery, setSearchQuery] = useState<string>("");
   const [activeProjectModal, setActiveProjectModal] = useState<ProjectItem | null>(null);
 
-  const allTags = useMemo(
-    () => ["All", ...Array.from(new Set(PROJECTS.flatMap((p) => p.tags)))],
-    []
-  );
-
-  const filteredProjects = useMemo(() => {
-    return PROJECTS.filter((proj) => {
-      const matchesTag =
-        selectedTag === "All" ||
-        proj.tags.some((t) => t.toLowerCase().includes(selectedTag.toLowerCase())) ||
-        (selectedTag === "DevOps" && proj.tags.some((t) => t.includes("Docker") || t.includes("DevOps")));
-
-      const q = searchQuery.toLowerCase().trim();
-      const matchesSearch =
-        !q ||
-        proj.title.toLowerCase().includes(q) ||
-        (proj.titleFa && proj.titleFa.toLowerCase().includes(q)) ||
-        proj.description.toLowerCase().includes(q) ||
-        (proj.descriptionFa && proj.descriptionFa.toLowerCase().includes(q)) ||
-        proj.tags.some((t) => t.toLowerCase().includes(q));
-
-      return matchesTag && matchesSearch;
-    });
-  }, [selectedTag, searchQuery]);
+  useEffect(() => {
+    if (!activeProjectModal) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setActiveProjectModal(null);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [activeProjectModal]);
 
   return (
     <SectionContainer
@@ -57,49 +37,9 @@ export default function Projects({ lang }: ProjectsProps) {
           testid="projects-heading"
         />
 
-        {/* Filter and Search Bar */}
-        <SectionItem className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-          {/* Tags */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
-            {allTags.map((tag) => (
-              <button
-                key={tag}
-                onClick={() => setSelectedTag(tag)}
-                className={`px-3 py-1.5 rounded-lg font-mono text-xs transition-all whitespace-nowrap ${
-                  selectedTag === tag
-                    ? "bg-emerald-500 text-slate-950 font-bold shadow-md shadow-emerald-500/20"
-                    : "bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border border-white/5"
-                }`}
-              >
-                {tag}
-              </button>
-            ))}
-          </div>
-
-          {/* Search Input */}
-          <div className="relative w-full md:w-64">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={lang === "fa" ? "جستجو در پروژه‌ها..." : "Filter by keyword..."}
-              className="w-full bg-[#0B111D] border border-white/10 rounded-xl pl-9 pr-8 py-1.5 font-mono text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-emerald-500/50"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery("")}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            )}
-          </div>
-        </SectionItem>
-
         {/* Projects Grid with Staggered Entrance */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-          {filteredProjects.map((proj, i) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+          {PROJECTS.map((proj, i) => (
             <SectionItem key={proj.testid} index={i} className="h-full">
               <SpotlightCard
                 data-testid={proj.testid}
@@ -112,7 +52,7 @@ export default function Projects({ lang }: ProjectsProps) {
                     <div className="flex items-center gap-2">
                       <FolderGit2 className="w-4 h-4 text-emerald-400" />
                       <span className="font-mono text-xs text-slate-400 font-semibold">
-                        PROJECT // {proj.index}
+                        {proj.index}
                       </span>
                     </div>
                     <span className="font-mono text-xs text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20 font-medium">
@@ -161,7 +101,7 @@ export default function Projects({ lang }: ProjectsProps) {
 
                   <div className="flex items-center justify-between font-mono text-xs">
                     <span className="text-emerald-400 group-hover:underline flex items-center gap-1">
-                      <span>{lang === "fa" ? "مشاهده جزئیات معماری" : "View architecture specs"}</span>
+                      <span>{lang === "fa" ? "مشاهده جزئیات" : "View details"}</span>
                       <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                     </span>
 
@@ -183,15 +123,11 @@ export default function Projects({ lang }: ProjectsProps) {
           ))}
         </div>
 
-        {filteredProjects.length === 0 && (
-          <div className="text-center py-16 text-slate-400 font-mono text-sm border border-dashed border-white/10 rounded-2xl">
-            {lang === "fa" ? "هیچ پروژه‌ای با این معیار پیدا نشد." : "No projects match your filter criteria."}
-          </div>
-        )}
-
         {/* Project Technical Detail Modal */}
         {activeProjectModal && (
           <div
+            role="dialog"
+            aria-modal="true"
             className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in"
             onClick={() => setActiveProjectModal(null)}
           >
@@ -202,7 +138,7 @@ export default function Projects({ lang }: ProjectsProps) {
               <div className="flex items-start justify-between">
                 <div>
                   <span className="font-mono text-xs text-emerald-400">
-                    PROJECT // {activeProjectModal.index}
+                    {activeProjectModal.index}
                   </span>
                   <h3 className="text-2xl font-display font-bold text-white mt-1">
                     {lang === "fa" && activeProjectModal.titleFa
@@ -216,6 +152,7 @@ export default function Projects({ lang }: ProjectsProps) {
 
                 <button
                   onClick={() => setActiveProjectModal(null)}
+                  aria-label={lang === "fa" ? "بستن" : "Close"}
                   className="p-1.5 rounded-lg border border-white/10 text-slate-400 hover:text-white bg-white/5"
                 >
                   <X className="w-4 h-4" />

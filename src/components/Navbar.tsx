@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { SEO } from "../data/seo";
-import { Download, Globe, Menu, X, Film } from "lucide-react";
+import { Download, Globe, Menu, X } from "lucide-react";
 
 interface NavbarProps {
   lang: "en" | "fa";
   onToggleLang: () => void;
   onOpenCvModal: () => void;
-  onOpenMotionTourModal?: () => void;
 }
 
 export default function Navbar({
   lang,
   onToggleLang,
   onOpenCvModal,
-  onOpenMotionTourModal,
 }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -27,7 +25,7 @@ export default function Navbar({
   }, []);
 
   useEffect(() => {
-    const ids = ["about", "stack", "experience", "projects", "architecture", "contact"];
+    const ids = ["about", "stack", "experience", "projects", "contact"];
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -52,8 +50,7 @@ export default function Navbar({
     { href: "#stack", index: "02", label: lang === "fa" ? "مهارت‌ها" : "Stack" },
     { href: "#experience", index: "03", label: lang === "fa" ? "سوابق کاری" : "Experience" },
     { href: "#projects", index: "04", label: lang === "fa" ? "پروژه‌ها" : "Projects" },
-    { href: "#architecture", index: "05", label: lang === "fa" ? "معماری" : "Architecture" },
-    { href: "#contact", index: "06", label: lang === "fa" ? "تماس" : "Contact" },
+    { href: "#contact", index: "05", label: lang === "fa" ? "تماس" : "Contact" },
   ];
 
   const handleNavClick = (href: string) => {
@@ -136,17 +133,6 @@ export default function Navbar({
             <span className="font-bold">{lang === "fa" ? "EN" : "فا"}</span>
           </a>
 
-          {onOpenMotionTourModal && (
-            <button
-              onClick={onOpenMotionTourModal}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-cyan-500/40 bg-cyan-950/40 hover:bg-cyan-900/60 px-2.5 sm:px-3 py-1.5 font-mono text-xs font-semibold text-cyan-300 transition-all shadow-md shadow-cyan-500/15 active:scale-95 min-h-[36px] cursor-pointer"
-              title={lang === "fa" ? "تور موشن‌گرافی ویدیویی پروژه (Veo 3)" : "AI Motion Tour (Veo 3)"}
-            >
-              <Film className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-              <span className="hidden md:inline">{lang === "fa" ? "موشن‌گرافی" : "Motion Tour"}</span>
-            </button>
-          )}
-
           <button
             onClick={onOpenCvModal}
             className="hidden sm:inline-flex items-center gap-1.5 rounded-xl border border-emerald-500/40 bg-emerald-500 hover:bg-emerald-400 px-3.5 py-1.5 font-mono text-xs font-bold text-slate-950 transition-all shadow-md shadow-emerald-500/20 active:scale-95 min-h-[36px]"
@@ -159,7 +145,8 @@ export default function Navbar({
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="lg:hidden p-2 rounded-xl border border-white/10 text-slate-300 hover:text-white bg-white/5 focus:outline-none min-h-[38px] min-w-[38px] flex items-center justify-center"
-            aria-label="Toggle menu"
+            aria-label={lang === "fa" ? "منو" : "Menu"}
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
