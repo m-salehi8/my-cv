@@ -38,6 +38,7 @@ try {
     html = replaceTag(html, /<html lang="fa" dir="rtl">/, `<html lang="${lang}" dir="${lang === 'fa' ? 'rtl' : 'ltr'}">`);
     html = replaceTag(html, /<title>.*?<\/title>/s, `<title>${escapeAttr(meta.title)}</title>`);
     html = replaceTag(html, /(<meta\s+name="description"\s+content=")[^"]*(")/s, `$1${escapeAttr(meta.description)}$2`);
+    html = replaceTag(html, /(<meta name="keywords" content=")[^"]*(")/, `$1${escapeAttr(meta.keywords)}$2`);
     html = replaceTag(html, /(<link rel="canonical" href=")[^"]*(")/, `$1${url}$2`);
     html = replaceTag(html, /(<meta property="og:url" content=")[^"]*(")/, `$1${url}$2`);
     html = replaceTag(html, /(<meta property="og:title" content=")[^"]*(")/, `$1${escapeAttr(meta.title)}$2`);

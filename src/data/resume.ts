@@ -102,9 +102,9 @@ export const PROFILE: ProfileData = {
   heroHookFa:
     "توسعه‌دهنده بک‌اند؛ سازنده پایپ‌لاین‌های داده و گردش‌کارهای هوش مصنوعی: سرویس‌های Django و FastAPI، ERP ایجنتیک و خزنده‌هایی با بیش از ۵۰۰ هزار رکورد. محصول را از ایده تا استقرار جلو می‌برم.",
   aboutStory:
-    "With 5 years of production experience, I build services in Python, Django and FastAPI, design data pipelines, and take products from idea to production. I keep growing toward software engineering and system design on purpose: cleaner architecture, better testing, and more considered technical decisions.",
+    "I'm Mohammadreza Salehi (Mohammad Salehi), a Python programmer and backend developer based in Istanbul. With 5 years of production experience, I build services in Python, Django and FastAPI, design data pipelines, and take products from idea to production. I keep growing toward software engineering and system design on purpose: cleaner architecture, better testing, and more considered technical decisions.",
   aboutStoryFa:
-    "با ۵ سال تجربه در محیط‌های پروداکشن، سرویس‌های Python، Django و FastAPI می‌سازم، پایپ‌لاین داده طراحی می‌کنم و محصول را از ایده تا استقرار جلو می‌برم. مهندسی نرم‌افزار و طراحی سیستم مسیری است که آگاهانه در آن رشد می‌کنم: معماری تمیزتر، تست بیشتر و تصمیم‌های فنی سنجیده‌تر.",
+    "من محمدرضا صالحی (محمد صالحی) هستم، برنامه‌نویس پایتون و توسعه‌دهنده بک‌اند ساکن استانبول. با ۵ سال تجربه در محیط‌های پروداکشن، سرویس‌های Python، Django و FastAPI می‌سازم، پایپ‌لاین داده طراحی می‌کنم و محصول را از ایده تا استقرار جلو می‌برم. مهندسی نرم‌افزار و طراحی سیستم مسیری است که آگاهانه در آن رشد می‌کنم: معماری تمیزتر، تست بیشتر و تصمیم‌های فنی سنجیده‌تر.",
 };
 
 export const SOCIALS: SocialLink[] = [

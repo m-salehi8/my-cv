@@ -82,7 +82,7 @@ export default function Hero({ lang, onOpenCvModal }: HeroProps) {
               <span className="text-white block">{lang === "fa" ? "محمدرضا" : "MOHAMMADREZA"}</span>
               <span className="text-emerald-400 block mt-0.5 sm:mt-1">{lang === "fa" ? "صالحی" : "SALEHI"}</span>
               {/* The visible role line is animated (empty in the static HTML), so the heading states it too. */}
-              <span className="sr-only">{lang === "fa" ? "، توسعه‌دهنده بک‌اند پایتون" : ", Python backend developer"}</span>
+              <span className="sr-only">{lang === "fa" ? "، برنامه‌نویس پایتون و توسعه‌دهنده بک‌اند" : ", Python programmer and backend developer"}</span>
             </h1>
 
             {/* Terminal Typing Subtitle: $ MICROSERVICES & ASYNC PIPELINES */}

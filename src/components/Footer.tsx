@@ -294,7 +294,9 @@ export default function Footer({ lang, onOpenCvModal }: FooterProps) {
 
         {/* Bottom Bar */}
         <div className="mt-20 pt-8 border-t border-white/10 font-mono text-xs text-slate-500">
-          © 2026 Mohammadreza Salehi
+          {lang === "fa"
+            ? "© ۲۰۲۶ محمدرضا صالحی (محمد صالحی) — برنامه‌نویس پایتون و توسعه‌دهنده بک‌اند"
+            : "© 2026 Mohammadreza Salehi (Mohammad Salehi) — Python backend developer"}
         </div>
       </div>
     </footer>

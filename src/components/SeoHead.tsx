@@ -19,11 +19,12 @@ const setMeta = (nameOrProperty: string, value: string, isProperty = false) => {
 /** Keeps head tags in sync when the language is switched client-side (the static HTML is prerendered per language). */
 export default function SeoHead({ lang }: SeoHeadProps) {
   useEffect(() => {
-    const { title, description, path, locale, imageAlt } = SEO[lang];
+    const { title, description, keywords, path, locale, imageAlt } = SEO[lang];
     const url = `${SITE_URL}${path}`;
 
     document.title = title;
     setMeta("description", description);
+    setMeta("keywords", keywords);
     setMeta("og:title", title, true);
     setMeta("og:description", description, true);
     setMeta("og:url", url, true);

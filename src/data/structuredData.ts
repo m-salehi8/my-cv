@@ -1,5 +1,5 @@
 import { EXPERIENCE, PROFILE, SKILLS, SOCIALS } from "./resume";
-import { Lang, SEO, SITE_URL } from "./seo";
+import { Lang, NAME_VARIANTS, SEO, SITE_URL } from "./seo";
 
 const PERSON_ID = `${SITE_URL}/#person`;
 const WEBSITE_ID = `${SITE_URL}/#website`;
@@ -16,9 +16,18 @@ export function buildJsonLd(lang: Lang) {
       {
         "@type": "Person",
         "@id": PERSON_ID,
-        name: PROFILE.fullName,
-        alternateName: ["محمدرضا صالحی", "Mohammad Reza Salehi"],
-        jobTitle: lang === "fa" ? "توسعه‌دهنده بک‌اند پایتون" : "Backend Developer",
+        name: lang === "fa" ? "محمدرضا صالحی" : PROFILE.fullName,
+        alternateName: [...NAME_VARIANTS.fa, ...NAME_VARIANTS.en].filter(
+          (n) => n !== (lang === "fa" ? "محمدرضا صالحی" : PROFILE.fullName)
+        ),
+        givenName: lang === "fa" ? "محمدرضا" : "Mohammadreza",
+        familyName: lang === "fa" ? "صالحی" : "Salehi",
+        jobTitle: lang === "fa" ? ["برنامه‌نویس پایتون", "توسعه‌دهنده بک‌اند"] : ["Python Developer", "Backend Developer"],
+        hasOccupation: {
+          "@type": "Occupation",
+          name: lang === "fa" ? "برنامه‌نویس و توسعه‌دهنده بک‌اند" : "Software Developer (Backend)",
+          occupationalCategory: "15-1252.00",
+        },
         description: lang === "fa" ? PROFILE.faSummary : PROFILE.summary,
         image: `${SITE_URL}/profile.jpg`,
         url: SITE_URL + "/",
@@ -37,8 +46,8 @@ export function buildJsonLd(lang: Lang) {
         "@type": "WebSite",
         "@id": WEBSITE_ID,
         url: SITE_URL + "/",
-        name: "Mohammadreza Salehi",
-        alternateName: "محمدرضا صالحی",
+        name: lang === "fa" ? "محمدرضا صالحی" : "Mohammadreza Salehi",
+        alternateName: [...NAME_VARIANTS.fa, ...NAME_VARIANTS.en],
         inLanguage: ["fa-IR", "en-US"],
         publisher: { "@id": PERSON_ID },
       },
