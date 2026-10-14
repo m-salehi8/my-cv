@@ -3,7 +3,7 @@ import { PROJECTS, ProjectItem } from "../data/resume";
 import SectionHeading from "./SectionHeading";
 import SpotlightCard from "./SpotlightCard";
 import SectionContainer, { SectionItem } from "./SectionContainer";
-import { ExternalLink, FolderGit2, Search, X, CheckCircle2, ArrowRight } from "lucide-react";
+import { ExternalLink, FolderGit2, Search, X, CheckCircle2, ArrowRight, Sparkles } from "lucide-react";
 
 interface ProjectsProps {
   lang: "en" | "fa";
@@ -14,7 +14,10 @@ export default function Projects({ lang }: ProjectsProps) {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [activeProjectModal, setActiveProjectModal] = useState<ProjectItem | null>(null);
 
-  const allTags = ["All", "FastAPI", "Scraping", "AI Pipelines", "PostgreSQL", "DevOps"];
+  const allTags = useMemo(
+    () => ["All", ...Array.from(new Set(PROJECTS.flatMap((p) => p.tags)))],
+    []
+  );
 
   const filteredProjects = useMemo(() => {
     return PROJECTS.filter((proj) => {
@@ -45,7 +48,11 @@ export default function Projects({ lang }: ProjectsProps) {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           route="/projects"
-          meta={lang === "fa" ? `${PROJECTS.length} پروژه` : `${PROJECTS.length} projects`}
+          meta={
+            lang === "fa"
+              ? `${PROJECTS.length} پروژه · شامل ۲ محصول شخصی`
+              : `${PROJECTS.length} projects · incl. 2 own products`
+          }
           title={lang === "fa" ? "پروژه‌های کلیدی و معماری‌های توسعه‌یافته" : "Featured engineering projects"}
           testid="projects-heading"
         />
@@ -117,6 +124,16 @@ export default function Projects({ lang }: ProjectsProps) {
                   <h3 className="mt-4 font-display font-bold text-xl text-white group-hover:text-emerald-300 transition-colors">
                     {lang === "fa" && proj.titleFa ? proj.titleFa : proj.title}
                   </h3>
+
+                  {/* Own-product badge: built from zero by the author */}
+                  {proj.ownership && (
+                    <div className="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
+                      <Sparkles className="w-3.5 h-3.5 text-cyan-300 shrink-0" />
+                      <span className="font-mono text-[11px] font-semibold text-cyan-200 leading-tight">
+                        {lang === "fa" && proj.ownershipFa ? proj.ownershipFa : proj.ownership}
+                      </span>
+                    </div>
+                  )}
 
                   {/* Role sub-badge */}
                   <div className="mt-1 font-mono text-xs text-slate-400">
@@ -205,6 +222,52 @@ export default function Projects({ lang }: ProjectsProps) {
                 </button>
               </div>
 
+              {activeProjectModal.ownership && (
+                <div className="rounded-xl border border-cyan-500/30 bg-cyan-500/[0.07] p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Sparkles className="w-4 h-4 text-cyan-300 shrink-0" />
+                    <span className="font-mono text-xs font-bold text-cyan-200">
+                      {lang === "fa" && activeProjectModal.ownershipFa
+                        ? activeProjectModal.ownershipFa
+                        : activeProjectModal.ownership}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {[
+                      {
+                        step: lang === "fa" ? "ایده و طراحی محصول" : "Product Idea & Design",
+                        text:
+                          lang === "fa"
+                            ? "مسئله، معماری و تصمیم‌های کلیدی محصول توسط خودم تعریف و طراحی شد."
+                            : "The problem, the architecture and every key product decision were defined and designed by me.",
+                      },
+                      {
+                        step: lang === "fa" ? "توسعه و پیاده‌سازی" : "Development & Implementation",
+                        text:
+                          lang === "fa"
+                            ? "بک‌اند، فرانت‌اند، موتور داده و زیرساخت — همه از صفر توسط خودم کدنویسی شد."
+                            : "Backend, frontend, data engine and infrastructure — all written from scratch by me.",
+                      },
+                      {
+                        step: lang === "fa" ? "مالکیت کامل محصول" : "Full Ownership",
+                        text:
+                          lang === "fa"
+                            ? "محصول شخصی من است؛ طراحی، توسعه و نگهداری کامل توسط خودم انجام می‌شود."
+                            : "It is my own product; design, development and maintenance are entirely mine.",
+                      },
+                    ].map((b) => (
+                      <div key={b.step} className="rounded-lg bg-black/25 border border-white/5 p-3">
+                        <div className="font-mono text-[11px] font-semibold text-cyan-300 mb-1">
+                          {b.step}
+                        </div>
+                        <p className="text-[11px] leading-relaxed text-slate-300">{b.text}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div>
                 <h4 className="font-mono text-xs uppercase tracking-wider text-slate-400 mb-2">
                   {lang === "fa" ? "خلاصه معماری و نقش در پروژه" : "Architecture & Contributions"}
@@ -246,7 +309,15 @@ export default function Projects({ lang }: ProjectsProps) {
                 ) : (
                   <span className="font-mono text-xs text-slate-400 flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <span>{lang === "fa" ? "معماری در محیط پروداکشن فعال است" : "Enterprise internal deployment"}</span>
+                    <span>
+                      {activeProjectModal.ownership
+                        ? lang === "fa"
+                          ? "محصول شخصی — در دسترس برای دموی زنده"
+                          : "My own product — live demo available on request"
+                        : lang === "fa"
+                          ? "معماری در محیط پروداکشن فعال است"
+                          : "Enterprise internal deployment"}
+                    </span>
                   </span>
                 )}
 

@@ -16,7 +16,6 @@ import { useRootScrollProgress } from "./lib/scroll";
 import { Lang, SEO } from "./data/seo";
 
 // Lazy-loaded heavy below-the-fold sections and modals
-const ApiPlayground = React.lazy(() => import("./components/ApiPlayground"));
 const ArchitectureDiagram = React.lazy(() => import("./components/ArchitectureDiagram"));
 const CvModal = React.lazy(() => import("./components/CvModal"));
 const ContactModal = React.lazy(() => import("./components/ContactModal"));
@@ -46,7 +45,7 @@ export default function App({ initialLang = "fa" }: { initialLang?: Lang }) {
     if (typeof window !== "undefined") {
       const hash = window.location.hash;
       if (hash) {
-        // If loaded with a hash (e.g. #architecture, #api-playground), scroll to target
+        // If loaded with a hash (e.g. #architecture, #projects), scroll to target
         const checkTarget = () => {
           const el = document.querySelector(hash);
           if (el) {
@@ -69,7 +68,6 @@ export default function App({ initialLang = "fa" }: { initialLang?: Lang }) {
       setShowBackToTop(window.scrollY > 600);
       if (!preloaded && window.scrollY > 200) {
         preloaded = true;
-        import("./components/ApiPlayground");
         import("./components/ArchitectureDiagram");
       }
     };
@@ -111,13 +109,6 @@ export default function App({ initialLang = "fa" }: { initialLang?: Lang }) {
           <Marquee />
           <About lang={lang} />
           <Skills lang={lang} />
-          {mounted ? (
-            <React.Suspense fallback={<SectionPlaceholder id="api-playground" className="min-h-[750px]" />}>
-              <ApiPlayground lang={lang} />
-            </React.Suspense>
-          ) : (
-            <SectionPlaceholder id="api-playground" className="min-h-[750px]" />
-          )}
           <Experience lang={lang} />
           <Projects lang={lang} />
           {mounted ? (

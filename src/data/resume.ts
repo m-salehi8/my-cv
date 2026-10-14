@@ -64,6 +64,9 @@ export interface ProjectItem {
   tags: string[];
   testid: string;
   url?: string;
+  /** Set when the project is the author's own product, taken from zero to shipped. */
+  ownershipFa?: string;
+  ownership?: string;
 }
 
 export interface TerminalCommand {
@@ -215,24 +218,6 @@ export const EXPERIENCE: ExperienceItem[] = [
     testid: "experience-card-0",
   },
   {
-    company: "Jaryan",
-    role: "Backend Developer — No-Code Workflow Orchestration",
-    period: "Present",
-    location: "Remote",
-    points: [
-      "Architected and deployed robust backend task execution pipelines for a no-code workflow orchestration platform using FastAPI.",
-      "Synchronized complex data flow logic and automated canvas positioning with a ReactFlow frontend.",
-      "Handled asynchronous operations and database migrations to ensure high availability.",
-    ],
-    pointsFa: [
-      "معماری و استقرار خطوط اجرای وظایف باک‌اند برای پلتفرم ارکستراسیون گردش‌کار بدون کد با FastAPI.",
-      "هماهنگ‌سازی منطق جریان داده پیچیده و جانمایی خودکار روی بوم گرافیکی ReactFlow.",
-      "مدیریت عملیات غیرهمگام (Async) و مایگریشن‌های دیتابیس جهت تداوم پایداری سرویس.",
-    ],
-    tags: ["FastAPI", "Async", "ReactFlow", "Migrations"],
-    testid: "experience-card-1",
-  },
-  {
     company: "MoboNews",
     role: "Backend Developer",
     period: "Aug 2022 — Aug 2025",
@@ -252,7 +237,7 @@ export const EXPERIENCE: ExperienceItem[] = [
       "ناتلو (Natelo - زنجیره خرده‌فروشی سوئیس): توسعه وب‌سرویس‌های خرید/تعمیرات، پنل مدیریت، سیستم نوتیفیکیشن شعب و موتور قیمت‌گذاری مطابق با قوانین سوئیس.",
     ],
     tags: ["Microservices", "Elasticsearch", "Docker", "APIs"],
-    testid: "experience-card-2",
+    testid: "experience-card-1",
   },
   {
     company: "GoldenKey",
@@ -272,7 +257,7 @@ export const EXPERIENCE: ExperienceItem[] = [
       "توسعه سیستم یکپارچه احراز هویت (SSO) با ضریب امنیتی بالا.",
     ],
     tags: ["RabbitMQ", "SSO", "Transcoding", "REST"],
-    testid: "experience-card-3",
+    testid: "experience-card-2",
   },
 ];
 
@@ -316,6 +301,51 @@ export const PROJECTS: ProjectItem[] = [
     tags: ["Full-Stack", "DevOps", "mrtrader.net", "AI-assisted"],
     testid: "project-card-2",
     url: "https://mrtrader.net",
+  },
+  {
+    index: "04",
+    title: "DataCanvas — AI-Powered BI Platform",
+    titleFa: "دیتاکانواس — پلتفرم هوش تجاری مبتنی بر هوش مصنوعی",
+    role: "Full-Stack & AI Data Engineer",
+    period: "Aug 2026 — Present",
+    description:
+      "An AI-powered business intelligence platform: upload a spreadsheet, describe the question in plain language, and get an interactive dashboard, a full analytical report and a data Q&A chat. A Django/Pandas engine computes every number deterministically — the LLM only proposes validated JSON structure, so a hallucinated column costs a block but never produces a wrong figure. Includes Jalali calendar timelines, multi-sheet/header auto-detection, DB connectors, team workspaces with role-based access, and 750 automated tests.",
+    descriptionFa:
+      "یک پلتفرم هوش تجاری مبتنی بر هوش مصنوعی: فایل اکسل را آپلود کنید، سؤالتان را به زبان طبیعی بپرسید و یک داشبورد تعاملی، گزارش تحلیلی کامل و چت پرسش‌وپاسخ روی داده دریافت کنید. موتور محاسباتی Django/Pandas هر عدد را به‌صورت قطعی حساب می‌کند و مدل زبانی صرفاً ساختار JSON اعتبارسنجی‌شده پیشنهاد می‌دهد؛ در نتیجه یک ستون توهمی فقط یک بخش را از گزارش حذف می‌کند و هرگز عدد غلط تولید نمی‌کند. شامل خط زمانی تقویم جلالی، تشخیص خودکار شیت و سطر عنوان در فایل‌های چندشیتی، کانکتور پایگاه داده، فضای کاری تیمی با کنترل دسترسی مبتنی بر نقش و ۷۵۰ تست خودکار.",
+    tags: [
+      "Django",
+      "Pandas",
+      "Nuxt 3 / Vue",
+      "LLM Orchestration",
+      "Apache ECharts",
+      "Docker",
+    ],
+    testid: "project-card-3",
+    ownership: "Own Product · Idea, Design & Full Implementation",
+    ownershipFa: "محصول شخصی · ایده، طراحی و پیاده‌سازی کامل از صفر",
+  },
+  {
+    index: "05",
+    title: "Jaryan — No-Code Workflow Automation Platform",
+    titleFa: "جریان — پلتفرم اتوماسیون گردش‌کار بدون کد",
+    role: "Backend & Workflow Engine Engineer",
+    period: "Jun 2026 — Present",
+    description:
+      "A Persian-first, multi-tenant SaaS platform that lets organizations design, run and monitor approval processes (leave requests, expenses, onboarding) with no code. The backend workflow engine evaluates conditional edge rules, propagates form data as context, snapshots each run so later edits never affect in-flight processes, and escalates SLA timeouts through Celery/Redis. Processes are built by describing them in plain Persian and watching an LLM stream the graph via SSE, with AI-agent and OCR nodes available as steps.",
+    descriptionFa:
+      "یک پلتفرم SaaS چندسازمانی و فارسی‌اول که به سازمان‌ها اجازه می‌دهد فرایندهای تأیید (مرخصی، تنخواه، آنبوردینگ) را بدون کدنویسی طراحی، اجرا و نظارت کنند. موتور اجرای فرایند در بک‌اند شرط‌های لبه‌ها را ارزیابی می‌کند، داده فرم‌ها را به‌عنوان context منتقل می‌کند، از هر اجرا اسنپ‌شات می‌گیرد تا تغییرات بعدی روی فرایندهای در حال اجرا اثر نگذارد و انقضای SLA را با Celery/Redis به مرحله بعد می‌برد. فرایندها با توصیف متنی فارسی ساخته می‌شوند و مدل زبانی گراف را به‌صورت SSE استریم می‌کند؛ نودهای AI Agent و OCR هم به‌عنوان گام در دسترس‌اند.",
+    tags: [
+      "Django",
+      "Celery",
+      "PostgreSQL",
+      "MongoDB",
+      "React",
+      "LLM Orchestration",
+      "Multi-Tenant",
+    ],
+    testid: "project-card-4",
+    ownership: "Own Product · Idea, Design & Full Implementation",
+    ownershipFa: "محصول شخصی · ایده، طراحی و پیاده‌سازی کامل از صفر",
   },
 ];
 
@@ -369,7 +399,6 @@ export const TERMINAL_COMMANDS: TerminalCommand[] = [
     command: "salehi --experience",
     output: [
       "▸ National Center of Cyberspace — Backend Dev (ERP Portal)",
-      "▸ Jaryan — Backend Dev (No-Code Workflow Orchestration)",
       "▸ MoboNews — Backend Dev · 2022–2025 (Karpol, Natelo)",
       "▸ GoldenKey — Backend Dev · 2021–2022 (Vidamag, Transcoding)",
     ],

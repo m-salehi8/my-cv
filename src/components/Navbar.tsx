@@ -27,7 +27,7 @@ export default function Navbar({
   }, []);
 
   useEffect(() => {
-    const ids = ["about", "stack", "api-playground", "experience", "projects", "architecture", "contact"];
+    const ids = ["about", "stack", "experience", "projects", "architecture", "contact"];
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -50,11 +50,10 @@ export default function Navbar({
   const navLinks = [
     { href: "#about", index: "01", label: lang === "fa" ? "درباره من" : "About" },
     { href: "#stack", index: "02", label: lang === "fa" ? "مهارت‌ها" : "Stack" },
-    { href: "#api-playground", index: "03", label: lang === "fa" ? "تست API" : "API Docs" },
-    { href: "#experience", index: "04", label: lang === "fa" ? "سوابق کاری" : "Experience" },
-    { href: "#projects", index: "05", label: lang === "fa" ? "پروژه‌ها" : "Projects" },
-    { href: "#architecture", index: "06", label: lang === "fa" ? "معماری" : "Architecture" },
-    { href: "#contact", index: "07", label: lang === "fa" ? "تماس" : "Contact" },
+    { href: "#experience", index: "03", label: lang === "fa" ? "سوابق کاری" : "Experience" },
+    { href: "#projects", index: "04", label: lang === "fa" ? "پروژه‌ها" : "Projects" },
+    { href: "#architecture", index: "05", label: lang === "fa" ? "معماری" : "Architecture" },
+    { href: "#contact", index: "06", label: lang === "fa" ? "تماس" : "Contact" },
   ];
 
   const handleNavClick = (href: string) => {
